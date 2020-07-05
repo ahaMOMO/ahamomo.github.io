@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Visual-Studio-Code中Es6的开发环境搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="article-date">
+  <time datetime="2019-07-14T12:51:00.000Z" itemprop="datePublished">2019-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Visual Studio Code中Es6的开发环境搭建</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.打开终端，输入初始化代码。输入代码之后会在目录中出现package.json,可以在红色下划线上写上作者名和描述（不写也可以）</p>
+<p><strong>npm init -y</strong>  </p>
+<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714202227695-501064038.png" alt="img"></p>
+<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714202745854-2029552755.png" alt="img"></p>
+<p>2.安装Babel转换器</p>
+<p>npm install -g babel-cli  </p>
+<p> <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714202539106-855301776.png" alt="img"></p>
+<p>3.安装打包（es5）</p>
+<p>npm install –save-dev babel-preset-es2015 babel-cli  </p>
+<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714203136635-836811666.png" alt="img"></p>
+<p>然后打开package.json，出现以下红括号的代码则说明安装成功</p>
+<p>　<img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714203253697-2100836276.png" alt="img"></p>
+<p>4.在根目录创建.babelrc配置文件（注意不是文件夹）。输入以下代码</p>
+<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714203502895-1756015490.png" alt="img"></p>
+<p>5.最后输入babel 需要转码文件路径 -o 转码结果写入的文件路径。如：</p>
+<p>  babel js/1-2es6.js -o es5Js/1-2es6.js   </p>
+<p> <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714204132937-1799230633.png" alt="img"></p>
+<p>以上就可以实现es6到es5的转换了！</p>
+<p>最后，如果不想每次转换都输入这么多重复的路径命令。则可以通过在package.json文件中通过配置以下代码：</p>
+<p>　<img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714204355434-65865200.png" alt="img"></p>
+<p>则可以在终端输入npm run build就可以转换成功！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" data-id="ckc8j6ufv000054pe8hg6b8t3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Visual Studio Code中Es6的开发环境搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
