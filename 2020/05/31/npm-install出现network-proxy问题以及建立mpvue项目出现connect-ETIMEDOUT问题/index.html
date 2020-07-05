@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>npm install出现network proxy问题以及建立mpvue项目出现connect ETIMEDOUT问题 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="今天在构建mpvue项目的时候，出现了以下错误：  vue-cli · Failed to download repo mpvue&#x2F;mpvue-quickstart: connect ETIMEDOUT 13.250.162.133:443  之前我遇到的npm下载webpack插件时出现network proxy问题 今天查看了一些资料，发现上面的两个问题出现的原因是： 在公司内网要使用代理才能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="npm install出现network proxy问题以及建立mpvue项目出现connect ETIMEDOUT问题">
+<meta property="og:url" content="http://yoursite.com/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="今天在构建mpvue项目的时候，出现了以下错误：  vue-cli · Failed to download repo mpvue&#x2F;mpvue-quickstart: connect ETIMEDOUT 13.250.162.133:443  之前我遇到的npm下载webpack插件时出现network proxy问题 今天查看了一些资料，发现上面的两个问题出现的原因是： 在公司内网要使用代理才能">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/1734305-20200531165702252-442407283.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/1734305-20200602101821275-1527146465.png">
+<meta property="article:published_time" content="2020-05-31T08:59:00.000Z">
+<meta property="article:modified_time" content="2020-07-05T04:55:21.123Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/1734305-20200531165702252-442407283.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-npm-install出现network-proxy问题以及建立mpvue项目出现connect-ETIMEDOUT问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-05-31T08:59:00.000Z" itemprop="datePublished">2020-05-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      npm install出现network proxy问题以及建立mpvue项目出现connect ETIMEDOUT问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在构建mpvue项目的时候，出现了以下错误：</p>
+<p><img src="/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/1734305-20200531165702252-442407283.png" alt="img"></p>
+<p>vue-cli · Failed to download repo mpvue/mpvue-quickstart: connect ETIMEDOUT 13.250.162.133:443 </p>
+<p>之前我遇到的npm下载webpack插件时出现network proxy问题</p>
+<p>今天查看了一些资料，发现上面的两个问题出现的原因是：</p>
+<p><strong>在公司内网要使用代理才能安装插件，所以需要为npm设置代理</strong>。</p>
+<p><strong>解决方法：</strong></p>
+<p>为npm设置代理</p>
+<p>在终端输入以下命令：npm config set proxy <a href="http://web-proxy.oa.com:8080" target="_blank" rel="noopener">http://web-proxy.oa.com:8080</a></p>
+<p>其中”<code>web-proxy.oa.com:8080</code>”是自己机器所在网络的代理地址</p>
+<p><strong>提出疑问：</strong>为什么需要设置npm代理？</p>
+<p>首先先明白什么是代理，什么是代理服务器：</p>
+<p>可参考：<a href="https://zh.wikipedia.org/wiki/代理服务器" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8</a></p>
+<p><img src="/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/1734305-20200602101821275-1527146465.png" alt="img"></p>
+<p>我们可以去电脑设置中查看自己的电脑已经自动设置了代理服务器。</p>
+<p>npm设置了代理之后，安装插件之类的请求都会让本地代理服务器帮你转发。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/" data-id="ckc8m3pzk0003uspe4a76ax8s" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          使用mpvue创建项目以及总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%94%9F%E6%88%90%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">二叉树的生成插入算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" rel="tag">学习mpvue的第二天，对于其语法有了初步认识</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" style="font-size: 10px;">学习mpvue的第二天，对于其语法有了初步认识</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/">nginx-vue项目在window下的部署</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/">JavaScript中对象继承方式（ES5）</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/">浏览器渲染原理及过程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/">浏览器组成和多进程架构概念</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/">mpvue的用法总结（vue与小程序中的语法支持） </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

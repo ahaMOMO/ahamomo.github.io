@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>webpack4.41.0配置三（插件minCssExtract/ DefinePlugin/Html）  | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="（注：如无特殊说明这里的配置文件都指的是webpack.config.js） minCssExtract我们通常期望js和js文件一起，css和css文件一起。该插件将CSS提取到单独的文件中。它为每个包含CSS的JS文件创建一个CSS文件。它支持CSS和SourceMap的按需加载。 1.安装组件命令：1npm install mini-css-extract-plugin  2.在配置文件中引">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack4.41.0配置三（插件minCssExtract&#x2F; DefinePlugin&#x2F;Html） ">
+<meta property="og:url" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="（注：如无特殊说明这里的配置文件都指的是webpack.config.js） minCssExtract我们通常期望js和js文件一起，css和css文件一起。该插件将CSS提取到单独的文件中。它为每个包含CSS的JS文件创建一个CSS文件。它支持CSS和SourceMap的按需加载。 1.安装组件命令：1npm install mini-css-extract-plugin  2.在配置文件中引">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007183151402-2111433774.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191009132232224-106620615.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191009132915143-1094832712.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007185721352-1196692489.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007192620608-1439636967.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007192844834-1039434162.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007193124389-77401270.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007193245351-1536974011.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194101551-2049552903.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194252415-1942391226.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194527888-1835261362.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194555296-717868608.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194901991-75691556.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195037910-176363434.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195257785-1001949602.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195600933-1318303997.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195844661-1827607157.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195811837-1296633006.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007200024386-667784585.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007200642074-151249710.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007200933999-685805939.png">
+<meta property="article:published_time" content="2019-10-09T05:43:00.000Z">
+<meta property="article:modified_time" content="2020-07-05T04:42:49.852Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007183151402-2111433774.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-webpack4-41-0配置三（插件minCssExtract-DefinePlugin-Html）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/" class="article-date">
+  <time datetime="2019-10-09T05:43:00.000Z" itemprop="datePublished">2019-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      webpack4.41.0配置三（插件minCssExtract/ DefinePlugin/Html） 
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>（注：如无特殊说明这里的配置文件都指的是webpack.config.js）</strong></p>
+<h3 id="minCssExtract"><a href="#minCssExtract" class="headerlink" title="minCssExtract"></a><strong>minCssExtract</strong></h3><p>我们通常期望js和js文件一起，css和css文件一起。该插件将CSS提取到单独的文件中。它为每个包含CSS的JS文件创建一个CSS文件。它支持CSS和SourceMap的按需加载。</p>
+<h5 id="1-安装组件命令："><a href="#1-安装组件命令：" class="headerlink" title="1.安装组件命令："></a>1.安装组件命令：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install mini-css-extract-plugin</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-在配置文件中引入：const-MiniCssExtractPlugin-require-39-mini-css-extract-plugin-39"><a href="#2-在配置文件中引入：const-MiniCssExtractPlugin-require-39-mini-css-extract-plugin-39" class="headerlink" title="2.在配置文件中引入：const MiniCssExtractPlugin = require(&#39;mini-css-extract-plugin&#39;);"></a>2.在配置文件中引入：<code>const MiniCssExtractPlugin = require(&#39;mini-css-extract-plugin&#39;);</code></h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007183151402-2111433774.png" alt="img"></p>
+<h5 id="3-在配置文件中创建plugins结点，并且对rules进行相应的变化"><a href="#3-在配置文件中创建plugins结点，并且对rules进行相应的变化" class="headerlink" title="3.在配置文件中创建plugins结点，并且对rules进行相应的变化"></a>3.在配置文件中创建plugins结点，并且对rules进行相应的变化</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> MiniCssExtractPlugin = <span class="built_in">require</span>(<span class="string">'mini-css-extract-plugin'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    entry: <span class="string">'./input.js'</span>,</span><br><span class="line">    output: &#123;</span><br><span class="line">        path: path.resolve(__dirname, <span class="string">'dist'</span>),</span><br><span class="line">        filename: <span class="string">'output.bundle.js'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="keyword">new</span> MiniCssExtractPlugin(&#123;</span><br><span class="line">            <span class="comment">// Options similar to the same options in webpackOptions.output</span></span><br><span class="line">            <span class="comment">// all options are optional</span></span><br><span class="line">            <span class="comment">//name为entry入口文件名</span></span><br><span class="line">            filename: <span class="string">'[name].css'</span>,</span><br><span class="line">            chunkFilename: <span class="string">'[id].css'</span>,</span><br><span class="line">            ignoreOrder: <span class="literal">false</span>, <span class="comment">// Enable to remove warnings about conflicting order</span></span><br><span class="line">        &#125;),</span><br><span class="line">    ],</span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">        rules: [</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.(png|jpg|gif)$/i</span>,</span><br><span class="line">                use: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        loader: <span class="string">'url-loader'</span>,</span><br><span class="line">                        options: &#123;</span><br><span class="line">                            <span class="comment">//小于限制的变成base64,大于的变成普通的物理文件</span></span><br><span class="line">                            limit: <span class="number">8192</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.m?js$/</span>,</span><br><span class="line">                <span class="comment">//排除一些文件</span></span><br><span class="line">                exclude: <span class="regexp">/(node_modules|bower_components)/</span>,</span><br><span class="line">                use: &#123;</span><br><span class="line">                    loader: <span class="string">'babel-loader'</span>,</span><br><span class="line">                    options: &#123;</span><br><span class="line">                        presets: [<span class="string">'@babel/preset-env'</span>]</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">                use: [</span><br><span class="line">                    MiniCssExtractPlugin.loader,    </span><br><span class="line">                    <span class="string">'css-loader'</span>,</span><br><span class="line">                    <span class="string">'sass-loader'</span></span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-新建text-scss，在input-js入口文件中引入text-scss文件"><a href="#4-新建text-scss，在input-js入口文件中引入text-scss文件" class="headerlink" title="4.新建text.scss，在input.js入口文件中引入text.scss文件"></a>4.新建text.scss，在input.js入口文件中引入text.scss文件</h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191009132232224-106620615.png" alt="img"></p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191009132915143-1094832712.png" alt="img"></p>
+<h5 id="5-进行webpack打包，会发现在dist文件夹下多了个main-css-实现了css和js文件的分离"><a href="#5-进行webpack打包，会发现在dist文件夹下多了个main-css-实现了css和js文件的分离" class="headerlink" title="5.进行webpack打包，会发现在dist文件夹下多了个main.css(实现了css和js文件的分离)"></a>5.进行webpack打包，会发现在dist文件夹下多了个main.css(实现了css和js文件的分离)</h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007185721352-1196692489.png" alt="img"></p>
+<h3 id="DefinePlugin"><a href="#DefinePlugin" class="headerlink" title="DefinePlugin"></a><strong>DefinePlugin</strong></h3><p> 生产环境和开发环境中会有很多不一样的需求，比如在生产环境下要访问生产环境下的服务器地址，在开发环境下要访问开发环境下的服务器地址。但是我们不能用if else去判断，不方便维护。这时候这个插件的作用就出现了，我们的代码只写一套，但是我们把这个变量的定义放在DefinePlugin中，也就是webpack文件中去，我们使用的时候只使用这个变量就行了</p>
+<h5 id="1-在官网中https-webpack-docschina-org-plugins-找到需要使用的变量，将它添加到配置文件中的plugins中去"><a href="#1-在官网中https-webpack-docschina-org-plugins-找到需要使用的变量，将它添加到配置文件中的plugins中去" class="headerlink" title="1.在官网中https://webpack.docschina.org/plugins/找到需要使用的变量，将它添加到配置文件中的plugins中去"></a>1.在官网中<a href="https://webpack.docschina.org/plugins/找到需要使用的变量，将它添加到配置文件中的plugins中去" target="_blank" rel="noopener">https://webpack.docschina.org/plugins/找到需要使用的变量，将它添加到配置文件中的plugins中去</a></h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007192620608-1439636967.png" alt="img"></p>
+<h5 id="2-然后可以直接在代码中使用变量就可以了，比如在input-js中修改代码："><a href="#2-然后可以直接在代码中使用变量就可以了，比如在input-js中修改代码：" class="headerlink" title="2.然后可以直接在代码中使用变量就可以了，比如在input.js中修改代码："></a>2.然后可以直接在代码中使用变量就可以了，比如在input.js中修改代码：</h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007192844834-1039434162.png" alt="img"></p>
+<p>这样子就算以后的服务器地址变了，我们也不需要改代码，只需要修改配置文件就可以了</p>
+<h5 id="3-这时候进行打包会报错"><a href="#3-这时候进行打包会报错" class="headerlink" title="3.这时候进行打包会报错"></a>3.这时候进行打包会报错</h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007193124389-77401270.png" alt="img"></p>
+<p> 那是因为我们没有在配置文件中导入webpack。我们现在去导入Webpack</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007193245351-1536974011.png" alt="img"></p>
+<p> 之后再进行打包就可以了。</p>
+<p><strong>Html</strong></p>
+<p>使用的目的是为了帮助我们生成html文件，因为我们的js文件不能独立运行，那么它肯定需要被某个html文件包含进去，才能在浏览器里面运行起来。怎么能给它包含在某个html文件中去呢？这时候需要用到这个插件</p>
+<p>1.首先先安装插件：<code>npm install html-webpack-plugin -D</code></p>
+<p>2.然后在配置文件中进行配置</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194101551-2049552903.png" alt="img"></p>
+<p> 3.然后就可以运行了，执行webpack。会发现dist文件夹中自动多了个index.html。打开index.html(会发现它自动给我们引入了css和js文件)</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194252415-1942391226.png" alt="img"></p>
+<p> 比较方便的是，我们在修改文件名的时候，在出口中修改出口文件名，相应的html中引入的地方也会自动进行了修改</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194527888-1835261362.png" alt="img"></p>
+<p> <img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194555296-717868608.png" alt="img"></p>
+<h5 id="4-但是我们经常不需要自动生成html代码，只需要帮我们引入css和js-就行了。因为html代码我们通常都会自己定义。这时候，我们需要做一下调整："><a href="#4-但是我们经常不需要自动生成html代码，只需要帮我们引入css和js-就行了。因为html代码我们通常都会自己定义。这时候，我们需要做一下调整：" class="headerlink" title="4.但是我们经常不需要自动生成html代码，只需要帮我们引入css和js 就行了。因为html代码我们通常都会自己定义。这时候，我们需要做一下调整："></a>4.但是我们经常不需要自动生成html代码，只需要帮我们引入css和js 就行了。因为html代码我们通常都会自己定义。这时候，我们需要做一下调整：</h5><p>4.1点击下面红色方框部分（在官网中找到这个插件的文档）</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194901991-75691556.png" alt="img"></p>
+<p>4.2进去新页面滑下去看到它的用法</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195037910-176363434.png" alt="img"></p>
+<p> <img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195257785-1001949602.png" alt="img"></p>
+<p> 4.3参考配置，去我们的配置文件进行配置</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195600933-1318303997.png" alt="img"></p>
+<p>4.4新建输入文件template.html</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195844661-1827607157.png" alt="img"></p>
+<p>4.5观察刚才的文档，发现title是这种用法</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195811837-1296633006.png" alt="img"></p>
+<p> 4.6所以相应的template.html中也要改变</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007200024386-667784585.png" alt="img"></p>
+<p>之后会自动替换成我们在配置文件中定义的title(Good morning)</p>
+<p>4.7可能我们还想使用自己的js文件，但是并不想要打包。我们直接在template.html中引入。还可以写自己的代码</p>
+<p> <img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007200642074-151249710.png" alt="img"></p>
+<p> 4.8之后执行打包，会发现打包过后的index.html中包含自己引入的js文件和自己写的html代码</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007200933999-685805939.png" alt="img"></p>
+<p>4.8之后我们可以在input.js中使用index.html页面中的id为“good”的结点</p>
+<h5 id="5-在执行打包"><a href="#5-在执行打包" class="headerlink" title="5.在执行打包"></a>5.在执行打包</h5><p>最后在浏览器打开打包过后的index.html是最后看到的效果</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/" data-id="ckc8m3pzt0006uspec8e55ay0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          webpack4.41.0配置四(热替换)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%BA%8C%EF%BC%88%E5%8A%A0%E8%BD%BD%E5%99%A8-url-loader-babel-loader-sass-loader%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">webpack4.41.0配置二（加载器_url-loader/babel-loader/sass-loader）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" rel="tag">学习mpvue的第二天，对于其语法有了初步认识</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" style="font-size: 10px;">学习mpvue的第二天，对于其语法有了初步认识</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/">nginx-vue项目在window下的部署</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/">JavaScript中对象继承方式（ES5）</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/">浏览器渲染原理及过程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/">浏览器组成和多进程架构概念</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/">mpvue的用法总结（vue与小程序中的语法支持） </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

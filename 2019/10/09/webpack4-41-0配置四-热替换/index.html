@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>webpack4.41.0配置四(热替换) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="每次修改都要去编译，这个操作比较繁琐。所以我们希望编译过程是自动化的，而且页面的更新也是自动化的。所以需要使用这个热替换 1.首先安装webpack-dev-server：npm install webpack-dev-server -D(-D生产环境下) （作用为：启动服务并且能够支持热替换） 2.更改一下我们的配置文件   3.启动webpack-dev-server 因为我们没有全局安装we">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack4.41.0配置四(热替换)">
+<meta property="og:url" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="每次修改都要去编译，这个操作比较繁琐。所以我们希望编译过程是自动化的，而且页面的更新也是自动化的。所以需要使用这个热替换 1.首先安装webpack-dev-server：npm install webpack-dev-server -D(-D生产环境下) （作用为：启动服务并且能够支持热替换） 2.更改一下我们的配置文件   3.启动webpack-dev-server 因为我们没有全局安装we">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007203153494-1416396449.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007204101979-1045476410.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007204627529-1636040188.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007204809416-1996242541.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007205431454-588549293.png">
+<meta property="article:published_time" content="2019-10-09T05:51:00.000Z">
+<meta property="article:modified_time" content="2020-07-05T04:43:58.546Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007203153494-1416396449.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-webpack4-41-0配置四-热替换" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/" class="article-date">
+  <time datetime="2019-10-09T05:51:00.000Z" itemprop="datePublished">2019-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      webpack4.41.0配置四(热替换)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>每次修改都要去编译，这个操作比较繁琐。所以我们希望编译过程是自动化的，而且页面的更新也是自动化的。所以需要使用这个热替换</p>
+<p>1.首先安装<a href="https://github.com/webpack/webpack-dev-server" target="_blank" rel="noopener">webpack-dev-server</a>：npm install webpack-dev-server -D(-D生产环境下)</p>
+<p>（作用为：启动服务并且能够支持热替换）</p>
+<p>2.更改一下我们的配置文件</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007203153494-1416396449.png" alt="img"></p>
+<p> 3.启动webpack-dev-server</p>
+<p>因为我们没有全局安装webpack-dev-server，所以不能在终端输入webpack-dev-server去启动，我们需要去package.json中创建命令</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007204101979-1045476410.png" alt="img"></p>
+<p>之所以这个方式可以，是因为它们查找的方式不一样，它会先去mode_modules文件夹中寻找webpack-dev-server。在终端直接输入webpack-dev-server会去path路径中去找。</p>
+<p>执行npm run start</p>
+<p>启动之后可以去浏览器中输入localhost:8080访问页面</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007204627529-1636040188.png" alt="img"></p>
+<p>然后可以在template.html中修改页面内容，即可得到立即更新</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007204809416-1996242541.png" alt="img"></p>
+<p> 4.添加热替换功能</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007205431454-588549293.png" alt="img"></p>
+<p>然后重新npm run start,现在就是具备热替换功能的服务器了</p>
+<p>当hotOnly:false时，我们在页面进行了更改只需要保存，不需要进行页面更新就可以得到修改过后的数据</p>
+<p>所以说这是一个坑，我们可以把hotOnly在配置中去掉，webpack都具备热替换的功能(只是webpack4和webpack3不一样的地方，webpack3需要明确的指出hotOnly才会具备热替换的功能)</p>
+<p>最后webpack4.41.0环境搭建和简单使用就到此结束啦！之后需要自己多结合项目去深入理解！<br>最后附上我学习Webpack中的学习视频：<a href="https://www.bilibili.com/video/av51893932/" target="_blank" rel="noopener">https://www.bilibili.com/video/av51893932/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/" data-id="ckc8m3pzx0009uspe7cz3bhwc" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Vue的响应式原理---(v-model中的双向绑定原理)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">webpack4.41.0配置三（插件minCssExtract/ DefinePlugin/Html） </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" rel="tag">学习mpvue的第二天，对于其语法有了初步认识</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" style="font-size: 10px;">学习mpvue的第二天，对于其语法有了初步认识</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/">nginx-vue项目在window下的部署</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/">JavaScript中对象继承方式（ES5）</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/">浏览器渲染原理及过程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/">浏览器组成和多进程架构概念</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/">mpvue的用法总结（vue与小程序中的语法支持） </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

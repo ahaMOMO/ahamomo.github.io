@@ -64,10 +64,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-webpack4-41-0配置一（基础配置webpack文件，入口出口，实现打包）" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-nginx-vue项目在window下的部署" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/" class="article-date">
-  <time datetime="2019-10-08T05:35:00.000Z" itemprop="datePublished">2019-10-08</time>
+    <a href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time datetime="2020-07-05T04:45:08.000Z" itemprop="datePublished">2020-07-05</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/">webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） </a>
+      <a class="article-title" href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/">nginx-vue项目在window下的部署</a>
     </h1>
   
 
@@ -86,46 +86,42 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>1.查看node.js版本、npm版本和webpack版本（使用webpack4时，请确保node.js的版本&gt;=8.9.4）</strong></p>
-<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007092932789-829123539.png" alt="img"></p>
-<p><strong>2.我先重新卸载了webpack和webpack-cli(全局)</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall -g webpack-cli</span><br><span class="line"></span><br><span class="line">npm uninstall -g webpack</span><br></pre></td></tr></table></figure>
+        <p>主机-&gt;操作系统-&gt;window(.net)/Linux-&gt;tomcat/nginx(软件反向代理)</p>
+<p><strong>1.vue项目打包到dist文件夹(之后把dist文件夹放到服务器就可以了)</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
 
-<p>npm uninstall -g webpack</p>
-<p><strong>3.全局安装webpack-cli和webpack</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack-cli -g</span><br><span class="line"></span><br><span class="line">npm install webpack -g</span><br></pre></td></tr></table></figure>
-
-<p><strong>4.测试一下webpack4的新特性，不用配置入口(默认./src)和出口(默认./dist)</strong></p>
-<p> 4.1建立src文件夹并在文件夹中建立两个js文件，内容任意</p>
-<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191008132754048-1859633601.png" alt="img"></p>
-<p>4.2之后在终端输入webpack –mode development（无–mode默认是production,有–mode为开发者模式，文件比较大，方便我们调式，有一些出入日志等功能）</p>
-<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112523844-417646620.png" alt="img"></p>
-<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112554217-1233236069.png" alt="img"></p>
-<p>然后就自动出现了出口文件夹，但是这只适合于小项目，我们一般还是建议需要配置一下配置文件，因为很多时候我们的项目不一定只有入口和出口的配置，我们可能还需要编译less,sass,需要支持es6语法等。</p>
-<p><strong>5.建立配置文件webpack.config.js并书写以下内容</strong></p>
-<p><a href="javascript:void(0);"><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/copycode.gif" alt="复制代码"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const path &#x3D; require(&#39;path&#39;);</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">    entry:&#39;.&#x2F;input.js&#39;,</span><br><span class="line">    output:&#123;</span><br><span class="line">        path:path.resolve(__dirname,&#39;dist&#39;),</span><br><span class="line">        filename:&#39;output.bundle.js&#39;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a href="javascript:void(0);"><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/copycode.gif" alt="复制代码"></a></p>
-<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114058931-228108134.png" alt="img"></p>
-<p> 5.1建立input.js入口文件</p>
-<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114646407-1243656626.png" alt="img"></p>
-<p> 5.2终端输入webpack,出现出口文件dist</p>
-<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114754810-915745005.png" alt="img"></p>
-<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114824733-1169698622.png" alt="img"></p>
-<p> <strong>6.更改配置文件，多个入口文件，出口文件与相应的入口文件对应</strong></p>
-<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115418867-533485961.png" alt="img"></p>
-<p> 进行打包</p>
-<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115551418-1054343194.png" alt="img"></p>
-<p>在出口文件中找不到在入口文件中写的console.log。因为打包没有写–mode默认为生产模式，将我们的调式程序都省略了。如果你换成webpack –mode development,就会看到有console.log。(这就是生产模式和开发模式的区别，开发模式的文件会大很多，所以我们项目最终上线是要打包成生产模式的)。但是我们每次不需要在终端都输入–mode,只需要在配置文件中设置mode就可以了。</p>
-<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007120219545-2089555699.png" alt="img"></p>
-<p>之后在终端输入webpack也为开发者模式。终端也不会出现黄色的提示了。</p>
-<p>以上就是最基础的webpack打包的配置了</p>
+<p>​    <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104658881-2102662413.png" alt="img"></p>
+<p>​    <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104825040-1771464082.png" alt="img"></p>
+<p><strong>2.去<a href="https://nginx.org/官网下载nginx" target="_blank" rel="noopener">https://nginx.org/官网下载nginx</a></strong></p>
+<p>　　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105014339-2006775941.png" alt="img"></p>
+<p>​    <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105125953-1541141051.png" alt="img"></p>
+<p>这里有很多版本,我们选择stable version</p>
+<p><img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105214933-426417882.png" alt="img"></p>
+<p>点击进入下载页面</p>
+<p>　　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105303839-1095565363.png" alt="img"></p>
+<p> <strong>3.安装nginx</strong></p>
+<p>进入安装路径双击nginx.exe   </p>
+<p>   <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105357802-948178972.png" alt="img"></p>
+<p>若是一闪而过,在浏览器中输入localhost,若是出现以下类似页面: <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105702104-2028287243.png" alt="img"></p>
+<p>打开控制面板中的管理工具-&gt;服务-&gt;找到IIS</p>
+<p><img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105759243-2051342374.png" alt="img"></p>
+<p>双击打开,选择停止(因为端口可能被占用)　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105847171-1931406201.png" alt="img"></p>
+<p> 之后重新双击nginx.exe,在浏览器输入localhost,出现一些页面则安装成功　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105944196-1386879846.png" alt="img"></p>
+<p><strong>4.显示自己打包的页面</strong></p>
+<p>找到自己项目中的dist文件夹</p>
+<p>　　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110334712-1509860850.png" alt="img"></p>
+<p>复制到nginx文件夹下的html中,把之前nginx默认的index.html等删除,把我们dist里面的文件放到ngnix的html文件中,</p>
+<p>　　如图:</p>
+<p>　　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110808898-329231142.png" alt="img"></p>
+<p>之后回到浏览器中刷新,就是我们打包过后的页面了</p>
+<p><img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110917141-1512112451.png" alt="img"></p>
+<p>完成!注意ngnix文件名路径不能带有中文!</p>
+<p>还有一种方式是修改nginx的配置文件,可以自己去百度搜索查看</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/" data-id="ckc8kknfl0001cope5nsmhioj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/" data-id="ckc8m3pzr0005uspe0gaxbkt0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -135,10 +131,10 @@
 
 
   
-    <article id="post-多种方式实现平均分栏布局（有间距）div平分行宽" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-JavaScript中对象继承方式（ES5" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/" class="article-date">
-  <time datetime="2019-09-15T03:53:00.000Z" itemprop="datePublished">2019-09-15</time>
+    <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/" class="article-date">
+  <time datetime="2020-07-04T07:32:00.000Z" itemprop="datePublished">2020-07-04</time>
 </a>
     
   </div>
@@ -149,7 +145,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/">多种方式实现平均分栏布局（有间距）div平分行宽</a>
+      <a class="article-title" href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/">JavaScript中对象继承方式（ES5）</a>
     </h1>
   
 
@@ -157,68 +153,233 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>以下例子基于分四栏+栏间有间距的例子分析</strong></p>
-<p><strong>效果图：</strong></p>
-<p><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190915113413799-904978675.png" alt="img"></p>
-<p> <strong>html代码：</strong>　</p>
-<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;buy-one-buy&quot;&gt;</span><br><span class="line">   &lt;h3&gt;淘一淘&lt;&#x2F;h3&gt;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-1.jpg&quot; alt&#x3D;&quot;First buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-1.jpg&quot; alt&#x3D;&quot;Second buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-2.jpg&quot; alt&#x3D;&quot;Third buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-3.jpg&quot; alt&#x3D;&quot;Four slide&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">   &lt;&#x2F;ul&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+        <h4 id="原型链继承"><a href="#原型链继承" class="headerlink" title="原型链继承"></a><strong>原型链继承</strong></h4><p>其基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.property = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SuperType.prototype.getSuperValue = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.property;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.subproperty = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//继承了 SuperType</span></span><br><span class="line">SubType.prototype = <span class="keyword">new</span> SuperType();</span><br><span class="line">SubType.prototype.getSubValue = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.subproperty;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> instance = <span class="keyword">new</span> SubType();</span><br><span class="line">alert(instance.getSuperValue()); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
 
-<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
-<h5 id="1-最简单粗暴的方式就是通过固定值-margin去计算"><a href="#1-最简单粗暴的方式就是通过固定值-margin去计算" class="headerlink" title="1.最简单粗暴的方式就是通过固定值+margin去计算"></a>1.最简单粗暴的方式就是通过固定值+margin去计算</h5><ul>
-<li><p>首先我先固定了最外层的宽度为1200px;（这里为1202px宽度是因为我加了一个红边框方便观察，最后页面显示的时候要记得把border去掉并且宽度改为1200px）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SubType.prototype 现在是 SuperType的实例，那么 SuperType中的property =true当然就位于该实例（SubType.prototype ）中了。</p>
+<p>调用instance.getSuperValue()会经历三个搜索步骤：</p>
+<p>1）搜索实例；</p>
+<p>2）搜索 SubType.prototype；</p>
+<p>3）搜索 SuperType.prototype，最后一步才会找到该方法。在找不到属性或方法的情况下，搜索过 程总是要一环一环地前行到原型链末端才会停下来。</p>
+<p>还有一点需要提醒读者，即在通过原型链实现继承时，不能使用对象字面量创建原型方法。因为这 样做就会重写原型链，如下面的例子所示 :</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.property = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line">SuperType.prototype.getSuperValue = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.property;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.subproperty = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//继承了 SuperType</span></span><br><span class="line">SubType.prototype = <span class="keyword">new</span> SuperType();</span><br><span class="line"><span class="comment">//使用字面量添加新方法，会导致上一行代码无效</span></span><br><span class="line">SubType.prototype = &#123;</span><br><span class="line">    getSubValue : <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.subproperty;</span><br><span class="line">    &#125;,</span><br><span class="line">    someOtherMethod : <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> instance = <span class="keyword">new</span> SubType();</span><br><span class="line">alert(instance.getSuperValue()); <span class="comment">//error!</span></span><br></pre></td></tr></table></figure>
+
+<p>以上代码展示了刚刚把 SuperType 的实例赋值给原型，紧接着又将原型替换成一个对象字面量而导致的问题。由于现在的原型包含的是一个 Object 的实例，而非 SuperType 的实例，因此我们设想中的原型链已经被切断——SubType 和 SuperType 之间已经没有关系了 。</p>
+<p>优点：</p>
+<p>1）SubType实例既是子类SubType实例，又是父类SuperType实例</p>
+<p>缺点：</p>
+<p>1）通过原型来实现继承时，原型实际上会变成另一个类型的实例。 （SubType.prototype 现在是 SuperType的实例）。于是，原先的实例属性（比如SuperType中的peoperty属性）也就顺理成章地变成了现在的原型属性了。 所以如果原先的实例属性（SuperType的实例属性）是引用类型的，那么就会被SubType中的实例纂改。</p>
+<p>2）在创建子类型的实例时，不能向超类型的构造函数中传递参数。 实际上，应该说是没有办法在不影响所有对象实例的情况下，给超类型的构造函数传递参数。</p>
+<h4 id="构造函数继承"><a href="#构造函数继承" class="headerlink" title="构造函数继承"></a>构造函数继承</h4><p>在子类型构造函数的内部调用（通过使用 apply()和 call()方法 ）超类型构造函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.colors = [<span class="string">"red"</span>, <span class="string">"blue"</span>, <span class="string">"green"</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//继承了 SuperType</span></span><br><span class="line">    SuperType.call(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> instance1 = <span class="keyword">new</span> SubType();</span><br><span class="line">instance1.colors.push(<span class="string">"black"</span>);</span><br><span class="line">alert(instance1.colors); <span class="comment">//"red,blue,green,black"</span></span><br><span class="line"><span class="keyword">var</span> instance2 = <span class="keyword">new</span> SubType();</span><br><span class="line">alert(instance2.colors); <span class="comment">//"red,blue,green"</span></span><br></pre></td></tr></table></figure>
+
+<p>这样一来，就会在新 SubType 对象上执行 SuperType()函数中定义的所有对象初始化代码。结果，SubType 的每个实例就都会具有自己的 colors 属性的副本了 。</p>
+<p><strong>优点：</strong></p>
+<p>1）可以在子类型构造函数中向超类型构造函数传递参数。</p>
+<p>2）解决了父类的属性会被实例共享的问题</p>
+<p><strong>缺点：</strong></p>
+<p>1）不能实现函数复用，每次实例化子类，都要执行父类函数，重新声明父类所定义的方法。</p>
+<p>2）在父类原型中定义的属性和方法，子类是不可见的，所以不能继承父类原型中定义的属性和方法。</p>
+<h4 id="组合继承（常用）"><a href="#组合继承（常用）" class="headerlink" title="组合继承（常用）"></a>组合继承（常用）</h4><p>思路是使用原型链实现对原型属性和方法的继承，而通过借用构造函数来实现对实例属性的继承。这样，既通过在原型上定义方法实现了函数复用，又能够保证每个实例都有它自己的属性。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.colors = [<span class="string">"red"</span>, <span class="string">"blue"</span>, <span class="string">"green"</span>];</span><br><span class="line">&#125;</span><br><span class="line">SuperType.prototype.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params">name, age</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//继承属性</span></span><br><span class="line">    SuperType.call(<span class="keyword">this</span>, name);</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//继承方法</span></span><br><span class="line">SubType.prototype = <span class="keyword">new</span> SuperType();</span><br><span class="line">SubType.prototype.constructor = SubType;</span><br><span class="line">SubType.prototype.sayAge = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>.age);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> instance1 = <span class="keyword">new</span> SubType(<span class="string">"Nicholas"</span>, <span class="number">29</span>);</span><br><span class="line">instance1.colors.push(<span class="string">"black"</span>);</span><br><span class="line">alert(instance1.colors); <span class="comment">//"red,blue,green,black"</span></span><br><span class="line">instance1.sayName(); <span class="comment">//"Nicholas";</span></span><br><span class="line">instance1.sayAge(); <span class="comment">//29</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> instance2 = <span class="keyword">new</span> SubType(<span class="string">"Greg"</span>, <span class="number">27</span>);</span><br><span class="line">alert(instance2.colors); <span class="comment">//"red,blue,green"</span></span><br><span class="line">instance2.sayName(); <span class="comment">//"Greg";</span></span><br><span class="line">instance2.sayAge(); <span class="comment">//27</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中， SuperType 构造函数定义了两个属性： name 和 colors。 SuperType 的原型定义了一个方法 sayName()。 SubType 构造函数在调用 SuperType 构造函数时传入了 name 参数，紧接着又定义了它自己的属性 age。然后，将 SuperType 的实例赋值给 SubType 的原型，然后又在该新原型上定义了方法 sayAge()。这样一来，就可以让两个不同的 SubType 实例既分别拥有自己属性——包括 colors 属性，又可以使用相同的方法了。</p>
+<p><strong>优点：</strong></p>
+<p>1）解决了原型链继承中父类属性被实例共享的问题</p>
+<p>2）解决了构造函数继承中不能继承其原型中的属性和方法的问题以及父类方法得不到复用的问题</p>
+<p><strong>缺点：</strong></p>
+<p>1）调用了父类两次（一次是生成子类实例时候new SubType()中调用了SuperType.call(),一次是生成父类实例也就是子类原型（SubType.prototype = new SuperType()）的时候又调用了一次）</p>
+<p>2）基于上一点，导致原型中存在相同的两份父类的属性和方法。（子类实例中instance1拥有父类的name和colors属性，子类的原型中SubType.prototype也拥有父类的name和colors属性）。</p>
+<h4 id="原型式继承"><a href="#原型式继承" class="headerlink" title="原型式继承"></a>原型式继承</h4><p>借助原型可以<strong>基于已有的对象创建新对象</strong>，同时还不必因此创建自定义类型。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">object</span>(<span class="params">o</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">    F.prototype = o;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 object()函数内部，先创建了一个临时性的构造函数，然后将传入的对象作为这个构造函数的原型，最后返回了这个临时类型的一个新实例。从本质上讲， object()对传入其中的对象执行了一次浅复制。来看下面的例子。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name: <span class="string">"Nicholas"</span>,</span><br><span class="line">    friends: [<span class="string">"Shelby"</span>, <span class="string">"Court"</span>, <span class="string">"Van"</span>]</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> anotherPerson = object(person);</span><br><span class="line">anotherPerson.name = <span class="string">"Greg"</span>;</span><br><span class="line">anotherPerson.friends.push(<span class="string">"Rob"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yetAnotherPerson = object(person);</span><br><span class="line">yetAnotherPerson.name = <span class="string">"Linda"</span>;</span><br><span class="line">yetAnotherPerson.friends.push(<span class="string">"Barbie"</span>);</span><br><span class="line">alert(person.friends); <span class="comment">//"Shelby,Court,Van,Rob,Barbie"</span></span><br></pre></td></tr></table></figure>
+
+<p>克罗克福德主张的这种原型式继承，要求你必须有一个对象可以作为另一个对象的基础。如果有这么一个对象的话，可以把它传递给 object()函数，然后再根据具体需求对得到的对象加以修改即可。在这个例子中，可以作为另一个对象基础的是 person 对象，于是我们把它传入到 object()函数中，然后该函数就会返回一个新对象。这个新对象将 person 作为原型，所以它的原型中就包含一个基本类型值属性和一个引用类型值属性。这意味着 person.friends 不仅属于 person 所有，而且也会被 anotherPerson以及 yetAnotherPerson 共享。</p>
+<p>ECMAScript 5 通过新增 Object.create()方法规范化了原型式继承。这个方法接收两个参数：一个用作新对象原型的对象和（可选的）一个为新对象定义额外属性的对象。在传入一个参数的情况下，Object.create()与 object()方法的行为相同 。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name: <span class="string">"Nicholas"</span>,</span><br><span class="line">    friends: [<span class="string">"Shelby"</span>, <span class="string">"Court"</span>, <span class="string">"Van"</span>]</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> anotherPerson = <span class="built_in">Object</span>.create(person);  <span class="comment">//等同于object函数</span></span><br><span class="line">anotherPerson.name = <span class="string">"Greg"</span>;</span><br><span class="line">anotherPerson.friends.push(<span class="string">"Rob"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yetAnotherPerson = <span class="built_in">Object</span>.create(person);</span><br><span class="line">yetAnotherPerson.name = <span class="string">"Linda"</span>;</span><br><span class="line">yetAnotherPerson.friends.push(<span class="string">"Barbie"</span>);</span><br><span class="line">alert(person.friends); <span class="comment">//"Shelby,Court,Van,Rob,Barbie"</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>优点：</strong>兼容性好</p>
+<p><strong>缺点：</strong>与原型模式一样，引用类型的属性会共享相应的值。</p>
+<h4 id="寄生式继承"><a href="#寄生式继承" class="headerlink" title="寄生式继承"></a>寄生式继承</h4><p>寄生式继承的思路与寄生构造函数和工厂模式类似，即创建一个仅用于封装继承过程的函数，该函数在内部<strong>以某种方式来增强对象</strong>，最后再像真地是它做了所有工作一样返回对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createAnother</span>(<span class="params">original</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> clone = object(original); <span class="comment">//通过调用函数创建一个新对象</span></span><br><span class="line">    clone.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">//以某种方式来增强这个对象</span></span><br><span class="line">        alert(<span class="string">"hi"</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> clone; <span class="comment">//返回这个对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中， createAnother()函数接收了一个参数，也就是将要作为新对象基础的对象。然后，把这个对象（ original）传递给 object()函数，将返回的结果赋值给 clone。再为 clone 对象添加一个新方法 sayHi()，最后返回 clone 对象。可以像下面这样来使用 createAnother()函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name: <span class="string">"Nicholas"</span>,</span><br><span class="line">    friends: [<span class="string">"Shelby"</span>, <span class="string">"Court"</span>, <span class="string">"Van"</span>]</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> anotherPerson = createAnother(person);</span><br><span class="line">anotherPerson.sayHi(); <span class="comment">//"hi"</span></span><br></pre></td></tr></table></figure>
+
+<p>这个例子中的代码基于 person 返回了一个新对象——anotherPerson。新对象不仅具有 person的所有属性和方法，而且还有自己的 sayHi()方法。主要考虑对象而不是自定义类型和构造函数的情况下，寄生式继承也是一种有用的模式。前面示范继承模式时使用的 object()函数不是必需的；任何能够返回新对象的函数都适用于此模式。</p>
+<p><strong>优点：</strong>兼容性好</p>
+<p><strong>缺点：</strong>与构造函数一样不能做到函数复用</p>
+<h4 id="寄生组合式继承-最理想"><a href="#寄生组合式继承-最理想" class="headerlink" title="寄生组合式继承(最理想)"></a>寄生组合式继承(最理想)</h4><p>组合继承是 JavaScript 最常用的继承模式；不过，它也有自己的不足。组合继承最大的问题就是无论什么情况下，都会调用两次超类型构造函数：一次是在创建子类型原型的时候，另一次是在子类型构造函数内部。没错，子类型最终会包含超类型对象的全部实例属性，但我们不得不在调用子类型构造函数时重写这些属性。 解决这个问题方法——寄生组合式继承。</p>
+<p>寄生组合式继承，即通过借用构造函数来继承属性，通过原型链的混成形式来继承方法。其背后的基本思路是：不必为了指定子类型的原型而调用超类型的构造函数，我们所需要的无非就是超类型原型的一个副本而已。本质上，就是使用寄生式继承来继承超类型的原型，然后再将结果指定给子类型的原型。寄生组合式继承的基本模式如下所示。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inheritPrototype</span>(<span class="params">subType, superType</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> prototype = object(superType.prototype); <span class="comment">//方式一使用object函数（需自己定义）创建对象</span></span><br><span class="line">    <span class="comment">//var prototype = Object.create(superType.prototype);//方式二使用Object中的方法create创建对象</span></span><br><span class="line">    prototype.constructor = subType; <span class="comment">//增强对象</span></span><br><span class="line">    subType.prototype = prototype; <span class="comment">//指定对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个示例中的 inheritPrototype()函数实现了寄生组合式继承的最简单形式。这个函数接收两个参数：子类型构造函数和超类型构造函数。在函数内部，第一步是创建超类型原型的一个副本。第二步是为创建的副本添加 constructor 属性，从而弥补因重写原型而失去的默认的 constructor 属性。最后一步，将新创建的对象（即副本）赋值给子类型的原型。这样，我们就可以用调用 inheritPrototype()函数的语句，去替换前面例子中为子类型原型赋值的语句了，例如 ：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.colors = [<span class="string">"red"</span>, <span class="string">"blue"</span>, <span class="string">"green"</span>];</span><br><span class="line">&#125;</span><br><span class="line">SuperType.prototype.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params">name, age</span>)</span>&#123;</span><br><span class="line">    SuperType.call(<span class="keyword">this</span>, name);</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line">inheritPrototype(SubType, SuperType);</span><br><span class="line">SubType.prototype.sayAge = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>.age);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/20200704151214.png" alt="image-20200704151211380"></p>
+<p>这个例子的高效率体现在它只调用了一次 SuperType 构造函数，并且因此避免了在 SubType.prototype 上面创建不必要的、多余的属性。与此同时，原型链还能保持不变；因此，还能够正常使用instanceof 和 isPrototypeOf()。开发人员普遍认为寄生组合式继承是引用类型最理想的继承范式。</p>
+<p><strong>优点：</strong></p>
+<p>1）只继承了父类构造函数一次</p>
+<p>2）子类的prototype只有子类通过prototype声明的属性和方法</p>
+<p>参考书籍：</p>
+<p>JavaScript高级程序设计（第3版）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/" data-id="ckc8m3q0h000fuspe8ckn0jbs" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
 
 
+  
+    <article id="post-浏览器渲染原理及过程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/" class="article-date">
+  <time datetime="2020-06-14T06:26:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/">浏览器渲染原理及过程</a>
+    </h1>
+  
 
-</li>
-</ul>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>通常，我们编写好HTML、CSS、JavaScript等文件，经过浏览器就会显示出漂亮的页面（如下图所示），但是你知道它们是如何转化成页面的吗？</p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591600977_96_w1091_h455.png" alt="1591600977_96_w1091_h455.png"></p>
+<p>从图中可以看出，左边输入的是HTML、CSS、JavaScript数据，这些数据经过中间渲染模块的处理，最终输出为屏幕上的像素。</p>
+<p>这中间的渲染模块就是我们今天要讨论的主题。</p>
+<h2 id="首先我们先了解一下渲染主流程的示例"><a href="#首先我们先了解一下渲染主流程的示例" class="headerlink" title="首先我们先了解一下渲染主流程的示例"></a><strong>首先我们先了解一下渲染主流程的示例</strong></h2><p>通常情况下，不同浏览器内核的解析渲染过程也略有不同，我们以Chrome、Safari浏览器的Webkit内核和Firefox浏览器的Gecko内核为例，看看渲染引擎工作流程的具体步骤：</p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591601230_22_w1106_h600.png" alt="1591601230_22_w1106_h600.png"></p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591601249_35_w1126_h532.png" alt="1591601249_35_w1126_h532.png"></p>
+<p>从上图中，我们可以看到一些区别：</p>
 <ul>
-<li><p>之后我将每个li的宽度固定为288px(四个li即为1152px,剩下还有1200px-1152px=48px作为四栏中的间距（四栏共有三个间距，则48px/3=16px)。因此我给每个li设置margin-right为16px，当然最后一个li中的amrgin-right要设置为0。)  </p>
-<p>注意：因为li是块元素，我首先先把它转换为行内块元素再进行操作。所以先在ul中清除掉行内块的默认间距（font-size:0）。</p>
-<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy ul&#123;</span><br><span class="line">    font-size: 0;</span><br><span class="line">&#125;</span><br><span class="line">.buy-one-buy li&#123;</span><br><span class="line">    display: inline-block;</span><br><span class="line">    width: 288px;</span><br><span class="line">    height: 140px;</span><br><span class="line">    margin-right: 16px;</span><br><span class="line">&#125; </span><br><span class="line">.buy-one-buy li:last-child&#123;</span><br><span class="line">    margin-right: 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
-</li>
-<li><p>最后就能实现上图中的分栏效果了                           </p>
-</li>
+<li>webkit内核中的HTML和CSS解析可以认为是并行的；而Gecko则是先解析HTML，生成内容Sink（Content Sink可以认为是构建DOM结构树的工厂方法）后再开始解析CSS。</li>
+<li>webkit内核解析后的渲染对象被称为是渲染树（Render Tree）,而Gecko内核解析后的渲染对象被称为是Frame树（Frame Tree）。</li>
 </ul>
-<h5 id="2-使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float-margin-百分比实现一样的效果，之后维护只需要修改相应的百分比即可"><a href="#2-使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float-margin-百分比实现一样的效果，之后维护只需要修改相应的百分比即可" class="headerlink" title="2.使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float+margin+百分比实现一样的效果，之后维护只需要修改相应的百分比即可"></a>2.使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float+margin+百分比实现一样的效果，之后维护只需要修改相应的百分比即可</h5><ul>
-<li><p>首先依旧固定住最外层的宽度</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;&#x2F;*之后要改回去1200*&#x2F;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>之后在li中使用float让他们位于同一行，给每个li的宽度设置为22%(原本应为父元素的1/4，即25%。但是需要留剩下的百分比给间距)。然后100%-22%*4=12%(即为三个间距的总宽度，每个间距宽度为4%);</p>
-<p><code>.buy-one-buy li{``  ``float``: ``left``;``  ``width``: ``22%``;``  ``margin-right``: ``4%``;``  ``height``: ``180px``;``}``.buy-one-buy li:last-child{``  ``margin-right``: ``0%``;``}``.buy-one-buy img{``  ``width``: ``100%``;``  ``height``: ``100%``;``}</code></p>
-</li>
-<li><p>最后也能实现一样的效果（但在实际上也可以将float变成display:inline-block;但是需要消除默认间距。也一样能实现）</p>
-</li>
-</ul>
-<h5 id="3-上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局-css3去实现"><a href="#3-上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局-css3去实现" class="headerlink" title="3.上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局+css3去实现"></a>3.上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局+css3去实现</h5><ul>
-<li><p>依旧固定住最外层的宽度</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;&#x2F;*之后要改回去1200*&#x2F;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>然后在ul中（li列表的父元素）使用flex布局（这里自定义了一个属性n:为你需要分栏的数字，之后的li根据这个属性去动态计算宽度）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy ul&#123;</span><br><span class="line">    display: flex;</span><br><span class="line">    justify-content: space-between;&#x2F;*两端对齐，项目之间的间隔都相等*&#x2F;</span><br><span class="line">    --n : 4;&#x2F;*css自定义属性(--*)，用var(--*)使用自定义属性*&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将每个li设置宽度和高度（其中不需要将li转换成行内块元素，因为flex布局默认flex-direction属性的主轴方向为水平方向）(这里使用了css3中的calc函数)</p>
-<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy li&#123;</span><br><span class="line">    width: calc(calc((100&#x2F;var(--n))*1%) - 20px);   </span><br><span class="line">    height: 100px;</span><br><span class="line">&#125;</span><br><span class="line">.buy-one-buy img&#123;</span><br><span class="line">    width: 100%;</span><br><span class="line">    height: 100%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是它们主要的流程是相似的，都经过HTML DOM解析、CSS样式解析、渲染树生成和渲染树绘制显示阶段。</p>
+<p>所以我们下面按照渲染引擎的流程（<strong>构建DOM树</strong>、<strong>样式计算</strong>、<strong>布局阶段</strong>、分层、<strong>绘制</strong>、光栅化和合成。）进行具体分析。</p>
+<h2 id="1-构建DOM树（生成了DOM树）"><a href="#1-构建DOM树（生成了DOM树）" class="headerlink" title="1.构建DOM树（生成了DOM树）"></a><strong>1.构建DOM树（生成了DOM树）</strong></h2><h2 id="为什么要构建DOM树呢-？这是因为浏览器无法直接理解和使用HTML，所以需要将HTML转换为浏览器能够理解的结构——DOM树。"><a href="#为什么要构建DOM树呢-？这是因为浏览器无法直接理解和使用HTML，所以需要将HTML转换为浏览器能够理解的结构——DOM树。" class="headerlink" title="\为什么要构建DOM树呢\？这是因为浏览器无法直接理解和使用HTML，所以需要将HTML转换为浏览器能够理解的结构——DOM树。**"></a><strong><em>\</em>为什么要构建DOM树呢\</strong>？这是因为浏览器无法直接理解和使用HTML，所以需要将HTML转换为浏览器能够理解的结构——DOM树。**</h2><p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591601719_15_w1060_h518.png" alt="1591601719_15_w1060_h518.png"></p>
+<p>从图中可以看出，解析HTML构建DOM树时渲染引擎会先将HTML元素标签解析成多个DOM元素对象节点组成的且具有节点父子关系的DOM树结构。（构建DOM树的输入内容是一个非常简单的HTML文件，然后经由HTML解析器解析，最终输出树状结构的DOM）。</p>
+<p><strong>但是HTML解析器是怎么解析的呢？</strong></p>
+<h3 id="1）字节流转换为字符并W3C标准令牌化"><a href="#1）字节流转换为字符并W3C标准令牌化" class="headerlink" title="1）字节流转换为字符并W3C标准令牌化"></a><strong>1）字节流转换为字符并W3C标准令牌化</strong></h3><p>读取 HTML 的原始字节流（字节流来源于网络进程传给渲染引擎，然后渲染引擎传给HTML解析器），并根据文件的指定编码（例如 UTF-8）将它们转换成各个字符。 并将字符串转换成 W3C HTML5 标准规定的各种令牌，例如，“<code>&lt;html&gt;</code>”、“<code>&lt;body&gt;</code>”以及其他尖括号内的字符串。每个令牌都具有特殊含义和一组规则。</p>
+<p>一堆字节流 bytes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3C 62 6F ...</span><br></pre></td></tr></table></figure>
 
-<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
-</li>
-<li><p>最后，就能成功实现上述效果了！而且修改成不同的栏还十分方便！</p>
-</li>
-<li><p>flex布局教程：<a href="https://www.runoob.com/w3cnote/flex-grammar.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/flex-grammar.htm</a>l</p>
-</li>
-</ul>
-<p>注意： css3中定义原生变量var浏览器兼容性不太好，如图：</p>
-<p>   <img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190916122634415-1266328338.png" alt="img"></p>
+<p>转成正常的html文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div&gt;1&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;div&gt;test&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
 
+<h3 id="2）-通过分词器将字节流转化为-Token"><a href="#2）-通过分词器将字节流转化为-Token" class="headerlink" title="2） 通过分词器将字节流转化为 Token"></a><strong>2） 通过分词器将字节流转化为 Token</strong></h3><p>分词器将字节流转换为一个一个的 Token，Token 分为 Tag Token和文本 Token，上面这段代码最后分词器转化后的结果是:</p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591602000_67_w1197_h265.png" alt="1591602000_67_w1197_h265.png"></p>
+<p>由图可以看出，Tag Token 又分 StartTag 和 EndTag。StartTag 和EndTag分别对于图中的蓝色和红色块，文本 Token 对应的绿色块。</p>
+<h3 id="3）将-Token-解析为-DOM-节点，并将-DOM-节点添加到-DOM-树中"><a href="#3）将-Token-解析为-DOM-节点，并将-DOM-节点添加到-DOM-树中" class="headerlink" title="3）将 Token 解析为 DOM 节点，并将 DOM 节点添加到 DOM 树中"></a><strong>3）将 Token 解析为 DOM 节点，并将 DOM 节点添加到 DOM 树中</strong></h3><p>HTML 解析器维护了一个 Token 栈结构，这个栈结构的目的就是用来计算节点间的父子关系，在上一个阶段生成的 Token 会被顺序压到这个栈中，以下是具体规则：</p>
+<ul>
+<li>如果压入到栈中的是StartTag Token，HTML 解析器会为该 Token 创建一个 DOM 节点，然后将该节点加入到 DOM 树中，它的父节点就是栈中相邻的那个元素生成的节点。</li>
+<li>如果分词器解析出来是文本 Token，那么会生成一个文本节点，然后将该节点加入到 DOM 树中，文本 Token 是不需要压入到栈中，它的父节点就是当前栈顶 Token 所对应的 DOM 节点。</li>
+<li>如果分词器解析出来的是EndTag 标签，比如是 EndTag div，HTML 解析器会查看 Token 栈顶的元素是否是 StarTag div，如果是，就将 StartTag div 从栈中弹出，表示该 div 元素解析完成。</li>
+</ul>
+<p>通过分词器产生的新 Token 就这样不停地压栈和出栈，整个解析过程就这样一直持续下去，直到分词器将所有字节流分词完成。</p>
+<p>为了更加直观地理解整个过程，下面我们结合一段 HTML 代码（如下），来一步步分析 DOM 树的生成过程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div&gt;1&lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div&gt;test&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​    这段代码以字节流的形式传给了 HTML 解析器，经过分词器处理，解析出来的第一个 Token 是 StartTag html，解析出来的 Token 会被压入到栈中，并同时创建一个 html 的 DOM 节点，将其加入到 DOM 树中。</p>
+<p>这里需要补充说明下，HTML 解析器开始工作时，会默认创建了一个根为 document 的空 DOM 结构，同时会将一个 StartTag document 的 Token 压入栈底。然后经过分词器解析出来的第一个 StartTag html Token 会被压入到栈中，并创建一个 html 的 DOM 节点，添加到 document 上，如下图所示：</p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591602148_21_w1193_h841.png" alt="1591602148_21_w1193_h841.png"></p>
+<p>然后按照同样的流程解析出来 StartTag body 和 StartTag div，其 Token 栈和 DOM 的状态如下图所示：</p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591602176_92_w1141_h839.png" alt="1591602176_92_w1141_h839.png"></p>
+<p>接下来解析出来的是第一个 div 的文本 Token，渲染引擎会为该 Token 创建一个文本节点，并将该 Token 添加到 DOM 中，它的父节点就是当前 Token 栈顶元素对应的节点，如下图所示：</p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591602207_35_w1170_h822.png" alt="1591602207_35_w1170_h822.png"></p>
+<p>再接下来，分词器解析出来第一个 EndTag div，这时候 HTML 解析器会去判断当前栈顶的元素是否是 StartTag div，如果是则从栈顶弹出 StartTag div，如下图所示：</p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591602223_47_w1180_h686.png" alt="1591602223_47_w1180_h686.png"></p>
+<p>按照同样的规则，一路解析，最终结果如下图所示：</p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591602248_61_w1176_h816.png" alt="1591602248_61_w1176_h816.png"></p>
+<p>通过上面的介绍，相信你已经清楚 DOM 是怎么生成的了。不过在实际生产环境中，HTML 源文件中既包含 CSS 和 JavaScript，又包含图片、音频、视频等文件，所以处理过程远比上面这个示范 Demo 复杂。不过理解了这个简单的 Demo 生成过程，我们就可以往下分析更加复杂的场景了。（复杂场景这里不分析先）</p>
+<p>这里提一个问题：HTML 解析器是等整个 HTML 文档加载完成之后开始解析的，还是随着 HTML 文档边加载边解析的？</p>
+<p>答案是HTML 解析器并不是等整个文档加载完成之后再解析的，而是网络进程加载了多少数据，HTML 解析器便解析多少数据。</p>
+<h2 id="2-样式计算（生成CSS-Rule-Tree-ComputedStyle-）"><a href="#2-样式计算（生成CSS-Rule-Tree-ComputedStyle-）" class="headerlink" title="2.样式计算（生成CSS Rule Tree(ComputedStyle)）"></a><strong>2.样式计算（生成CSS Rule Tree(ComputedStyle)）</strong></h2><p><strong>样式计算的目的是为了计算出DOM节点中每个元素的具体样式。</strong></p>
+<p><strong>这个阶段可以分为3个步骤：（同样的读取CSS内容也是和DOM树过程类似，先将CSS字节转为字符，再转为token和节点，最后形成树结构）</strong></p>
+<h3 id="1）-把CSS转换为浏览器能够理解的结构"><a href="#1）-把CSS转换为浏览器能够理解的结构" class="headerlink" title="1） 把CSS转换为浏览器能够理解的结构"></a><strong>1） 把CSS转换为浏览器能够理解的结构</strong></h3><p><strong>CSS样式来源主要有三种：通过link引用的外部CSS文件、<style>标记内的 CSS和元素的style属性内嵌的CSS。和HTML文件一样，浏览器也是无法直接理解这些纯文本的CSS样式，所以当渲染引擎接收到CSS文本时，会执行一个转换操作，将CSS文本转换为浏览器可以理解的结构——styleSheets。在控制台输入document.styleSheets，就会看到如下的结构：</strong></p>
+<p><img src="%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591602540_33_w1197_h622.png" alt="1591602540_33_w1197_h622.png"></p>
+<p>从图中可以看出，这个样式表包含了很多种样式，已经把那三种来源的样式都包含进去了。</p>
+<p>里面的具体结构读者感兴趣可以自行查阅。</p>
+<p>可以参考此文章：<a href="https://juejin.im/post/5d150afee51d45777a1261d2" target="_blank" rel="noopener">https://juejin.im/post/5d150afee51d45777a1261d2</a></p>
+<h3 id="2）转换样式表中的属性值，使其标准化"><a href="#2）转换样式表中的属性值，使其标准化" class="headerlink" title="2）转换样式表中的属性值，使其标准化"></a><strong>2）转换样式表中的属性值，使其标准化</strong></h3><p>现在我们已经把现有的CSS文本转化为浏览器可以理解的结构了，那么接下来就要对其进行属性值的标准化操作。</p>
+<p>要理解什么是属性值标准化，你可以看下面这样一段CSS文本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">body &#123; font-size: 2em &#125;</span><br><span class="line">p &#123;color:blue;&#125;</span><br><span class="line">span  &#123;display: none&#125;</span><br><span class="line">div &#123;font-weight: bold&#125;</span><br><span class="line">div  p &#123;color:green;&#125;</span><br><span class="line">div &#123;color:red; &#125;</span><br></pre></td></tr></table></figure>
+
+<p> 可以看到上面的CSS文本中有很多属性值，如2em、blue、bold，这些类型数值不容易被渲染引擎理解，所以需要将所有值转换为渲染引擎容易理解的、标准化的计算值，这个过程就是属性值标准化。</p>
+<p>那标准化后的属性值是什么样子的？</p>
+<p><img src="%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591602617_74_w1172_h435.png" alt="1591602617_74_w1172_h435.png"></p>
+<h3 id="3）计算DOM树中每个节点的具体样式"><a href="#3）计算DOM树中每个节点的具体样式" class="headerlink" title="3）计算DOM树中每个节点的具体样式"></a><strong>3）计算DOM树中每个节点的具体样式</strong></h3><p>现在样式的属性已被标准化了，接下来就需要计算DOM树中每个节点的样式属性了，如何计算呢？</p>
+<p><strong>这就涉及到CSS的继承规则和层叠规则了。</strong></p>
+<p><strong>首先是CSS继承。CSS继承就是每个DOM节点都包含有父节点的样式。这么说可能有点抽象，我们可以结合具体例子，看下面这样一张样式表是如何应用到DOM节点上的。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">body &#123; font-size: 20px &#125;</span><br><span class="line">p &#123;color:blue;&#125;</span><br><span class="line">span  &#123;display: none&#125;</span><br><span class="line">div &#123;font-weight: bold;color:red&#125;</span><br><span class="line">div  p &#123;color:green;&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 这张样式表最终应用到DOM节点的效果如下图所示：</p>
+<p><strong><img src="%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591602670_33_w1066_h901.png" alt="1591602670_33_w1066_h901.png"></strong></p>
+<p>从图中可以看出，所有子节点都继承了父节点样式。比如body节点的font-size属性是20，那body节点下面的所有节点的font-size都等于20。</p>
+<p>样式计算过程中的第二个规则是样式层叠（此处忽略不讲）。<strong>层叠是CSS的一个基本特征，它是一个定义了如何合并来自多个源的属性值的算法</strong>。它在CSS处于核心地位，CSS的全称“层叠样式表”正是强调了这一点。</p>
+<p>此时一颗CSS Rule Tree就构建出来了。</p>
+<h2 id="3-布局阶段"><a href="#3-布局阶段" class="headerlink" title="3.布局阶段"></a><strong>3.布局阶段</strong></h2><p><strong>现在，我们有DOM树和DOM树中元素的样式，但这还不足以显示页面，因为我们还不知道DOM元素的几何位置信息。那么接下来就需要计算出DOM树中可见元素的几何位置，我们把这个计算过程叫做布局。</strong></p>
+<p><strong>Chrome在布局阶段需要完成两个任务：创建布局树和布局计算</strong></p>
+<h3 id="1）创建布局树（在这一步生成了渲染树）"><a href="#1）创建布局树（在这一步生成了渲染树）" class="headerlink" title="1）创建布局树（在这一步生成了渲染树）"></a><strong>1）创建布局树（在这一步生成了渲染树）</strong></h3><p>浏览器引擎会通过DOM Tree 和CSS Rule Tree （ComputedStyle）来构造 Rendering Tree（渲染树）。</p>
+<p><strong>下面我们就来看看Rendering Tree的构造过程。</strong></p>
+<p><strong>你可能注意到了DOM树还含有很多不可见的元素，比如head标签，还有使用了<code>display:none</code>属性的元素。所以在显示之前，我们还要额外地构建一棵只包含可见元素布局树。（渲染树的结构基本上就是复制 DOM 树的结构，不同之处在于 DOM 树中那些不需要显示的元素会被过滤掉，如 display:none 属性的元素、head 标签、script 标签等）。</strong></p>
+<p><strong>我们结合下图来看看渲染树的构造过程：</strong></p>
+<p><img src="%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591604020_5_w1184_h930.png" alt="1591604020_5_w1184_h930.png"></p>
+<p>从上图可以看出，DOM树中所有不可见的节点都没有包含到渲染树中。</p>
+<p>为了构建渲染树，浏览器大体上完成了下面这些工作</p>
+<ul>
+<li>遍历DOM树中的所有可见节点，并把这些节点加到布局中；</li>
+<li>而不可见的节点会被布局树忽略掉，如<code>head</code>标签下面的全部内容，再比如<code>body.p.span</code>这个元素，因为它的属性包含 <code>dispaly:none</code>，所以这个元素也没有被包进布局树</li>
+<li>对于每个可见节点，为其找到适配的 CSSOM 规则并应用它们。</li>
+</ul>
+<h3 id="2）布局计算（回流-重排发生在此处）"><a href="#2）布局计算（回流-重排发生在此处）" class="headerlink" title="2）布局计算（回流/重排发生在此处）"></a><strong>2）布局计算（回流/重排发生在此处）</strong></h3><p>到目前为止，我们计算了哪些节点应该是可见的以及它们的计算样式，已经有了一颗完整的布局树（渲染树），但我们尚未计算它们在设备<a href="https://developers.google.com/web/fundamentals/design-and-ux/responsive?hl=zh-cn#set-the-viewport" target="_blank" rel="noopener">视口</a>内的确切位置和大小—这就是“布局”阶段，也称为“自动重排”。</p>
+<p>为弄清每个对象在网页上的确切大小和位置，浏览器从渲染树的根节点开始进行遍历。让我们考虑下面这样一个简单的实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width,initial-scale&#x3D;1&quot;&gt;</span><br><span class="line">    &lt;title&gt;Critial Path: Hello world!&lt;&#x2F;title&gt;</span><br><span class="line">  &lt;&#x2F;head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div style&#x3D;&quot;width: 50%&quot;&gt;</span><br><span class="line">      &lt;div style&#x3D;&quot;width: 50%&quot;&gt;Hello world!&lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  &lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p> 以上网页的正文包含两个嵌套 div：第一个（父）div 将节点的显示尺寸设置为视口宽度的 50%，—父 div 包含的第二个 div—将其宽度设置为其父项的 50%；即视口宽度的 25%。</p>
+<p><img src="%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591604108_63_w1204_h547.png" alt="1591604108_63_w1204_h547.png"></p>
+<p>布局流程的输出是一个“盒模型”，它会精确地捕获每个元素在视口内的确切位置和尺寸：所有相对测量值都转换为屏幕上的绝对像素。</p>
+<p>在这里，会根据每个渲染树节点在页面中的大小和位，将节点固定到页面的对应位置上。</p>
+<h2 id="4-分层"><a href="#4-分层" class="headerlink" title="4.分层"></a><strong>4.分层</strong></h2><p>现在我们有了布局树，而且每个元素的具体位置信息都计算出来了，那么接下来是不是就要开始着手绘制页面了？</p>
+<p>答案依然是否定的。</p>
+<p>因为页面中有很多复杂的效果，如一些复杂的3D变换、页面滚动，或者使用z-indexing做z轴排序等，为了更加方便地实现这些效果，渲染引擎还需要为特定的节点生成专用的图层，并生成一棵对应的图层树（LayerTree）。如果你熟悉PS，相信你会很容易理解图层的概念，正是这些图层叠加在一起构成了最终的页面图像。</p>
+<p>但是这里我们先跳过分层的具体内容。</p>
+<h2 id="5-图层绘制（重绘发生在此处）"><a href="#5-图层绘制（重绘发生在此处）" class="headerlink" title="5.图层绘制（重绘发生在此处）"></a><strong>5.图层绘制（重绘发生在此处）</strong></h2><p>布局完成后，浏览器会立即发出“Paint Setup”和“Paint”事件，进入绘制阶段。在绘制阶段中，系统会遍历呈现树，并调用呈现器的“paint”方法，将呈现器的内容显示在屏幕上。绘制工作是使用用户界面基础组件完成的。</p>
+<p>绘制顺序为：<a href="http://www.w3.org/TR/CSS21/zindex.html" target="_blank" rel="noopener">CSS2 规范定义了绘制流程的顺序</a></p>
+<p>其实渲染引擎实现图层的绘制时候，会把一个图层的绘制拆分成很多小的绘制指令，然后再把这些指令按照顺序组成一个待绘制列表，如下图所示：</p>
+<p><img src="%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/1591604215_34_w1089_h624.png" alt="1591604215_34_w1089_h624.png"></p>
+<p>从图中可以看出，绘制列表中的指令其实非常简单，就是让其执行一个简单的绘制操作，比如绘制粉色矩形或者黑色的线等。而绘制一个元素通常需要好几条绘制指令，因为每个元素的背景、前景、边框都需要单独的指令去绘制。所以在图层绘制阶段，输出的内容就是这些待绘制列表。</p>
+<h2 id="6-栅格化操作"><a href="#6-栅格化操作" class="headerlink" title="6.栅格化操作"></a><strong>6.栅格化操作</strong></h2><h2 id="7-合成和显示"><a href="#7-合成和显示" class="headerlink" title="7.合成和显示"></a><strong>7.合成和显示</strong></h2><h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a><strong>总结：</strong></h2><p>下面这篇文章是我根据以上的渲染流程总结的一篇比较常见的问题回答，以及一些有关的页面性能优化：</p>
+<p>还没写出来先哈哈</p>
+<p><strong>参考文章：</strong></p>
+<p><strong><a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-cn" target="_blank" rel="noopener">https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-cn</a></strong></p>
+<p><strong><a href="https://blog.poetries.top/browser-working-principle/" target="_blank" rel="noopener">https://blog.poetries.top/browser-working-principle/</a></strong></p>
+<p><strong><a href="https://juejin.im/post/5bee2366e51d451fa238957c" target="_blank" rel="noopener">https://juejin.im/post/5bee2366e51d451fa238957c</a></strong></p>
+<p><strong>参考书籍：</strong></p>
+<p><strong>现代前端技术解析</strong></p>
+</style></strong></p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/" data-id="ckc8kknfm0002copeb2p4b0z5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/" data-id="ckc8m3q05000duspec9hca6js" class="article-share-link">Share</a>
       
       
     </footer>
@@ -228,10 +389,10 @@
 
 
   
-    <article id="post-Bootstrap环境安装加使用-开启Bootstrap-之旅" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-浏览器组成和多进程架构概念" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/" class="article-date">
-  <time datetime="2019-09-15T03:22:00.000Z" itemprop="datePublished">2019-09-15</time>
+    <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/" class="article-date">
+  <time datetime="2020-06-14T06:21:00.000Z" itemprop="datePublished">2020-06-14</time>
 </a>
     
   </div>
@@ -242,7 +403,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/">Bootstrap环境安装加使用---开启Bootstrap 之旅</a>
+      <a class="article-title" href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/">浏览器组成和多进程架构概念</a>
     </h1>
   
 
@@ -250,21 +411,80 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>1.首先去Bootstrap官网<a href="https://getbootstrap.com/上下载Bootstrap" target="_blank" rel="noopener">https://getbootstrap.com/上下载Bootstrap</a> 的最新版本</p>
-<p><img src="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/1734305-20190909194121993-835429346.png" alt="img"> </p>
-<p>　　对应的中文页面如下：</p>
-<p>  <img src="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/1734305-20190909194223022-1957648999.png" alt="img"></p>
-<p>　　下载自己所需要的版本（目前我自己下载的是编译的css和js）</p>
-<p>　　下载完成之后，你将会看到很多压缩了的css和js文件</p>
-<p>2.之后就可以在页面中引入 <strong>jquery.js</strong>、<strong>bootstrap.min.js</strong>和 <strong>bootstrap.min.css</strong> 文件用于让一个常规的 HTML 文件变为使用了 Bootstrap 的模板。</p>
-<p><u>这里注意应该把jquery.js文件在引入Bootstrap.min.js之前引入,因为Bootstrap是基于jquery的，而且jquery.js的版本必须在1.9以上可以使用终端输入命令：npm install jquery下载最新版本的jquery文件。</u></p>
-<p><strong>注意事项：</strong></p>
-<p><strong><img src="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/1734305-20190909210014244-728849811.png" alt="img"></strong></p>
+        <p><strong>浏览器的组成结构：</strong></p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/1591580309_48_w1198_h817.png" alt="1591580309_48_w1198_h817.png"></p>
+<ol>
+<li><strong>用户界面</strong>-包括地址栏，后退/前进按钮，书签菜单等用户可操作的功能选项。</li>
+<li><strong>浏览器引擎</strong>-用于查询和操作渲染引擎的界面。可以在用户界面和渲染引擎之间传送指令或在客户端本地缓存中读写数据等，是浏览器中各个部分之间相互通信的核心。</li>
+<li><strong>渲染引擎</strong>-负责显示请求的内容。它的功能是解析DOM文档和CSS规则并将内容排版到浏览器中显示有样式的页面，也有人称为排版引擎，我们常说的浏览器内核主要指的就是渲染引擎。</li>
+<li><strong>网络</strong>-用于网络调用，是浏览器开启网络线程发送请求或下载资源文件的模块。例如DOM树解析过程中请求静态资源首先是通过浏览器中的网络模块发起的。</li>
+<li><strong>UI后端</strong>-用于绘制基本的浏览器窗口内控件，例如组合框、按钮、输入框等。它公开了不是平台特定的通用接口。它的下面使用操作系统的用户界面方法。</li>
+<li><strong>JavaScript解释器</strong>-用于解析和执行JavaScript代码，例如V8引擎。</li>
+<li><strong>数据存储</strong>-这是一个持久层。浏览器需要将各种数据保存在硬盘上，例如cookie。新的HTML规范（HTML5）定义了“网络数据库”，它是浏览器中完整的数据库（尽管很轻）。它可以通过浏览器引擎提供的API进行调用。</li>
+</ol>
+<p><strong>浏览器进程：</strong></p>
+<ul>
+<li><strong>浏览器主进程</strong>主要负责界面显示（前进、后退、各个界面管理）、用户交互、子进程管理（创建和销毁其他进程）和文件储存等功能。</li>
+<li><strong>网络进程</strong>是面向渲染进程和浏览器进程等提供网络下载功能。</li>
+<li><strong>渲染进程</strong>的主要职责是把从网络下载的HTML、JavaScript、CSS、图片等资源解析为可以显示和交互的页面。因为渲染进程所有的内容都是通过网络获取的，会存在一些恶意代码利用浏览器漏洞对系统进行攻击，所以运行在渲染进程里面的代码是不被信任的。这也是为什么Chrome会让渲染进程运行在安全沙箱里，就是为了保证系统的安全（<strong>需要特别注意的是，与大多数浏览器不同，Chrome拥有多个渲染引擎实例-每个选项卡一个。每个选项卡是一个单独的过程。</strong>）</li>
+<li><strong>CPU进程</strong>：实现3D css,网页、谷歌UI绘制。</li>
+<li><strong>插件进程</strong>：负责插件运行，因插件容易崩溃，所以通过插件进程来隔离，以保证插件崩溃不会对浏览器和页面造成影响。如flash。</li>
+</ul>
+<p>不同进程负责的浏览器区域示意图如下：</p>
+<p><img src="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/1591583161_81_w1800_h918.png" alt="1591583161_81_w1800_h918.png"></p>
+<p>以上各进程之间的联系可以用一个很常见的问题去描述：那就是从输入URL到页面展示这中间发生了什么？</p>
+<p>这里有一些进程线程的概念解释，以及上面这个问题的答案可做参考：<a href="https://zhuanlan.zhihu.com/p/47407398" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/47407398</a></p>
+<p>我们主要需要了解的是浏览器的渲染引擎和灵活运用数据存储技术–因为这一部分我们在实际开发工作中使用最多，其他几个部分都是浏览器决定的，开发者控制的部分相对较少。</p>
+<p><strong>渲染引擎（浏览器内核、渲染进程，内部是多线程的）</strong></p>
+<ol>
+<li><strong>GUI渲染线程</strong>：</li>
+</ol>
+<ul>
+<li>负责渲染浏览器界面，解析HTML、CSS、构建DOM树和RenderObject树，布局和绘制等当界面需要重绘（Repaint）或由于 某种操作导致重排（Reflow）时，该线程就会执行。</li>
+<li>GUI渲染 线程和JS引擎线程是互斥的，当js引擎执行时GUI线程会被挂起（相当于冻结），GUI更新会被保存 在一个队列中等到js引擎空闲时立即执行。</li>
+</ul>
+<ol start="2">
+<li><strong>JS引擎线程</strong>：</li>
+</ol>
+<ul>
+<li>也称之为js内核，负责处理javascript脚本程序（V8引擎）。</li>
+<li>JS引擎线程负责解析javascript脚本，运 行代码JS引擎一直在等待着任务的到来，然后加以处理，一个renderer进程中无论如何都只有一个js 线程在运行js程序。</li>
+<li>由于GUI渲染线程和JS引擎线程是互斥的，所以如果JS执行时间如果过长，这样 就会造成页面渲染不连贯，导致页面渲染加载阻塞。</li>
+</ul>
+<ol start="3">
+<li><strong>事件触发（请求）线程</strong>：</li>
+</ol>
+<ul>
+<li>归属于浏览器而不是js引擎，用来控制事件循环。</li>
+<li>当js引擎执行代码，如setTimeout时 （也可以是来自浏览器内核的其他线程，如鼠标点击，ajax请求等），会将对应的任务添加到事件线程 当中。</li>
+<li>当对应的事件符合触发条件被触发时，事件线程会把事件添加到待处理任务队列的队尾，等待js 引擎的处理。</li>
+<li>由于js的单线程关系，所以这些待处理队列中的事件都得排队等待js引擎处理（当js引擎 空闲时才会去执行）。</li>
+</ul>
+<ol start="4">
+<li><strong>定时器触发器线程</strong>：</li>
+</ol>
+<ul>
+<li>setInterval和setTimeout所在的线程。浏览器定时计数器并不是由js引擎计数的（因为js是单 线程的，如果处于阻塞状态就会影响计数的准确性）。</li>
+<li>单独的线程来计时并触发定时（计时完毕后， 添加到任务队列中，等待js引擎空闲后执行）。</li>
+<li>W3C在HTML标准中规定，规定要求setTimeout中低 于4ms的时间间隔算为4ms。</li>
+</ul>
+<ol start="5">
+<li><strong>异步http请求线程</strong>：</li>
+</ol>
+<ul>
+<li>在XMLHttpRequest在连接后通过浏览器开一个线程请求。</li>
+<li>将检测到状态变更时，如果有设置 有回调函数，异步线程就产生状态变更事件，将这个回调再放入事件队列中，再有js引擎执行。</li>
+</ul>
+<p>总结了这些基础概念之后，在下一篇文章我会总结渲染流程的具体过程。</p>
+<p>参考文章：</p>
+<p><a href="https://juejin.im/post/5bee2366e51d451fa238957c" target="_blank" rel="noopener">https://juejin.im/post/5bee2366e51d451fa238957c</a></p>
+<p><a href="http://taligarsiel.com/Projects/howbrowserswork1.htm#The_browsers_we_will_talk_about" target="_blank" rel="noopener">http://taligarsiel.com/Projects/howbrowserswork1.htm#The_browsers_we_will_talk_about</a></p>
+<p>参考书籍：现代前端技术解析</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/" data-id="ckc8kknfj0000cope96sgaohr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/" data-id="ckc8m3q08000euspeb08m2egh" class="article-share-link">Share</a>
       
       
     </footer>
@@ -274,10 +494,10 @@
 
 
   
-    <article id="post-使用webpack-安装webpack和webpack-dev-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-mpvue的用法总结（vue与小程序中的语法支持）" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/" class="article-date">
-  <time datetime="2019-08-18T08:41:00.000Z" itemprop="datePublished">2019-08-18</time>
+    <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/" class="article-date">
+  <time datetime="2020-06-02T12:11:00.000Z" itemprop="datePublished">2020-06-02</time>
 </a>
     
   </div>
@@ -288,7 +508,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/">使用webpack---安装webpack和webpack-dev-server</a>
+      <a class="article-title" href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/">mpvue的用法总结（vue与小程序中的语法支持） </a>
     </h1>
   
 
@@ -296,40 +516,43 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>1.先确保安装了最新版的Node.js和NPM,并已经了解NPM的基本用法</strong></p>
-<p><strong>（以下使用cmd命令行进行）</strong></p>
-<p><strong>2.安装webpack</strong></p>
-<p>(1)全局安装</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install webpack -g</span><br></pre></td></tr></table></figure>
-
-<p>(1)局部安装</p>
-<p>我并不喜欢全局安装这种方式，因为并不是所有的项目都需要webpack的。通常我们会将 Webpack 安装到项目的依赖中，这样就可以使用项目本地版本的 Webpack。</p>
-<p><code># 进入项目目录(这里为demo)</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">　　　 &#96;&#96;# 确定已经有 package.json，没有就通过 npm init 创建</span><br><span class="line"># 安装 webpack 依赖</span><br><span class="line">　　　 $ npm install webpack --save-dev</span><br></pre></td></tr></table></figure>
-
-<p>（–save-dev会作为开发依赖来安装webpack。安装成功之后，在 package.json中会多一项配置</p>
-<p>　<img src="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/1734305-20190814134152551-1845028354.png" alt="img"></p>
-<p>　）</p>
-<p><strong>3.安装webpack-dev-server(它可以在开发环境中提供很多服务，比如启动一个服务器、热更新、接口代理等）</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　$ npm install webpack-dev-server --save-dev</span><br></pre></td></tr></table></figure>
-
-<p>安装完成之后，最终的package.json文件内容为：</p>
-<p><img src="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/1734305-20190814134848783-948265812.png" alt="img"></p>
-<p>如果你的devDependencies中包含webpack和webpack-dev-server,恭喜你，已经安装成功！</p>
-<p><strong>4.安装webpack脚手架</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install webpack-cli -g</span><br></pre></td></tr></table></figure>
-
-<p><strong>5.在demo中创建一个js文件：webpack.config.js(进行出口入口配置)</strong></p>
-<p><strong><img src="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/1734305-20191006193214025-1794197143.png" alt="img"></strong></p>
-<p> <strong>6.在demo中创建一个input.js作为入口文件</strong></p>
-<p><strong><img src="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/1734305-20191006193456785-470655005.png" alt="img"></strong></p>
+        <h3 id="1-包含vue与小程序的生命周期"><a href="#1-包含vue与小程序的生命周期" class="headerlink" title="1.包含vue与小程序的生命周期"></a>1.包含vue与小程序的生命周期</h3><p>推荐：除特殊情况外，不建议使用小程序的生命周期钩子</p>
+<p>注意：</p>
+<p>​    1）在小程序onReady后，才会触发vue mounted生命周期</p>
+<p>​    2）不要在选项属性上使用箭头函数（比如created(){} 或者 created:function(){} 被写成了 created:()=&gt;{}）</p>
+<p>​    3）不要在回调函数中使用箭头函数（比如vm.$watch(‘a’, newValue =&gt; this.myMethod())）</p>
+<h3 id="2-几乎全支持vue中的模板方法"><a href="#2-几乎全支持vue中的模板方法" class="headerlink" title="2.几乎全支持vue中的模板方法"></a>2.几乎全支持vue中的模板方法</h3><p>vue的模板方法详情：<a href="https://cn.vuejs.org/v2/guide/syntax.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/syntax.html</a></p>
+<h3 id="3-支持vue中的计算属性"><a href="#3-支持vue中的计算属性" class="headerlink" title="3.支持vue中的计算属性"></a>3.支持vue中的计算属性</h3><h5 id="vue的计算属性详情：https-cn-vuejs-org-v2-guide-computed-html"><a href="#vue的计算属性详情：https-cn-vuejs-org-v2-guide-computed-html" class="headerlink" title="vue的计算属性详情：https://cn.vuejs.org/v2/guide/computed.html"></a><strong>vue的计算属性详情：<a href="https://cn.vuejs.org/v2/guide/computed.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/computed.html</a></strong></h5><h3 id="4-支持vue中的条件渲染（v-if-v-show）"><a href="#4-支持vue中的条件渲染（v-if-v-show）" class="headerlink" title="4.支持vue中的条件渲染（v-if/v-show）"></a>4.支持vue中的条件渲染（v-if/v-show）</h3><p>vue的条件渲染详情：<a href="https://cn.vuejs.org/v2/guide/conditional.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/conditional.html</a></p>
+<h3 id="5-支持vue中的列表渲染（v-for）"><a href="#5-支持vue中的列表渲染（v-for）" class="headerlink" title="5.支持vue中的列表渲染（v-for）"></a>5.支持vue中的列表渲染（v-for）</h3><p>vue的列表渲染详情：<a href="https://cn.vuejs.org/v2/guide/list.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/list.html</a></p>
+<p>注意：<strong>嵌套列表渲染，必须指定不同的索引！</strong></p>
+<h3 id="6-支持vue中的所有事件处理器"><a href="#6-支持vue中的所有事件处理器" class="headerlink" title="6.支持vue中的所有事件处理器"></a>6.支持vue中的所有事件处理器</h3><p>vue的事件处理器详情：<a href="https://cn.vuejs.org/v2/guide/events.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/events.html</a></p>
+<p>注意：  <img src="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591016381_42_w1256_h678.png" alt="img"></p>
+<h3 id="7-支持vue中的表单控件绑定"><a href="#7-支持vue中的表单控件绑定" class="headerlink" title="7.支持vue中的表单控件绑定"></a>7.支持vue中的表单控件绑定</h3><p>vue的表单控件绑定详情：<a href="https://cn.vuejs.org/v2/guide/forms.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/forms.html</a></p>
+<p>推荐：开发过程中直接使用微信小程序中的表单组件： </p>
+<p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/button.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/miniprogram/dev/component/button.html</a>      </p>
+<p>注意： （<a href="https://github.com/Meituan-Dianping/mpvue/issues/66" target="_blank" rel="noopener">表单元素 radio 用 radio-group 组件进行代替</a>）</p>
+<p>​             （<a href="https://github.com/Meituan-Dianping/mpvue/issues/58" target="_blank" rel="noopener">select 组件用 picker 组件进行代替</a>）</p>
+<h3 id="8-支持vue中的组件和小程序的原生组件"><a href="#8-支持vue中的组件和小程序的原生组件" class="headerlink" title="8.支持vue中的组件和小程序的原生组件"></a>8.支持vue中的组件和小程序的原生组件</h3><p>注意：</p>
+<p>1）小程序中的原生组件上的事件绑定，需要以vue的事件绑定语法来绑定；</p>
+<p>2）使用vue中的组件时，有且只能使用单文件组件（.vue 组件）的形式进行支持；<img src="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591017193_23_w1204_h590.png" alt="img"></p>
+<h3 id="9-不支持列表"><a href="#9-不支持列表" class="headerlink" title="9.不支持列表"></a>9.不支持列表</h3><p>1）小程序里所有的 BOM／DOM 都不能用（没有document、window等对象，所有的操作通过数据来实现，使用setData去改变视图），所以说<strong>不能使用v-html指令</strong>。vue是可以操作BOM和DOM的（可以获取wimdow执行操作，可以使用$refs去获取DOM）。</p>
+<p>2）不支持复杂的JS渲染表达式</p>
+<p>​    小程序目前所支持的表达式可看：<a href="https://developers.weixin.qq.com/miniprogram/dev/reference/wxml/data.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/miniprogram/dev/reference/wxml/data.html</a></p>
+<p>3）不支持过滤器（vue是支持过滤器的，小程序不支持）</p>
+<p>4）不支持函数（不支持在 template 内使用 methods 中的函数。（vue中自己试了一下也没有这种写法））</p>
+<p>​      <img src="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591016956_68_w1155_h109.png" alt="img"></p>
+<p>​      解决方法：<a href="https://dxinef.github.io/2019/05-10-Mpvue不支持在template内使用methods中函数的HACK方案/" target="_blank" rel="noopener">https://dxinef.github.io/2019/05-10-Mpvue%E4%B8%8D%E6%94%AF%E6%8C%81%E5%9C%A8template%E5%86%85%E4%BD%BF%E7%94%A8methods%E4%B8%AD%E5%87%BD%E6%95%B0%E7%9A%84HACK%E6%96%B9%E6%A1%88/</a></p>
+<p>5）不支持Class和Style绑定的classObject和styleObject语法也不支持在组件上使用 Class 与 Style 绑定。</p>
+<p>vue中的class和style绑定语法可参考：<a href="https://cn.vuejs.org/v2/guide/class-and-style.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/class-and-style.html</a>    <img src="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591017035_68_w1162_h1374.png" alt="img"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/" data-id="ckc8k9x02000044pe10iw8yt5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/" data-id="ckc8m3pzi0002uspeesibfym3" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" rel="tag">学习mpvue的第二天，对于其语法有了初步认识</a></li></ul>
+
     </footer>
   </div>
   
@@ -337,10 +560,10 @@
 
 
   
-    <article id="post-Visual-Studio-Code中Es6的开发环境搭建" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-使用mpvue创建项目以及总结" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="article-date">
-  <time datetime="2019-07-14T12:51:00.000Z" itemprop="datePublished">2019-07-14</time>
+    <a href="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2020-06-01T13:18:00.000Z" itemprop="datePublished">2020-06-01</time>
 </a>
     
   </div>
@@ -351,7 +574,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Visual Studio Code中Es6的开发环境搭建</a>
+      <a class="article-title" href="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/">使用mpvue创建项目以及总结</a>
     </h1>
   
 
@@ -359,32 +582,328 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>1.打开终端，输入初始化代码。输入代码之后会在目录中出现package.json,可以在红色下划线上写上作者名和描述（不写也可以）</p>
-<p><strong>npm init -y</strong>  </p>
-<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714202227695-501064038.png" alt="img"></p>
-<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714202745854-2029552755.png" alt="img"></p>
-<p>2.安装Babel转换器</p>
-<p>npm install -g babel-cli  </p>
-<p> <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714202539106-855301776.png" alt="img"></p>
-<p>3.安装打包（es5）</p>
-<p>npm install –save-dev babel-preset-es2015 babel-cli  </p>
-<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714203136635-836811666.png" alt="img"></p>
-<p>然后打开package.json，出现以下红括号的代码则说明安装成功</p>
-<p>　<img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714203253697-2100836276.png" alt="img"></p>
-<p>4.在根目录创建.babelrc配置文件（注意不是文件夹）。输入以下代码</p>
-<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714203502895-1756015490.png" alt="img"></p>
-<p>5.最后输入babel 需要转码文件路径 -o 转码结果写入的文件路径。如：</p>
-<p>  babel js/1-2es6.js -o es5Js/1-2es6.js   </p>
-<p> <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714204132937-1799230633.png" alt="img"></p>
-<p>以上就可以实现es6到es5的转换了！</p>
-<p>最后，如果不想每次转换都输入这么多重复的路径命令。则可以通过在package.json文件中通过配置以下代码：</p>
-<p>　<img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714204355434-65865200.png" alt="img"></p>
-<p>则可以在终端输入npm run build就可以转换成功！</p>
+        <h3 id="1-新建项目"><a href="#1-新建项目" class="headerlink" title="1.新建项目"></a>1.新建项目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 全局安装 vue-cli</span><br><span class="line">$ npm install --global vue-cli</span><br><span class="line"></span><br><span class="line"># 创建一个基于 mpvue-quickstart 模板的新项目</span><br><span class="line">$ vue init mpvue&#x2F;mpvue-quickstart my-project</span><br><span class="line"></span><br><span class="line"># 安装依赖</span><br><span class="line">$ cd my-project</span><br><span class="line">$ npm install</span><br><span class="line">$ npm run dev</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-配置依赖（这一步好像在上一步的时候就已经默认配置好了）"><a href="#2-配置依赖（这一步好像在上一步的时候就已经默认配置好了）" class="headerlink" title="2.配置依赖（这一步好像在上一步的时候就已经默认配置好了）"></a>2.配置依赖（这一步好像在上一步的时候就已经默认配置好了）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i mpvue -S&#96;&#96;npm i mpvue-template-compiler mpvue-loader mpvue-webpack-target postcss-mpvue-wxss webpack-dev-middleware-hard-disk -S-D</span><br></pre></td></tr></table></figure>
+
+<p><strong>依赖说明：</strong></p>
+<p><strong>mpvue-template-compiler</strong></p>
+<p>　　该软件包可用于将Vue 2.0模板预编译为渲染函数，以避免运行时编译开销和CSP限制。仅在编写具有非常特定需求的构建工具时才需要它。在大多数情况下，您应该改用<a href="http://mpvue.com/build-tool/mpvue-loader/" target="_blank" rel="noopener">mpvue-loader</a>。</p>
+<p><strong>mpvue-loader</strong></p>
+<p>　　除了vue-loader 本身所具备的能力之外，它还会产出微信小程序所需要的文件结构和模块内容。</p>
+<p>　　<a href="http://mpvue.com/build/mpvue-loader.html详细说明了vue文件是如何转化为小程序中的文件。" target="_blank" rel="noopener">http://mpvue.com/build/mpvue-loader.html详细说明了vue文件是如何转化为小程序中的文件。</a></p>
+<p><strong>mpvue-webpack-target</strong></p>
+<p>　　主要是兼容微信小程序中的全局变量。例如把 window 修改为 global。</p>
+<p>　　不支持 DOM 和 DOM 方法，不能进行热更替。</p>
+<p><strong>postcss-mpvue-wxss</strong></p>
+<p>　　清理 wxss 不支持的选择器。</p>
+<p>　　清理 wxss 不支持的注释。</p>
+<p>　　转换 rem 单位到 rpx。</p>
+<p>　　转换 Web 的标签选择器到小程序的 class 选择器。</p>
+<p>　　style scoped（postcss插件部分）。</p>
+<p>　　<a href="http://mpvue.com/build/postcss-mpvue-wxss.html说明了css选择器是如何转换为wxss支持的选择器以及在项目中如何配置它。" target="_blank" rel="noopener">http://mpvue.com/build/postcss-mpvue-wxss.html说明了css选择器是如何转换为wxss支持的选择器以及在项目中如何配置它。</a></p>
+<p><strong>webpack-dev-middlewar-hard-disk</strong></p>
+<p>　　简略用途如下：（这也是一直困扰我为什么npm run dev能生成dist?明明我记得的是npm run build才是生成dist的（我这里说的是默认的打包出口））</p>
+<p>   <img src="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/1590929145_99_w1898_h1350.png" alt="1590929145_99_w1898_h1350.png"></p>
+<p>​    详细用途如下：<a href="https://www.ctolib.com/topics-132236.html" target="_blank" rel="noopener">https://www.ctolib.com/topics-132236.html</a></p>
+<h3 id="3-遇到问题以及总结"><a href="#3-遇到问题以及总结" class="headerlink" title="3.遇到问题以及总结"></a><strong>3.遇到问题以及总结</strong></h3><p>　　 <strong>遇到的问题：</strong></p>
+<p>​     在新建mpvue过程中，报错：vue-cli · Failed to download repo mpvue/mpvue-quickstart: connect ETIMEDOUT 13.250.162.133:443 </p>
+<p>​    <img src="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/1590929306_100_w1071_h103.png" alt="1590929306_100_w1071_h103.png"></p>
+<p>　　 <strong>分析错误：</strong></p>
+<p>​    与上周遇到的npm下载webpack插件时出现network proxy问题（npm代理设置错误）的原因一致。在公司内网要使用代理才能安装插件，所以需要为npm设置代理。</p>
+<p>　　<strong>解决方法：</strong></p>
+<p>​    为npm设置代理</p>
+<p>​    使用以下命令：npm config set proxy <a href="http://web-proxy.oa.com:8080" target="_blank" rel="noopener">http://web-proxy.oa.com:8080</a></p>
+<p>​     其中”<code>web-proxy.oa.com:8080</code>”是自己机器所在网络的代理地址。</p>
+<p>　　<strong>疑问：为什么需要设置npm代理？</strong></p>
+<p>　　<strong>首先先明白什么是代理，什么是代理服务器：可参考：<a href="https://zh.wikipedia.org/wiki/代理服务器" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8</a></strong></p>
+<p>​    **<img src="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/1734305-20200602200801101-1471523807.png" alt="img"></p>
+<p><strong>总结：</strong></p>
+<p>​    npm run dev运行成功之后出现dist文件夹（它是怎么变成dist文件夹的？<a href="http://mpvue.com/build/mpvue-loader.html详细说明了vue文件是如何转化为小程序中的文件。），成功在微信开发者工具中运行项目。" target="_blank" rel="noopener">http://mpvue.com/build/mpvue-loader.html详细说明了vue文件是如何转化为小程序中的文件。），成功在微信开发者工具中运行项目。</a></p>
+<p>​    为什么要出现dist文件夹才可以成功运行项目？</p>
+<p>​    因为每个小程序项目的根目录会有一个<code>project.config.json</code>的项目配置文件，可以设置<code>miniprogramRoot</code>属性指定小程序源码的目录, 默认为根目录(<code>/</code>)。我们的项目中<code>miniprogramRoot</code>属性设置为了”dist/wx/“。</p>
+<p>​    <img src="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/1590929570_36_w1075_h450.png" alt="1590929570_36_w1075_h450.png"></p>
+<p>​    目前只是对mpvue的建立过程以及运行流程有了初步了解。还需要继续深入了解（vue和小程序的主要语法区别）。</p>
+<p>参考文章：<a href="http://mpvue.com/mpvue/" target="_blank" rel="noopener">http://mpvue.com/mpvue/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" data-id="ckc8j6ufv000054pe8hg6b8t3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/" data-id="ckc8m3q01000buspe4naleg2y" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-npm-install出现network-proxy问题以及建立mpvue项目出现connect-ETIMEDOUT问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-05-31T08:59:00.000Z" itemprop="datePublished">2020-05-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/">npm install出现network proxy问题以及建立mpvue项目出现connect ETIMEDOUT问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在构建mpvue项目的时候，出现了以下错误：</p>
+<p><img src="/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/1734305-20200531165702252-442407283.png" alt="img"></p>
+<p>vue-cli · Failed to download repo mpvue/mpvue-quickstart: connect ETIMEDOUT 13.250.162.133:443 </p>
+<p>之前我遇到的npm下载webpack插件时出现network proxy问题</p>
+<p>今天查看了一些资料，发现上面的两个问题出现的原因是：</p>
+<p><strong>在公司内网要使用代理才能安装插件，所以需要为npm设置代理</strong>。</p>
+<p><strong>解决方法：</strong></p>
+<p>为npm设置代理</p>
+<p>在终端输入以下命令：npm config set proxy <a href="http://web-proxy.oa.com:8080" target="_blank" rel="noopener">http://web-proxy.oa.com:8080</a></p>
+<p>其中”<code>web-proxy.oa.com:8080</code>”是自己机器所在网络的代理地址</p>
+<p><strong>提出疑问：</strong>为什么需要设置npm代理？</p>
+<p>首先先明白什么是代理，什么是代理服务器：</p>
+<p>可参考：<a href="https://zh.wikipedia.org/wiki/代理服务器" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8</a></p>
+<p><img src="/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/1734305-20200602101821275-1527146465.png" alt="img"></p>
+<p>我们可以去电脑设置中查看自己的电脑已经自动设置了代理服务器。</p>
+<p>npm设置了代理之后，安装插件之类的请求都会让本地代理服务器帮你转发。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/31/npm-install%E5%87%BA%E7%8E%B0network-proxy%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E5%BB%BA%E7%AB%8Bmpvue%E9%A1%B9%E7%9B%AE%E5%87%BA%E7%8E%B0connect-ETIMEDOUT%E9%97%AE%E9%A2%98/" data-id="ckc8m3pzk0003uspe4a76ax8s" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-二叉树的生成插入算法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%94%9F%E6%88%90%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2020-03-08T03:30:00.000Z" itemprop="datePublished">2020-03-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%94%9F%E6%88%90%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95/">二叉树的生成插入算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="一、二叉树概念"><a href="#一、二叉树概念" class="headerlink" title="一、二叉树概念"></a>一、二叉树概念</h5><p>二叉树（binary tree）是一颗树，其中每个节点都不能有多于两个的儿子。</p>
+<p>二叉树的插入，在这里其实是对于一个二叉查找树的插入。</p>
+<p>使二叉树成为二叉查找树的性质是，对于树中的每个节点X，它的左子树中所有项的值小于X中的项目，而它的右子树所有的项的值大于X中的项。</p>
+<p>如下图，两颗都是二叉树，左边的树是查找树，右边的树则不是。右边的树在其项为6的节点（该节点正好是根节点）的左子树中，有一个节点的项是7。</p>
+<p><img src="/2020/03/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%94%9F%E6%88%90%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95/1509000-20190622195422357-1442914258.png" alt="img"></p>
+<p>接下来我们要实现二叉树的插入：</p>
+<p>eg: 对于[ 2, 5, 4, 1, 3, 6] =&gt; </p>
+<p>　　<img src="/2020/03/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%94%9F%E6%88%90%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95/1509000-20190622200729090-1676566161.png" alt="img"></p>
+<h5 id="二、实现思路"><a href="#二、实现思路" class="headerlink" title="二、实现思路"></a>二、实现思路</h5><p>1.实例化node节点</p>
+<p>​    若根节点为空，便将newNode赋给root节点；</p>
+<p>​    若根节点存在，则插入新节点。</p>
+<p>2.插入左子树或右子树</p>
+<p>　1) 如果newNode小于node</p>
+<p>　　　1.如果node.left(左孩子)为空，newNode赋给node.left</p>
+<p>　　　2.否则再次比较newNode &lt; node.left </p>
+<p>　2) 如果newNode大于node</p>
+<p>　　　1.如果node.right(右孩子)为空，newNode赋给node.right</p>
+<p>　　　2.否则再次比较newNode&gt; node.right</p>
+<p>二、代码实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> nodes = [<span class="number">2</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>];</span><br><span class="line">         </span><br><span class="line"><span class="keyword">var</span> Node = <span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.key = key;</span><br><span class="line">    <span class="keyword">this</span>.left = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.right = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> root = <span class="literal">null</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">insert</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> node = <span class="keyword">new</span> Node(key);</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">null</span>)</span><br><span class="line">        root = node;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        insertNode(root, node);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">insertNode</span>(<span class="params">root, node</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root.key &gt; node.key) &#123;</span><br><span class="line">        <span class="keyword">if</span> (root.left)</span><br><span class="line">            insertNode(root.left, node)</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            root.left = node;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (root.key &lt; node.key) &#123;</span><br><span class="line">        <span class="keyword">if</span> (root.right)</span><br><span class="line">            insertNode(root.right, node)</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            root.right = node;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">nodes.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</span><br><span class="line">    insert(key);</span><br><span class="line">&#125;)</span><br><span class="line">insert(<span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(root);</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%94%9F%E6%88%90%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95/" data-id="ckc8m3q03000cuspe3ye159ls" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-什么是Token-Token有什么用处？为什么使用它？Token认证又是什么？" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/27/%E4%BB%80%E4%B9%88%E6%98%AFToken-Token%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%E5%A4%84%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%AE%83%EF%BC%9FToken%E8%AE%A4%E8%AF%81%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/" class="article-date">
+  <time datetime="2020-02-27T10:15:00.000Z" itemprop="datePublished">2020-02-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/27/%E4%BB%80%E4%B9%88%E6%98%AFToken-Token%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%E5%A4%84%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%AE%83%EF%BC%9FToken%E8%AE%A4%E8%AF%81%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/">什么是Token?Token有什么用处？为什么使用它？Token认证又是什么？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>写这一篇文章的来源是因为某一天的我被面试官提问：让你设计一个登录页面，你会如何设计？</p>
+<p>我当时的脑子只有？？？</p>
+<p>不就是提交账号、密码给后台就搞定了呢？</p>
+<p>不可能那么简单，我弱弱的想，难道要对密码加密？？</p>
+<p>之后他继续提问，当你登录成功后，去请求购物车时，后台为什么会返回的是你的购物车，而不是别人的？</p>
+<p>不是匹配用户id吗？？我还没领悟到面试官想让我回答的是Token。。。。</p>
+<p>参考链接：<a href="https://juejin.im/post/5a6c60166fb9a01caf37a5e5" target="_blank" rel="noopener">https://juejin.im/post/5a6c60166fb9a01caf37a5e5</a></p>
+<p>对称加密与非对称加密具体应用（https原理）：<a href="https://juejin.im/entry/5942061dda2f600067541114" target="_blank" rel="noopener">https://juejin.im/entry/5942061dda2f600067541114</a></p>
+<p><strong>什么是Token?</strong></p>
+<p>token的意思是“令牌”，是服务端生成的一串字符串，作为客户端进行请求的一个标识。</p>
+<p>当用户第一次登录后，服务器生成一个token并将此token返回给客户端，以后客户端只需带上这个token前来请求数据即可，无需再次带上用户名和密码。</p>
+<p>简单token的组成；uid(用户唯一的身份标识)、time(当前时间的时间戳)、sign（签名，token的前几位以哈希算法压缩成的一定长度的十六进制字符串。为防止token泄露）。</p>
+<p><strong>为什么要用Token?</strong></p>
+<ol>
+<li>Token 完全由应用管理，所以它可以避开同源策略</li>
+<li>Token 可以避免 <a href="http://www.cnblogs.com/shanyou/p/5038794.html" target="_blank" rel="noopener">CSRF 攻击</a></li>
+<li>Token 可以是无状态的，可以在多个服务间共享</li>
+</ol>
+<h2 id="基于token机制的身份认证"><a href="#基于token机制的身份认证" class="headerlink" title="基于token机制的身份认证"></a>基于token机制的身份认证</h2><p>使用token机制的身份验证方法，在服务器端不需要存储用户的登录记录。大概的流程：</p>
+<ol>
+<li>客户端使用用户名和密码请求登录。</li>
+<li>服务端收到请求，验证用户名和密码。</li>
+<li>验证成功后，服务端会生成一个token，然后把这个token发送给客户端。</li>
+<li>客户端收到token后把它存储起来，可以放在cookie或者Local Storage（本地存储）里。</li>
+<li>客户端每次向服务端发送请求的时候都需要带上服务端发给的token。</li>
+<li>服务端收到请求，然后去验证客户端请求里面带着token，如果验证成功，就向客户端返回请求的数据。(如果这个 Token 在服务端持久化（比如存入数据库），那它就是一个永久的身份令牌。)</li>
+</ol>
+<p><strong>Token需要设置有效期吗？</strong></p>
+<p>　　对于这个问题，我们不妨先看两个例子。一个例子是登录密码，一般要求定期改变密码，以防止泄漏，所以密码是有有效期的；另一个例子是安全证书。SSL 安全证书都有有效期，目的是为了解决吊销的问题。所以无论是从安全的角度考虑，还是从吊销的角度考虑，Token 都需要设有效期。</p>
+<p>　　那么有效期多长合适呢？</p>
+<p>　　只能说，根据系统的安全需要，尽可能的短，但也不能短得离谱——想像一下手机的自动熄屏时间，如果设置为 10 秒钟无操作自动熄屏，再次点亮需要输入密码，会不会疯？</p>
+<p>　　然后新问题产生了，如果用户在正常操作的过程中，Token 过期失效了，要求用户重新登录……用户体验岂不是很糟糕？</p>
+<p><strong>解决Token失效的问题</strong></p>
+<p>　　一种方案是在服务器端保存 Token 状态，用户每次操作都会自动刷新（推迟） Token 的过期时间——Session 就是采用这种策略来保持用户登录状态的。然而仍然存在这样一个问题，在前后端分离、单页 App 这些情况下，每秒种可能发起很多次请求，每次都去刷新过期时间会产生非常大的代价。如果 Token 的过期时间被持久化到数据库或文件，代价就更大了。所以通常为了提升效率，减少消耗，会把 Token 的过期时保存在缓存或者内存中。</p>
+<p>　　另一种方案，使用 Refresh Token，它可以避免频繁的读写操作。这种方案中，服务端不需要刷新 Token 的过期时间，一旦 Token 过期，就反馈给前端，前端使用 Refresh Token 申请一个全新 Token 继续使用。这种方案中，服务端只需要在客户端请求更新 Token 的时候对 Refresh Token 的有效性进行一次检查，大大减少了更新有效期的操作，也就避免了频繁读写。当然 Refresh Token 也是有有效期的，但是这个有效期就可以长一点了，比如，以天为单位的时间。</p>
+<p><strong>使用Token和RefreshToken的时序图如下：</strong></p>
+<p><strong><img src="/2020/02/27/%E4%BB%80%E4%B9%88%E6%98%AFToken-Token%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%E5%A4%84%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%AE%83%EF%BC%9FToken%E8%AE%A4%E8%AF%81%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/1734305-20200227174819753-2075672049.png" alt="img"></strong></p>
+<p><img src="/2020/02/27/%E4%BB%80%E4%B9%88%E6%98%AFToken-Token%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%E5%A4%84%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%AE%83%EF%BC%9FToken%E8%AE%A4%E8%AF%81%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/1734305-20200227175035295-607702499.png" alt="img"></p>
+<p><img src="/2020/02/27/%E4%BB%80%E4%B9%88%E6%98%AFToken-Token%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%E5%A4%84%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%AE%83%EF%BC%9FToken%E8%AE%A4%E8%AF%81%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/1734305-20200227175119181-233031164.png" alt="img"></p>
+<p>　　上面的时序图中并未提到 Refresh Token 过期怎么办。不过很显然，Refresh Token 既然已经过期，就该要求用户重新登录了。</p>
+<p>　　当然还可以把这个机制设计得更复杂一些，比如，Refresh Token 每次使用的时候，都更新它的过期时间，直到与它的创建时间相比，已经超过了非常长的一段时间（比如三个月），这等于是在相当长一段时间内允许 Refresh Token 自动续期。</p>
+<p>　　到目前为止，Token 都是有状态的，即在服务端需要保存并记录相关属性。那说好的无状态呢，怎么实现？</p>
+<p><strong>无状态Token</strong></p>
+<p>　　如果我们把所有状态信息都附加在 Token 上，服务器就可以不保存。但是服务端仍然需要认证 Token 有效。不过只要服务端能确认是自己签发的 Token，而且其信息未被改动过，那就可以认为 Token 有效——“签名”可以作此保证。平时常说的签名都存在一方签发，另一方验证的情况，所以要使用非对称加密算法。但是在这里，签发和验证都是同一方，所以对称加密算法就能达到要求，而对称算法比非对称算法要快得多（可达数十倍差距）。更进一步思考，对称加密算法除了加密，还带有还原加密内容的功能，而这一功能在对 Token 签名时并无必要——既然不需要解密，摘要（散列）算法就会更快。可以指定密码的散列算法，自然是 HMAC。</p>
+<p>　　上面说了这么多，还需要自己去实现吗？不用！<a href="https://jwt.io/" target="_blank" rel="noopener">JWT</a> 已经定义了详细的规范，而且有各种语言的若干实现。</p>
+<p>　　不过在使用无状态 Token 的时候在服务端会有一些变化，服务端虽然不保存有效的 Token 了，却需要保存未到期却已注销的 Token。如果一个 Token 未到期就被用户主动注销，那么服务器需要保存这个被注销的 Token，以便下次收到使用这个仍在有效期内的 Token 时判其无效。有没有感到一点沮丧？</p>
+<p>　　在前端可控的情况下（比如前端和服务端在同一个项目组内），可以协商：前端一但注销成功，就丢掉本地保存（比如保存在内存、LocalStorage 等）的 Token 和 Refresh Token。基于这样的约定，服务器就可以<strong>假设</strong>收到的 Token 一定是没注销的（因为注销之后前端就不会再使用了）。</p>
+<p>　　如果前端不可控的情况，仍然可以进行上面的假设，但是这种情况下，需要尽量缩短 Token 的有效期，而且必须在用户主动注销的情况下让 Refresh Token 无效。这个操作<strong>存在一定的安全漏洞</strong>，因为用户会认为已经注销了，实际上在较短的一段时间内并没有注销。如果应用设计中，这点漏洞并不会造成什么损失，那采用这种策略就是可行的。</p>
+<p>　　在使用无状态 Token 的时候，有两点需要注意：</p>
+<ol>
+<li>Refresh Token 有效时间较长，所以它应该在服务器端有状态，以增强安全性，确保用户注销时可控</li>
+<li>应该考虑使用二次认证来增强敏感操作的安全性</li>
+</ol>
+<p>　　到此，关于 Token 的话题似乎差不多了——然而并没有，上面说的只是认证服务和业务服务集成在一起的情况，如果是分</p>
+<h2 id="分离认证服务"><a href="#分离认证服务" class="headerlink" title="分离认证服务"></a>分离认证服务</h2><p>　　当 Token 无状态之后，单点登录就变得容易了。前端拿到一个有效的 Token，它就可以在任何同一体系的服务上认证通过——只要它们使用同样的密钥和算法来认证 Token 的有效性。就样这样：</p>
+<p><img src="/2020/02/27/%E4%BB%80%E4%B9%88%E6%98%AFToken-Token%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%E5%A4%84%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%AE%83%EF%BC%9FToken%E8%AE%A4%E8%AF%81%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/1734305-20200227175946871-1411988278.png" alt="img"></p>
+<p>　　 当然，如果 Token 过期了，前端仍然需要去认证服务更新 Token：</p>
+<p><img src="/2020/02/27/%E4%BB%80%E4%B9%88%E6%98%AFToken-Token%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%E5%A4%84%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%AE%83%EF%BC%9FToken%E8%AE%A4%E8%AF%81%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/1734305-20200227180011231-1003806559.png" alt="img"></p>
+<p> 　可见，虽然认证和业务分离了，实际即并没产生多大的差异。当然，这是建立在<strong>认证服务器信任业务服务器的前提</strong>下，因为认证服务器产生 Token 的密钥和业务服务器认证 Token 的密钥和算法相同。换句话说，业务服务器同样可以创建有效的 Token。</p>
+<p>　　如果业务服务器不能被信任，该怎么办？</p>
+<h2 id="不受信的业务服务器"><a href="#不受信的业务服务器" class="headerlink" title="不受信的业务服务器"></a>不受信的业务服务器</h2><p>　　遇到不受信的业务服务器时，很容易想到的办法是使用不同的密钥。认证服务器使用密钥1签发，业务服务器使用密钥2验证——这是典型非对称加密签名的应用场景。认证服务器自己使用私钥对 Token 签名，公开公钥。信任这个认证服务器的业务服务器保存公钥，用于验证签名。幸好，JWT 不仅可以使用 HMAC 签名，也可以使用 RSA（一种非对称加密算法）签名。</p>
+<p>不过，当业务服务器已经不受信任的时候，<strong>多个业务服务器之间使用相同的 Token 对用户来说是不安全的</strong>。因为任何一个服务器拿到 Token 都可以仿冒用户去另一个服务器处理业务……悲剧随时可能发生。</p>
+<p>　　为了防止这种情况发生，就需要在认证服务器产生 Token 的时候，把使用该 Token 的业务服务器的信息记录在 Token 中，这样当另一个业务服务器拿到这个 Token 的时候，发现它并不是自己应该验证的 Token，就可以直接拒绝。</p>
+<p>　　现在，认证服务器不信任业务服务器，业务服务器相互也不信任，但前端是信任这些服务器的——如果前端不信任，就不会拿 Token 去请求验证。那么为什么会信任？可能是因为这些是同一家公司或者同一个项目中提供的若干服务构成的服务体系。</p>
+<p>　　但是，前端信任不代表用户信任。如果 Token 不没有携带用户隐私（比如姓名），那么用户不会关心信任问题。但如果 Token 含有用户隐私的时候，用户得关心信任问题了。这时候认证服务就不得不再啰嗦一些，当用户请求 Token 的时候，问上一句，你真的要授权给某某某业务服务吗？而这个“某某某”，用户怎么知道它是不是真的“某某某”呢？用户当然不知道，甚至认证服务也不知道，因为公钥已经公开了，任何一个业务都可以声明自己是“某某某”。</p>
+<p>　　为了得到用户的信任，认证服务就不得不帮助用户来鉴别业务服务。所以，认证服器决定不公开公钥，而是要求业务服务先申请注册并通过审核。只有通过审核的业务服务器才能得到认证服务为它创建的，仅供它使用的公钥。如果该业务服务泄漏公钥带来风险，由该业务服务自行承担。现在认证服务可以清楚的告诉用户，“某某某”服务是什么了。如果用户还是不够信任，认证服务甚至可以问，某某某业务服务需要请求 A、B、C 三项个人数据，其中 A 是必须的，不然它不工作，是否允许授权？如果你授权，我就把你授权的几项数据加密放在 Token 中……</p>
+<p>　　废话了这么多，有没有似曾相识……对了，这类似开放式 API 的认证过程。</p>
+<p>e…看了那么多，我希望下次面试官问我登录页面怎么设计的时候，我可以说一番长篇大论哈哈哈。</p>
+<p>对称加密与非对称加密具体应用（https原理）：<a href="https://juejin.im/entry/5942061dda2f600067541114[" target="_blank" rel="noopener">https://juejin.im/entry/5942061dda2f600067541114[</a><br>](<a href="https://blog.csdn.net/u013320868/article/details/54090295" target="_blank" rel="noopener">https://blog.csdn.net/u013320868/article/details/54090295</a>)</p>
+<p>原文链接：<a href="https://juejin.im/post/5a6c60166fb9a01caf37a5e5" target="_blank" rel="noopener">https://juejin.im/post/5a6c60166fb9a01caf37a5e5</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/27/%E4%BB%80%E4%B9%88%E6%98%AFToken-Token%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%E5%A4%84%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%AE%83%EF%BC%9FToken%E8%AE%A4%E8%AF%81%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/" data-id="ckc8m3pzz000auspe01ws28fs" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-js函数防抖和函数节流" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/19/js%E5%87%BD%E6%95%B0%E9%98%B2%E6%8A%96%E5%92%8C%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/" class="article-date">
+  <time datetime="2020-01-19T09:28:00.000Z" itemprop="datePublished">2020-01-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/19/js%E5%87%BD%E6%95%B0%E9%98%B2%E6%8A%96%E5%92%8C%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/">js函数防抖和函数节流</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参考链接：<a href="https://juejin.im/post/5b651dc15188251aa30c8669" target="_blank" rel="noopener">https://juejin.im/post/5b651dc15188251aa30c8669</a></p>
+<p>参考链接：<a href="https://www.jb51.net/article/158818.htm" target="_blank" rel="noopener">https://www.jb51.net/article/158818.htm</a></p>
+<p>在我们前端开发中，我们经常会需要绑定一些持续触发的事件，如 resize、scroll、mousemove 等等，但有些时候我们并不希望在事件持续触发的过程中那么频繁地去执行函数。</p>
+<p>通常这种情况下我们怎么去解决的呢？</p>
+<p>一般来讲，防抖和节流是比较好的解决方案。</p>
+<p>函数节流（throttle）与 函数防抖（debounce）都是为了限制函数的执行频次，以优化函数触发频率过高导致的响应速度跟不上触发频率，出现延迟，假死或卡顿的现象。</p>
+<p><strong>函数防抖</strong></p>
+<p>定义：就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。举个例子，当你在页面中使用onkeyUp监听用户在input框中的输入，如果用户按住一个6不放，那监听事件岂不是一直被触发，这样就浪费了一部分性能了，那么我们在一定事件内监听，也就是说我过了一秒再来看看你输入了多少个6，那这样是不是轻松多了。</p>
+<p>原理：维护一个计时器，规定在延时时间后触发函数，但是在延时时间内再次被触发的话，就取消之前的计时器而重新设置，这样就能够保证只有最后一次操作被触发。即将所有操作合并为一个操作进行，并且只有最后一次操作是有效操作。</p>
+<p>防抖函数分为非立即执行版和立即执行版。</p>
+<p>非立即执行版：</p>
+<p>触发事件后函数不会立即执行，而是在 n 秒后执行，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">title</span>&gt;</span>防抖<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"debounce"</span>&gt;</span>防抖，防抖，防抖<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"> <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> obtn = <span class="built_in">document</span>.getElementById(<span class="string">'debounce'</span>); <span class="comment">//获取按钮</span></span></span><br><span class="line"><span class="actionscript"> obtn.addEventListener(<span class="string">'click'</span>,debounceHandle(debounce,<span class="number">500</span>),<span class="literal">false</span>); <span class="comment">//监听绑定事件</span></span></span><br><span class="line"> &#125;</span><br><span class="line">  </span><br><span class="line"><span class="actionscript"> <span class="comment">//防抖函数</span></span></span><br><span class="line"><span class="actionscript"><span class="function"><span class="keyword">function</span> <span class="title">debounceHandle</span><span class="params">(func, delay)</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> timer = <span class="literal">null</span>;</span></span><br><span class="line"><span class="actionscript">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">(<span class="rest_arg">...args</span>)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">if</span> (timer) clearTimeout(timer);<span class="comment">//如果存在事件就清除定时器</span></span></span><br><span class="line"><span class="javascript">    timer = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;<span class="comment">//如果不存在那么就开启定时器</span></span></span><br><span class="line"><span class="actionscript">      func.apply(<span class="keyword">this</span>, args);</span></span><br><span class="line">    &#125;, delay);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">  </span><br><span class="line"><span class="actionscript"> <span class="comment">//执行函数</span></span></span><br><span class="line"><span class="actionscript"> <span class="function"><span class="keyword">function</span> <span class="title">debounce</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">console</span>.log(<span class="string">'防抖,这里可以写一些防抖函数，如img中的onload事件'</span>);</span></span><br><span class="line"> &#125;</span><br><span class="line"> <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>立即执行版:</p>
+<p>触发事件后函数会立即执行，然后 n 秒内不触发事件才能继续执行函数的效果。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">title</span>&gt;</span>防抖<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"debounce"</span>&gt;</span>防抖，防抖，防抖<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"> <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> obtn = <span class="built_in">document</span>.getElementById(<span class="string">'debounce'</span>); <span class="comment">//获取按钮</span></span></span><br><span class="line"><span class="actionscript"> obtn.addEventListener(<span class="string">'click'</span>,debounceHandle(debounce,<span class="number">500</span>),<span class="literal">false</span>); <span class="comment">//监听绑定事件</span></span></span><br><span class="line"> &#125;</span><br><span class="line">  </span><br><span class="line"><span class="actionscript"> <span class="comment">//防抖函数</span></span></span><br><span class="line"><span class="actionscript"><span class="function"><span class="keyword">function</span> <span class="title">debounceHandle</span><span class="params">(func, delay)</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> timer = <span class="literal">null</span>;</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">(<span class="rest_arg">...args</span>)</span> </span>&#123;</span></span><br><span class="line">      if (timer) clearTimeout(timer);</span><br><span class="line"><span class="javascript">      <span class="keyword">let</span> callNow = !timer;</span></span><br><span class="line"><span class="javascript">      timer = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="actionscript">        timer = <span class="literal">null</span>;</span></span><br><span class="line">      &#125;, delay);</span><br><span class="line"><span class="actionscript">      <span class="keyword">if</span>(callNow) func.apply(<span class="keyword">this</span>, args);</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">  </span><br><span class="line"><span class="actionscript"> <span class="comment">//执行函数</span></span></span><br><span class="line"><span class="actionscript"> <span class="function"><span class="keyword">function</span> <span class="title">debounce</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">console</span>.log(<span class="string">'防抖,这里可以写一些防抖函数，如img中的onload事件'</span>);</span></span><br><span class="line"> &#125;</span><br><span class="line"> <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上述防抖函数的代码还需要注意的是 this 和 参数的传递。是为了让 debounceHandle 函数最终返回的函数 this 指向不变以及依旧能接受到 e 参数。</p>
+<p><strong>函数节流</strong></p>
+<p>定义：当持续触发事件时，保证一定时间段内只调用一次事件处理函数，按照一定的规律在某个时间间隔内去处理函数。假如在一个页面中有任意多张图片，那么就有可能会使用懒加载技术，譬如图片的懒加载，我希望在下滑过程中图片不断的被加载出来，而不是只有当我停止下滑时候，图片才被加载出来。那么节流就是在一定时间间隔内触发一次事件。</p>
+<p>原理：原理是通过判断是否达到一定时间来触发函数，使得一定时间内只触发一次函数。</p>
+<p>高频事件触发，但在n秒内只会执行一次，所以节流会稀释函数的执行频率</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">title</span>&gt;</span>节流<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"> div &#123;</span><br><span class="line">  height: 5000px;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span>&gt;</span>节流,节流,节流<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"> <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">window</span>.addEventListener(<span class="string">'scroll'</span>,throttleHandle(throttle),<span class="literal">false</span>); <span class="comment">//监听绑定事件</span></span></span><br><span class="line"> &#125;</span><br><span class="line">  </span><br><span class="line"><span class="actionscript"> <span class="comment">//节流函数</span></span></span><br><span class="line"><span class="actionscript"> <span class="function"><span class="keyword">function</span> <span class="title">throttleHandle</span> <span class="params">(fn)</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> timer = <span class="literal">null</span>,</span></span><br><span class="line"><span class="actionscript">   booleanVal = <span class="literal">true</span>; <span class="comment">// 声明一个变量标志做判断</span></span></span><br><span class="line"><span class="actionscript">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line">   if (!booleanVal) &#123;</span><br><span class="line"><span class="actionscript">   <span class="keyword">return</span></span></span><br><span class="line"><span class="actionscript">   &#125; <span class="comment">//如果事件正在执行，那么就返回，将布尔值改为false</span></span></span><br><span class="line"><span class="actionscript">   booleanVal = <span class="literal">false</span>;</span></span><br><span class="line"><span class="actionscript">   <span class="comment">//事件未执行，创建事件</span></span></span><br><span class="line"><span class="actionscript">   timer = setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">   fn.apply(<span class="keyword">this</span>,<span class="built_in">arguments</span>);</span></span><br><span class="line"><span class="actionscript">   booleanVal = <span class="literal">true</span>; <span class="comment">//事件执行完将布尔值改回</span></span></span><br><span class="line">   &#125;,300)</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">  </span><br><span class="line"><span class="actionscript"> <span class="comment">//执行函数</span></span></span><br><span class="line"><span class="actionscript"> <span class="function"><span class="keyword">function</span> <span class="title">throttle</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">var</span> scrollNum = <span class="built_in">document</span>.documentElement.scrollTop || <span class="built_in">document</span>.body.scrollTop;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">console</span>.log(scrollNum);</span></span><br><span class="line"> &#125;</span><br><span class="line"> <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/19/js%E5%87%BD%E6%95%B0%E9%98%B2%E6%8A%96%E5%92%8C%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/" data-id="ckc8m3pzh0001uspe70930bsa" class="article-share-link">Share</a>
       
       
     </footer>
@@ -395,6 +914,11 @@
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
 
 </section>
         
@@ -404,15 +928,29 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" rel="tag">学习mpvue的第二天，对于其语法有了初步认识</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" style="font-size: 10px;">学习mpvue的第二天，对于其语法有了初步认识</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
     </div>
   </div>
 
@@ -425,23 +963,23 @@
       <ul>
         
           <li>
-            <a href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/">webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） </a>
+            <a href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/">nginx-vue项目在window下的部署</a>
           </li>
         
           <li>
-            <a href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/">多种方式实现平均分栏布局（有间距）div平分行宽</a>
+            <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/">JavaScript中对象继承方式（ES5）</a>
           </li>
         
           <li>
-            <a href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/">Bootstrap环境安装加使用---开启Bootstrap 之旅</a>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/">浏览器渲染原理及过程</a>
           </li>
         
           <li>
-            <a href="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/">使用webpack---安装webpack和webpack-dev-server</a>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/">浏览器组成和多进程架构概念</a>
           </li>
         
           <li>
-            <a href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Visual Studio Code中Es6的开发环境搭建</a>
+            <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/">mpvue的用法总结（vue与小程序中的语法支持） </a>
           </li>
         
       </ul>

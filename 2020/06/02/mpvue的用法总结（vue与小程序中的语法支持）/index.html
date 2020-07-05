@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>mpvue的用法总结（vue与小程序中的语法支持）  | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.包含vue与小程序的生命周期推荐：除特殊情况外，不建议使用小程序的生命周期钩子 注意： ​    1）在小程序onReady后，才会触发vue mounted生命周期 ​    2）不要在选项属性上使用箭头函数（比如created(){} 或者 created:function(){} 被写成了 created:()&#x3D;&gt;{}） ​    3）不要在回调函数中使用箭头函数（比如vm.$wa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mpvue的用法总结（vue与小程序中的语法支持） ">
+<meta property="og:url" content="http://yoursite.com/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.包含vue与小程序的生命周期推荐：除特殊情况外，不建议使用小程序的生命周期钩子 注意： ​    1）在小程序onReady后，才会触发vue mounted生命周期 ​    2）不要在选项属性上使用箭头函数（比如created(){} 或者 created:function(){} 被写成了 created:()&#x3D;&gt;{}） ​    3）不要在回调函数中使用箭头函数（比如vm.$wa">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591016381_42_w1256_h678.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591017193_23_w1204_h590.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591016956_68_w1155_h109.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591017035_68_w1162_h1374.png">
+<meta property="article:published_time" content="2020-06-02T12:11:00.000Z">
+<meta property="article:modified_time" content="2020-07-05T05:11:07.951Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="学习mpvue的第二天，对于其语法有了初步认识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591016381_42_w1256_h678.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-mpvue的用法总结（vue与小程序中的语法支持）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/" class="article-date">
+  <time datetime="2020-06-02T12:11:00.000Z" itemprop="datePublished">2020-06-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mpvue的用法总结（vue与小程序中的语法支持） 
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-包含vue与小程序的生命周期"><a href="#1-包含vue与小程序的生命周期" class="headerlink" title="1.包含vue与小程序的生命周期"></a>1.包含vue与小程序的生命周期</h3><p>推荐：除特殊情况外，不建议使用小程序的生命周期钩子</p>
+<p>注意：</p>
+<p>​    1）在小程序onReady后，才会触发vue mounted生命周期</p>
+<p>​    2）不要在选项属性上使用箭头函数（比如created(){} 或者 created:function(){} 被写成了 created:()=&gt;{}）</p>
+<p>​    3）不要在回调函数中使用箭头函数（比如vm.$watch(‘a’, newValue =&gt; this.myMethod())）</p>
+<h3 id="2-几乎全支持vue中的模板方法"><a href="#2-几乎全支持vue中的模板方法" class="headerlink" title="2.几乎全支持vue中的模板方法"></a>2.几乎全支持vue中的模板方法</h3><p>vue的模板方法详情：<a href="https://cn.vuejs.org/v2/guide/syntax.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/syntax.html</a></p>
+<h3 id="3-支持vue中的计算属性"><a href="#3-支持vue中的计算属性" class="headerlink" title="3.支持vue中的计算属性"></a>3.支持vue中的计算属性</h3><h5 id="vue的计算属性详情：https-cn-vuejs-org-v2-guide-computed-html"><a href="#vue的计算属性详情：https-cn-vuejs-org-v2-guide-computed-html" class="headerlink" title="vue的计算属性详情：https://cn.vuejs.org/v2/guide/computed.html"></a><strong>vue的计算属性详情：<a href="https://cn.vuejs.org/v2/guide/computed.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/computed.html</a></strong></h5><h3 id="4-支持vue中的条件渲染（v-if-v-show）"><a href="#4-支持vue中的条件渲染（v-if-v-show）" class="headerlink" title="4.支持vue中的条件渲染（v-if/v-show）"></a>4.支持vue中的条件渲染（v-if/v-show）</h3><p>vue的条件渲染详情：<a href="https://cn.vuejs.org/v2/guide/conditional.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/conditional.html</a></p>
+<h3 id="5-支持vue中的列表渲染（v-for）"><a href="#5-支持vue中的列表渲染（v-for）" class="headerlink" title="5.支持vue中的列表渲染（v-for）"></a>5.支持vue中的列表渲染（v-for）</h3><p>vue的列表渲染详情：<a href="https://cn.vuejs.org/v2/guide/list.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/list.html</a></p>
+<p>注意：<strong>嵌套列表渲染，必须指定不同的索引！</strong></p>
+<h3 id="6-支持vue中的所有事件处理器"><a href="#6-支持vue中的所有事件处理器" class="headerlink" title="6.支持vue中的所有事件处理器"></a>6.支持vue中的所有事件处理器</h3><p>vue的事件处理器详情：<a href="https://cn.vuejs.org/v2/guide/events.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/events.html</a></p>
+<p>注意：  <img src="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591016381_42_w1256_h678.png" alt="img"></p>
+<h3 id="7-支持vue中的表单控件绑定"><a href="#7-支持vue中的表单控件绑定" class="headerlink" title="7.支持vue中的表单控件绑定"></a>7.支持vue中的表单控件绑定</h3><p>vue的表单控件绑定详情：<a href="https://cn.vuejs.org/v2/guide/forms.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/forms.html</a></p>
+<p>推荐：开发过程中直接使用微信小程序中的表单组件： </p>
+<p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/button.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/miniprogram/dev/component/button.html</a>      </p>
+<p>注意： （<a href="https://github.com/Meituan-Dianping/mpvue/issues/66" target="_blank" rel="noopener">表单元素 radio 用 radio-group 组件进行代替</a>）</p>
+<p>​             （<a href="https://github.com/Meituan-Dianping/mpvue/issues/58" target="_blank" rel="noopener">select 组件用 picker 组件进行代替</a>）</p>
+<h3 id="8-支持vue中的组件和小程序的原生组件"><a href="#8-支持vue中的组件和小程序的原生组件" class="headerlink" title="8.支持vue中的组件和小程序的原生组件"></a>8.支持vue中的组件和小程序的原生组件</h3><p>注意：</p>
+<p>1）小程序中的原生组件上的事件绑定，需要以vue的事件绑定语法来绑定；</p>
+<p>2）使用vue中的组件时，有且只能使用单文件组件（.vue 组件）的形式进行支持；<img src="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591017193_23_w1204_h590.png" alt="img"></p>
+<h3 id="9-不支持列表"><a href="#9-不支持列表" class="headerlink" title="9.不支持列表"></a>9.不支持列表</h3><p>1）小程序里所有的 BOM／DOM 都不能用（没有document、window等对象，所有的操作通过数据来实现，使用setData去改变视图），所以说<strong>不能使用v-html指令</strong>。vue是可以操作BOM和DOM的（可以获取wimdow执行操作，可以使用$refs去获取DOM）。</p>
+<p>2）不支持复杂的JS渲染表达式</p>
+<p>​    小程序目前所支持的表达式可看：<a href="https://developers.weixin.qq.com/miniprogram/dev/reference/wxml/data.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/miniprogram/dev/reference/wxml/data.html</a></p>
+<p>3）不支持过滤器（vue是支持过滤器的，小程序不支持）</p>
+<p>4）不支持函数（不支持在 template 内使用 methods 中的函数。（vue中自己试了一下也没有这种写法））</p>
+<p>​      <img src="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591016956_68_w1155_h109.png" alt="img"></p>
+<p>​      解决方法：<a href="https://dxinef.github.io/2019/05-10-Mpvue不支持在template内使用methods中函数的HACK方案/" target="_blank" rel="noopener">https://dxinef.github.io/2019/05-10-Mpvue%E4%B8%8D%E6%94%AF%E6%8C%81%E5%9C%A8template%E5%86%85%E4%BD%BF%E7%94%A8methods%E4%B8%AD%E5%87%BD%E6%95%B0%E7%9A%84HACK%E6%96%B9%E6%A1%88/</a></p>
+<p>5）不支持Class和Style绑定的classObject和styleObject语法也不支持在组件上使用 Class 与 Style 绑定。</p>
+<p>vue中的class和style绑定语法可参考：<a href="https://cn.vuejs.org/v2/guide/class-and-style.html" target="_blank" rel="noopener">https://cn.vuejs.org/v2/guide/class-and-style.html</a>    <img src="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/1591017035_68_w1162_h1374.png" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/" data-id="ckc8m3pzi0002uspeesibfym3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" rel="tag">学习mpvue的第二天，对于其语法有了初步认识</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          浏览器组成和多进程架构概念
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用mpvue创建项目以及总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" rel="tag">学习mpvue的第二天，对于其语法有了初步认识</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" style="font-size: 10px;">学习mpvue的第二天，对于其语法有了初步认识</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/">nginx-vue项目在window下的部署</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/">JavaScript中对象继承方式（ES5）</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/">浏览器渲染原理及过程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/">浏览器组成和多进程架构概念</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/">mpvue的用法总结（vue与小程序中的语法支持） </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

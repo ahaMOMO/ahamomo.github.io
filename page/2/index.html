@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Vue的响应式原理-v-model中的双向绑定原理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" class="article-date">
+  <time datetime="2020-01-09T05:05:00.000Z" itemprop="datePublished">2020-01-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/">Vue的响应式原理---(v-model中的双向绑定原理)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="Vue响应式原理"><a href="#Vue响应式原理" class="headerlink" title="Vue响应式原理"></a>Vue响应式原理</h5><p>不要认为数据发生改变,界面跟着更新是理所当然.</p>
+<p>具体代码实现:<a href="https://gitee.com/ahaMOMO/Vue-Responsive-Principle.git" target="_blank" rel="noopener">https://gitee.com/ahaMOMO/Vue-Responsive-Principle.git</a></p>
+<p>看下图:</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112059417-1001325982.png" alt="img"></p>
+<p> 例子如下:</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112242127-1957365636.png" alt="img"></p>
+<p>显示哈哈哈,但是当我们改变message时,也会相应改变</p>
+<p> <img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112345687-1736832302.png" alt="img"></p>
+<p> 加了几个message之后,页面也相应得到变化</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112541303-1303246143.png" alt="img"></p>
+<p> <img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112612170-1797691244.png" alt="img"></p>
+<p> <strong>问题来了:</strong></p>
+<p>(1)app.message修改数据,Vue内部是如何监听message数据?</p>
+<p>*Object.defineProperty–&gt;监听对象属性的改变</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109122233887-836411830.png" alt="img"></p>
+<p> 当你的obj中的name发生改变之后:</p>
+<p>obj.name=”kobe”时,在set方法中监听name的改变</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109122549614-407984612.png" alt="img"></p>
+<p> <img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109122710554-1549707859.png" alt="img"></p>
+<p>(2)当数据发生改变,Vue是如何知道要通知哪些人,界面发生刷新?</p>
+<p><strong>发布订阅者设计模式</strong></p>
+<p>监听name改变后,要告诉谁?谁用就告诉谁,谁在用?</p>
+<p>给每个使用的定义一个名字,谁用一次就会调用一次get方法,所以就知道谁在使用</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109122848368-1405380260.png" alt="img"></p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109123015891-494686929.png" alt="img"></p>
+<p> 定义依赖类</p>
+<p>subs属性装的是watcher中的所有订阅者</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109123623691-2089646184.png" alt="img"></p>
+<p> 定义订阅者</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109123816402-1082910203.png" alt="img"></p>
+<p> 在get方法中,创建watcher(因为谁在使用get谁就是订阅者的一员)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dep = <span class="keyword">new</span> Dep();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> w1 = <span class="keyword">new</span> Watcher(<span class="string">'张三'</span>);</span><br><span class="line"></span><br><span class="line">dep.addSub(w1);<span class="comment">//添加订阅者</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> w2 = <span class="keyword">new</span> Watcher(<span class="string">'李四'</span>);</span><br><span class="line"></span><br><span class="line">dep.addSub(w2);<span class="comment">//添加订阅者</span></span><br><span class="line"></span><br><span class="line">在<span class="keyword">set</span>方法中,调用dep中的notify方法</span><br><span class="line"></span><br><span class="line">dep.notify();//通知所有的订阅者</span><br></pre></td></tr></table></figure>
+
+<p>在obj中的每个属性都会创建一个dep对象</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109123732301-874621448.png" alt="img"></p>
+<p>使用图解分析过程如下:</p>
+<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109130336660-234906660.png" alt="img"></p>
+<p>具体代码实现:<a href="https://gitee.com/ahaMOMO/Vue-Responsive-Principle.git" target="_blank" rel="noopener">https://gitee.com/ahaMOMO/Vue-Responsive-Principle.git</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" data-id="ckc8m3pzd0000uspe0ymgfvhs" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-webpack4-41-0配置四-热替换" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/" class="article-date">
+  <time datetime="2019-10-09T05:51:00.000Z" itemprop="datePublished">2019-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/">webpack4.41.0配置四(热替换)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>每次修改都要去编译，这个操作比较繁琐。所以我们希望编译过程是自动化的，而且页面的更新也是自动化的。所以需要使用这个热替换</p>
+<p>1.首先安装<a href="https://github.com/webpack/webpack-dev-server" target="_blank" rel="noopener">webpack-dev-server</a>：npm install webpack-dev-server -D(-D生产环境下)</p>
+<p>（作用为：启动服务并且能够支持热替换）</p>
+<p>2.更改一下我们的配置文件</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007203153494-1416396449.png" alt="img"></p>
+<p> 3.启动webpack-dev-server</p>
+<p>因为我们没有全局安装webpack-dev-server，所以不能在终端输入webpack-dev-server去启动，我们需要去package.json中创建命令</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007204101979-1045476410.png" alt="img"></p>
+<p>之所以这个方式可以，是因为它们查找的方式不一样，它会先去mode_modules文件夹中寻找webpack-dev-server。在终端直接输入webpack-dev-server会去path路径中去找。</p>
+<p>执行npm run start</p>
+<p>启动之后可以去浏览器中输入localhost:8080访问页面</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007204627529-1636040188.png" alt="img"></p>
+<p>然后可以在template.html中修改页面内容，即可得到立即更新</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007204809416-1996242541.png" alt="img"></p>
+<p> 4.添加热替换功能</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/1734305-20191007205431454-588549293.png" alt="img"></p>
+<p>然后重新npm run start,现在就是具备热替换功能的服务器了</p>
+<p>当hotOnly:false时，我们在页面进行了更改只需要保存，不需要进行页面更新就可以得到修改过后的数据</p>
+<p>所以说这是一个坑，我们可以把hotOnly在配置中去掉，webpack都具备热替换的功能(只是webpack4和webpack3不一样的地方，webpack3需要明确的指出hotOnly才会具备热替换的功能)</p>
+<p>最后webpack4.41.0环境搭建和简单使用就到此结束啦！之后需要自己多结合项目去深入理解！<br>最后附上我学习Webpack中的学习视频：<a href="https://www.bilibili.com/video/av51893932/" target="_blank" rel="noopener">https://www.bilibili.com/video/av51893932/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/" data-id="ckc8m3pzx0009uspe7cz3bhwc" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-webpack4-41-0配置三（插件minCssExtract-DefinePlugin-Html）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/" class="article-date">
+  <time datetime="2019-10-09T05:43:00.000Z" itemprop="datePublished">2019-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/">webpack4.41.0配置三（插件minCssExtract/ DefinePlugin/Html） </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>（注：如无特殊说明这里的配置文件都指的是webpack.config.js）</strong></p>
+<h3 id="minCssExtract"><a href="#minCssExtract" class="headerlink" title="minCssExtract"></a><strong>minCssExtract</strong></h3><p>我们通常期望js和js文件一起，css和css文件一起。该插件将CSS提取到单独的文件中。它为每个包含CSS的JS文件创建一个CSS文件。它支持CSS和SourceMap的按需加载。</p>
+<h5 id="1-安装组件命令："><a href="#1-安装组件命令：" class="headerlink" title="1.安装组件命令："></a>1.安装组件命令：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install mini-css-extract-plugin</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-在配置文件中引入：const-MiniCssExtractPlugin-require-39-mini-css-extract-plugin-39"><a href="#2-在配置文件中引入：const-MiniCssExtractPlugin-require-39-mini-css-extract-plugin-39" class="headerlink" title="2.在配置文件中引入：const MiniCssExtractPlugin = require(&#39;mini-css-extract-plugin&#39;);"></a>2.在配置文件中引入：<code>const MiniCssExtractPlugin = require(&#39;mini-css-extract-plugin&#39;);</code></h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007183151402-2111433774.png" alt="img"></p>
+<h5 id="3-在配置文件中创建plugins结点，并且对rules进行相应的变化"><a href="#3-在配置文件中创建plugins结点，并且对rules进行相应的变化" class="headerlink" title="3.在配置文件中创建plugins结点，并且对rules进行相应的变化"></a>3.在配置文件中创建plugins结点，并且对rules进行相应的变化</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> MiniCssExtractPlugin = <span class="built_in">require</span>(<span class="string">'mini-css-extract-plugin'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    entry: <span class="string">'./input.js'</span>,</span><br><span class="line">    output: &#123;</span><br><span class="line">        path: path.resolve(__dirname, <span class="string">'dist'</span>),</span><br><span class="line">        filename: <span class="string">'output.bundle.js'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="keyword">new</span> MiniCssExtractPlugin(&#123;</span><br><span class="line">            <span class="comment">// Options similar to the same options in webpackOptions.output</span></span><br><span class="line">            <span class="comment">// all options are optional</span></span><br><span class="line">            <span class="comment">//name为entry入口文件名</span></span><br><span class="line">            filename: <span class="string">'[name].css'</span>,</span><br><span class="line">            chunkFilename: <span class="string">'[id].css'</span>,</span><br><span class="line">            ignoreOrder: <span class="literal">false</span>, <span class="comment">// Enable to remove warnings about conflicting order</span></span><br><span class="line">        &#125;),</span><br><span class="line">    ],</span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">        rules: [</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.(png|jpg|gif)$/i</span>,</span><br><span class="line">                use: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        loader: <span class="string">'url-loader'</span>,</span><br><span class="line">                        options: &#123;</span><br><span class="line">                            <span class="comment">//小于限制的变成base64,大于的变成普通的物理文件</span></span><br><span class="line">                            limit: <span class="number">8192</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.m?js$/</span>,</span><br><span class="line">                <span class="comment">//排除一些文件</span></span><br><span class="line">                exclude: <span class="regexp">/(node_modules|bower_components)/</span>,</span><br><span class="line">                use: &#123;</span><br><span class="line">                    loader: <span class="string">'babel-loader'</span>,</span><br><span class="line">                    options: &#123;</span><br><span class="line">                        presets: [<span class="string">'@babel/preset-env'</span>]</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">                use: [</span><br><span class="line">                    MiniCssExtractPlugin.loader,    </span><br><span class="line">                    <span class="string">'css-loader'</span>,</span><br><span class="line">                    <span class="string">'sass-loader'</span></span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-新建text-scss，在input-js入口文件中引入text-scss文件"><a href="#4-新建text-scss，在input-js入口文件中引入text-scss文件" class="headerlink" title="4.新建text.scss，在input.js入口文件中引入text.scss文件"></a>4.新建text.scss，在input.js入口文件中引入text.scss文件</h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191009132232224-106620615.png" alt="img"></p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191009132915143-1094832712.png" alt="img"></p>
+<h5 id="5-进行webpack打包，会发现在dist文件夹下多了个main-css-实现了css和js文件的分离"><a href="#5-进行webpack打包，会发现在dist文件夹下多了个main-css-实现了css和js文件的分离" class="headerlink" title="5.进行webpack打包，会发现在dist文件夹下多了个main.css(实现了css和js文件的分离)"></a>5.进行webpack打包，会发现在dist文件夹下多了个main.css(实现了css和js文件的分离)</h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007185721352-1196692489.png" alt="img"></p>
+<h3 id="DefinePlugin"><a href="#DefinePlugin" class="headerlink" title="DefinePlugin"></a><strong>DefinePlugin</strong></h3><p> 生产环境和开发环境中会有很多不一样的需求，比如在生产环境下要访问生产环境下的服务器地址，在开发环境下要访问开发环境下的服务器地址。但是我们不能用if else去判断，不方便维护。这时候这个插件的作用就出现了，我们的代码只写一套，但是我们把这个变量的定义放在DefinePlugin中，也就是webpack文件中去，我们使用的时候只使用这个变量就行了</p>
+<h5 id="1-在官网中https-webpack-docschina-org-plugins-找到需要使用的变量，将它添加到配置文件中的plugins中去"><a href="#1-在官网中https-webpack-docschina-org-plugins-找到需要使用的变量，将它添加到配置文件中的plugins中去" class="headerlink" title="1.在官网中https://webpack.docschina.org/plugins/找到需要使用的变量，将它添加到配置文件中的plugins中去"></a>1.在官网中<a href="https://webpack.docschina.org/plugins/找到需要使用的变量，将它添加到配置文件中的plugins中去" target="_blank" rel="noopener">https://webpack.docschina.org/plugins/找到需要使用的变量，将它添加到配置文件中的plugins中去</a></h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007192620608-1439636967.png" alt="img"></p>
+<h5 id="2-然后可以直接在代码中使用变量就可以了，比如在input-js中修改代码："><a href="#2-然后可以直接在代码中使用变量就可以了，比如在input-js中修改代码：" class="headerlink" title="2.然后可以直接在代码中使用变量就可以了，比如在input.js中修改代码："></a>2.然后可以直接在代码中使用变量就可以了，比如在input.js中修改代码：</h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007192844834-1039434162.png" alt="img"></p>
+<p>这样子就算以后的服务器地址变了，我们也不需要改代码，只需要修改配置文件就可以了</p>
+<h5 id="3-这时候进行打包会报错"><a href="#3-这时候进行打包会报错" class="headerlink" title="3.这时候进行打包会报错"></a>3.这时候进行打包会报错</h5><p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007193124389-77401270.png" alt="img"></p>
+<p> 那是因为我们没有在配置文件中导入webpack。我们现在去导入Webpack</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007193245351-1536974011.png" alt="img"></p>
+<p> 之后再进行打包就可以了。</p>
+<p><strong>Html</strong></p>
+<p>使用的目的是为了帮助我们生成html文件，因为我们的js文件不能独立运行，那么它肯定需要被某个html文件包含进去，才能在浏览器里面运行起来。怎么能给它包含在某个html文件中去呢？这时候需要用到这个插件</p>
+<p>1.首先先安装插件：<code>npm install html-webpack-plugin -D</code></p>
+<p>2.然后在配置文件中进行配置</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194101551-2049552903.png" alt="img"></p>
+<p> 3.然后就可以运行了，执行webpack。会发现dist文件夹中自动多了个index.html。打开index.html(会发现它自动给我们引入了css和js文件)</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194252415-1942391226.png" alt="img"></p>
+<p> 比较方便的是，我们在修改文件名的时候，在出口中修改出口文件名，相应的html中引入的地方也会自动进行了修改</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194527888-1835261362.png" alt="img"></p>
+<p> <img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194555296-717868608.png" alt="img"></p>
+<h5 id="4-但是我们经常不需要自动生成html代码，只需要帮我们引入css和js-就行了。因为html代码我们通常都会自己定义。这时候，我们需要做一下调整："><a href="#4-但是我们经常不需要自动生成html代码，只需要帮我们引入css和js-就行了。因为html代码我们通常都会自己定义。这时候，我们需要做一下调整：" class="headerlink" title="4.但是我们经常不需要自动生成html代码，只需要帮我们引入css和js 就行了。因为html代码我们通常都会自己定义。这时候，我们需要做一下调整："></a>4.但是我们经常不需要自动生成html代码，只需要帮我们引入css和js 就行了。因为html代码我们通常都会自己定义。这时候，我们需要做一下调整：</h5><p>4.1点击下面红色方框部分（在官网中找到这个插件的文档）</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007194901991-75691556.png" alt="img"></p>
+<p>4.2进去新页面滑下去看到它的用法</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195037910-176363434.png" alt="img"></p>
+<p> <img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195257785-1001949602.png" alt="img"></p>
+<p> 4.3参考配置，去我们的配置文件进行配置</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195600933-1318303997.png" alt="img"></p>
+<p>4.4新建输入文件template.html</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195844661-1827607157.png" alt="img"></p>
+<p>4.5观察刚才的文档，发现title是这种用法</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007195811837-1296633006.png" alt="img"></p>
+<p> 4.6所以相应的template.html中也要改变</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007200024386-667784585.png" alt="img"></p>
+<p>之后会自动替换成我们在配置文件中定义的title(Good morning)</p>
+<p>4.7可能我们还想使用自己的js文件，但是并不想要打包。我们直接在template.html中引入。还可以写自己的代码</p>
+<p> <img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007200642074-151249710.png" alt="img"></p>
+<p> 4.8之后执行打包，会发现打包过后的index.html中包含自己引入的js文件和自己写的html代码</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/1734305-20191007200933999-685805939.png" alt="img"></p>
+<p>4.8之后我们可以在input.js中使用index.html页面中的id为“good”的结点</p>
+<h5 id="5-在执行打包"><a href="#5-在执行打包" class="headerlink" title="5.在执行打包"></a>5.在执行打包</h5><p>最后在浏览器打开打包过后的index.html是最后看到的效果</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%89%EF%BC%88%E6%8F%92%E4%BB%B6minCssExtract-DefinePlugin-Html%EF%BC%89/" data-id="ckc8m3pzt0006uspec8e55ay0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-webpack4-41-0配置二（加载器-url-loader-babel-loader-sass-loader）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%BA%8C%EF%BC%88%E5%8A%A0%E8%BD%BD%E5%99%A8-url-loader-babel-loader-sass-loader%EF%BC%89/" class="article-date">
+  <time datetime="2019-10-09T04:24:00.000Z" itemprop="datePublished">2019-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%BA%8C%EF%BC%88%E5%8A%A0%E8%BD%BD%E5%99%A8-url-loader-babel-loader-sass-loader%EF%BC%89/">webpack4.41.0配置二（加载器_url-loader/babel-loader/sass-loader）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>loader是webpack用来预处理源文件的，比如typesrcipt形式的文件最终都得转成浏览器可以执行的js文件</strong></p>
+<p><strong>（注：以下的配置代码不一定与下方一摸一样，具体与官网上<a href="https://webpack.docschina.org/loaders/的为准，如无一般说明配置文件都指的是webpack.config.js）" target="_blank" rel="noopener">https://webpack.docschina.org/loaders/的为准，如无一般说明配置文件都指的是webpack.config.js）</a></strong></p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%BA%8C%EF%BC%88%E5%8A%A0%E8%BD%BD%E5%99%A8-url-loader-babel-loader-sass-loader%EF%BC%89/1734305-20191009143644975-864925463.png" alt="img"></p>
+<p><strong>url-loader</strong></p>
+<p>1.先在配置文件中配置Loader(具体的配置代码去<a href="https://webpack.docschina.org/loaders/file-loader/复制即可" target="_blank" rel="noopener">https://webpack.docschina.org/loaders/file-loader/复制即可</a>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">module: &#123;</span><br><span class="line">        rules: [</span><br><span class="line">            &#123;</span><br><span class="line">                test: &#x2F;\.(png|jpg|gif)$&#x2F;i,</span><br><span class="line">                use: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        loader: &#39;url-loader&#39;,</span><br><span class="line">                        option: &#123;</span><br><span class="line">                            limit: 8192</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>插入上面代码同时建立入口文件input.js和建立一个存放图片得文件夹，并在input.js中导入</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%BA%8C%EF%BC%88%E5%8A%A0%E8%BD%BD%E5%99%A8-url-loader-babel-loader-sass-loader%EF%BC%89/1734305-20191007160411383-101774951.png" alt="img"></p>
+<p> 2.因为上面我们使用了Loader,所以需要下载相应得Loader</p>
+<p>首先需要生成一下配置文件package.json，输入命令：<strong>npm init -y</strong>，</p>
+<p>然后执行npm install url-loader -S下载url-loader(-S代表安装完之后要记录到package.json配置文件中)和npm install file-loader -S</p>
+<p>之后package.json配置文件会出现以下内容：</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%BA%8C%EF%BC%88%E5%8A%A0%E8%BD%BD%E5%99%A8-url-loader-babel-loader-sass-loader%EF%BC%89/1734305-20191007165711521-1703230313.png" alt="img"></p>
+<p>3.最后执行webpack,打包成功</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%BA%8C%EF%BC%88%E5%8A%A0%E8%BD%BD%E5%99%A8-url-loader-babel-loader-sass-loader%EF%BC%89/1734305-20191007165633900-70031184.png" alt="img"></p>
+<p><strong>babel-loader</strong></p>
+<p>1.安装命令：<code>npm install -D babel-loader @babel/core @babel/preset-env webpack（``preset-env负责剑将es6语法转成es5语法``）</code></p>
+<p>2.在input.js中书写下面例子代码</p>
+<p><img src="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%BA%8C%EF%BC%88%E5%8A%A0%E8%BD%BD%E5%99%A8-url-loader-babel-loader-sass-loader%EF%BC%89/1734305-20191007172012362-1214495727.png" alt="img"></p>
+<p> 3.在配置文件中添加规则（如果不配置以下代码直接打包，那个打包过后的代码还会拥有es6语法的代码，低版本的浏览器运行不起来es6语法）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line"></span><br><span class="line">  entry: <span class="string">'./input.js'</span>,</span><br><span class="line"></span><br><span class="line">  output: &#123;</span><br><span class="line"></span><br><span class="line">       path: path.resolve(__dirname, <span class="string">'dist'</span>),</span><br><span class="line"></span><br><span class="line">       filename: <span class="string">'output.bundle.js'</span></span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line"></span><br><span class="line">    rules: [</span><br><span class="line"></span><br><span class="line">      &#123;</span><br><span class="line"></span><br><span class="line">        test: <span class="regexp">/\.(png|jpg|gif)$/i</span>,</span><br><span class="line"></span><br><span class="line">        use: [</span><br><span class="line"></span><br><span class="line">          &#123;</span><br><span class="line"></span><br><span class="line">           loader: <span class="string">'url-loader'</span>,</span><br><span class="line"></span><br><span class="line">            options: &#123;</span><br><span class="line"></span><br><span class="line">             <span class="comment">//小于限制的变成base64,大于的变成普通的物理文件</span></span><br><span class="line"></span><br><span class="line">              limit: <span class="number">8192</span></span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      &#123;</span><br><span class="line"></span><br><span class="line">        test: <span class="regexp">/\.m?js$/</span>,</span><br><span class="line"></span><br><span class="line">        <span class="comment">//排除一些文件</span></span><br><span class="line"></span><br><span class="line">        exclude: <span class="regexp">/(node_modules|bower_components)/</span>,</span><br><span class="line"></span><br><span class="line">        use: &#123;</span><br><span class="line"></span><br><span class="line">          loader: <span class="string">'babel-loader'</span>,</span><br><span class="line"></span><br><span class="line">          options: &#123;</span><br><span class="line"></span><br><span class="line">            presets: [<span class="string">'@babel/preset-env'</span>]</span><br><span class="line"></span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4.执行打包命令：webpack，成功打包</p>
+<p><strong>sass-loader</strong></p>
+<p>1.安装命令：<code>npm install sass-loader node-sass -D</code></p>
+<p>　　　　　　npm install style-loader css-loader -D</p>
+<p>2.书写规则在webpack.config.js中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">            test: &#x2F;\.scss$&#x2F;,</span><br><span class="line">            use: [</span><br><span class="line">                &quot;style-loader&quot;, &#x2F;&#x2F; 将 JS 字符串生成为 style 节点</span><br><span class="line">                &quot;css-loader&quot;, &#x2F;&#x2F; 将 CSS 转化成 CommonJS 模块</span><br><span class="line">                &quot;sass-loader&quot; &#x2F;&#x2F; 将 Sass 编译成 CSS，默认使用 Node Sass</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p> 3.在input.js中向上方一样书写一些简单例子最后进行打包</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%BA%8C%EF%BC%88%E5%8A%A0%E8%BD%BD%E5%99%A8-url-loader-babel-loader-sass-loader%EF%BC%89/" data-id="ckc8m3pzv0007usped4tmbwfq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-webpack4-41-0配置一（基础配置webpack文件，入口出口，实现打包）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/" class="article-date">
+  <time datetime="2019-10-08T05:35:00.000Z" itemprop="datePublished">2019-10-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/">webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.查看node.js版本、npm版本和webpack版本（使用webpack4时，请确保node.js的版本&gt;=8.9.4）</strong></p>
+<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007092932789-829123539.png" alt="img"></p>
+<p><strong>2.我先重新卸载了webpack和webpack-cli(全局)</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall -g webpack-cli</span><br><span class="line"></span><br><span class="line">npm uninstall -g webpack</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.全局安装webpack-cli和webpack</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack-cli -g</span><br><span class="line"></span><br><span class="line">npm install webpack -g</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.测试一下webpack4的新特性，不用配置入口(默认./src)和出口(默认./dist)</strong></p>
+<p> 4.1建立src文件夹并在文件夹中建立两个js文件，内容任意</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191008132754048-1859633601.png" alt="img"></p>
+<p>4.2之后在终端输入webpack –mode development（无–mode默认是production,有–mode为开发者模式，文件比较大，方便我们调式，有一些出入日志等功能）</p>
+<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112523844-417646620.png" alt="img"></p>
+<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112554217-1233236069.png" alt="img"></p>
+<p>然后就自动出现了出口文件夹，但是这只适合于小项目，我们一般还是建议需要配置一下配置文件，因为很多时候我们的项目不一定只有入口和出口的配置，我们可能还需要编译less,sass,需要支持es6语法等。</p>
+<p><strong>5.建立配置文件webpack.config.js并书写以下内容</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const path &#x3D; require(&#39;path&#39;);</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">    entry:&#39;.&#x2F;input.js&#39;,</span><br><span class="line">    output:&#123;</span><br><span class="line">        path:path.resolve(__dirname,&#39;dist&#39;),</span><br><span class="line">        filename:&#39;output.bundle.js&#39;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114058931-228108134.png" alt="img"></p>
+<p> 5.1建立input.js入口文件</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114646407-1243656626.png" alt="img"></p>
+<p> 5.2终端输入webpack,出现出口文件dist</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114754810-915745005.png" alt="img"></p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114824733-1169698622.png" alt="img"></p>
+<p> <strong>6.更改配置文件，多个入口文件，出口文件与相应的入口文件对应</strong></p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115418867-533485961.png" alt="img"></p>
+<p> 进行打包</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115551418-1054343194.png" alt="img"></p>
+<p>在出口文件中找不到在入口文件中写的console.log。因为打包没有写–mode默认为生产模式，将我们的调式程序都省略了。如果你换成webpack –mode development,就会看到有console.log。(这就是生产模式和开发模式的区别，开发模式的文件会大很多，所以我们项目最终上线是要打包成生产模式的)。但是我们每次不需要在终端都输入–mode,只需要在配置文件中设置mode就可以了。</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007120219545-2089555699.png" alt="img"></p>
+<p>之后在终端输入webpack也为开发者模式。终端也不会出现黄色的提示了。</p>
+<p>以上就是最基础的webpack打包的配置了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/" data-id="ckc8kknfl0001cope5nsmhioj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-多种方式实现平均分栏布局（有间距）div平分行宽" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/" class="article-date">
+  <time datetime="2019-09-15T03:53:00.000Z" itemprop="datePublished">2019-09-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/">多种方式实现平均分栏布局（有间距）div平分行宽</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>以下例子基于分四栏+栏间有间距的例子分析</strong></p>
+<p><strong>效果图：</strong></p>
+<p><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190915113413799-904978675.png" alt="img"></p>
+<p> <strong>html代码：</strong>　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;buy-one-buy&quot;&gt;</span><br><span class="line">   &lt;h3&gt;淘一淘&lt;&#x2F;h3&gt;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-1.jpg&quot; alt&#x3D;&quot;First buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-1.jpg&quot; alt&#x3D;&quot;Second buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-2.jpg&quot; alt&#x3D;&quot;Third buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-3.jpg&quot; alt&#x3D;&quot;Four slide&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">   &lt;&#x2F;ul&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-最简单粗暴的方式就是通过固定值-margin去计算"><a href="#1-最简单粗暴的方式就是通过固定值-margin去计算" class="headerlink" title="1.最简单粗暴的方式就是通过固定值+margin去计算"></a>1.最简单粗暴的方式就是通过固定值+margin去计算</h5><ul>
+<li><p>首先我先固定了最外层的宽度为1200px;（这里为1202px宽度是因为我加了一个红边框方便观察，最后页面显示的时候要记得把border去掉并且宽度改为1200px）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>之后我将每个li的宽度固定为288px(四个li即为1152px,剩下还有1200px-1152px=48px作为四栏中的间距（四栏共有三个间距，则48px/3=16px)。因此我给每个li设置margin-right为16px，当然最后一个li中的amrgin-right要设置为0。)  </p>
+<p>注意：因为li是块元素，我首先先把它转换为行内块元素再进行操作。所以先在ul中清除掉行内块的默认间距（font-size:0）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy ul&#123;</span><br><span class="line">      font-size: 0;</span><br><span class="line">  &#125;</span><br><span class="line">  .buy-one-buy li&#123;</span><br><span class="line">      display: inline-block;</span><br><span class="line">      width: 288px;</span><br><span class="line">      height: 140px;</span><br><span class="line">      margin-right: 16px;</span><br><span class="line">  &#125; </span><br><span class="line">  .buy-one-buy li:last-child&#123;</span><br><span class="line">      margin-right: 0;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后就能实现上图中的分栏效果了                           </p>
+</li>
+</ul>
+<h5 id="2-使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float-margin-百分比实现一样的效果，之后维护只需要修改相应的百分比即可"><a href="#2-使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float-margin-百分比实现一样的效果，之后维护只需要修改相应的百分比即可" class="headerlink" title="2.使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float+margin+百分比实现一样的效果，之后维护只需要修改相应的百分比即可"></a>2.使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float+margin+百分比实现一样的效果，之后维护只需要修改相应的百分比即可</h5><ul>
+<li><p>首先依旧固定住最外层的宽度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;&#x2F;*之后要改回去1200*&#x2F;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>之后在li中使用float让他们位于同一行，给每个li的宽度设置为22%(原本应为父元素的1/4，即25%。但是需要留剩下的百分比给间距)。然后100%-22%*4=12%(即为三个间距的总宽度，每个间距宽度为4%);</p>
+<p><code>.buy-one-buy li{``  ``float``: ``left``;``  ``width``: ``22%``;``  ``margin-right``: ``4%``;``  ``height``: ``180px``;``}``.buy-one-buy li:last-child{``  ``margin-right``: ``0%``;``}``.buy-one-buy img{``  ``width``: ``100%``;``  ``height``: ``100%``;``}</code></p>
+</li>
+<li><p>最后也能实现一样的效果（但在实际上也可以将float变成display:inline-block;但是需要消除默认间距。也一样能实现）</p>
+</li>
+</ul>
+<h5 id="3-上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局-css3去实现"><a href="#3-上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局-css3去实现" class="headerlink" title="3.上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局+css3去实现"></a>3.上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局+css3去实现</h5><ul>
+<li><p>依旧固定住最外层的宽度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;&#x2F;*之后要改回去1200*&#x2F;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后在ul中（li列表的父元素）使用flex布局（这里自定义了一个属性n:为你需要分栏的数字，之后的li根据这个属性去动态计算宽度）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy ul&#123;</span><br><span class="line">    display: flex;</span><br><span class="line">    justify-content: space-between;&#x2F;*两端对齐，项目之间的间隔都相等*&#x2F;</span><br><span class="line">    --n : 4;&#x2F;*css自定义属性(--*)，用var(--*)使用自定义属性*&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将每个li设置宽度和高度（其中不需要将li转换成行内块元素，因为flex布局默认flex-direction属性的主轴方向为水平方向）(这里使用了css3中的calc函数)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy li&#123;</span><br><span class="line">      width: calc(calc((100&#x2F;var(--n))*1%) - 20px);   </span><br><span class="line">      height: 100px;</span><br><span class="line">  &#125;</span><br><span class="line">  .buy-one-buy img&#123;</span><br><span class="line">      width: 100%;</span><br><span class="line">      height: 100%;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后，就能成功实现上述效果了！而且修改成不同的栏还十分方便！</p>
+</li>
+<li><p>flex布局教程：<a href="https://www.runoob.com/w3cnote/flex-grammar.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/flex-grammar.htm</a>l</p>
+</li>
+</ul>
+<p>注意： css3中定义原生变量var浏览器兼容性不太好，如图：</p>
+<p>   <img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190916122634415-1266328338.png" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/" data-id="ckc8kknfm0002copeb2p4b0z5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Bootstrap环境安装加使用-开启Bootstrap-之旅" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/" class="article-date">
+  <time datetime="2019-09-15T03:22:00.000Z" itemprop="datePublished">2019-09-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/">Bootstrap环境安装加使用---开启Bootstrap 之旅</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.首先去Bootstrap官网<a href="https://getbootstrap.com/上下载Bootstrap" target="_blank" rel="noopener">https://getbootstrap.com/上下载Bootstrap</a> 的最新版本</p>
+<p><img src="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/1734305-20190909194121993-835429346.png" alt="img"> </p>
+<p>　　对应的中文页面如下：</p>
+<p>  <img src="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/1734305-20190909194223022-1957648999.png" alt="img"></p>
+<p>　　下载自己所需要的版本（目前我自己下载的是编译的css和js）</p>
+<p>　　下载完成之后，你将会看到很多压缩了的css和js文件</p>
+<p>2.之后就可以在页面中引入 <strong>jquery.js</strong>、<strong>bootstrap.min.js</strong>和 <strong>bootstrap.min.css</strong> 文件用于让一个常规的 HTML 文件变为使用了 Bootstrap 的模板。</p>
+<p><u>这里注意应该把jquery.js文件在引入Bootstrap.min.js之前引入,因为Bootstrap是基于jquery的，而且jquery.js的版本必须在1.9以上可以使用终端输入命令：npm install jquery下载最新版本的jquery文件。</u></p>
+<p><strong>注意事项：</strong></p>
+<p><strong><img src="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/1734305-20190909210014244-728849811.png" alt="img"></strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/" data-id="ckc8kknfj0000cope96sgaohr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-使用webpack-安装webpack和webpack-dev-server" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/" class="article-date">
+  <time datetime="2019-08-18T08:41:00.000Z" itemprop="datePublished">2019-08-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/">使用webpack---安装webpack和webpack-dev-server</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.先确保安装了最新版的Node.js和NPM,并已经了解NPM的基本用法</strong></p>
+<p><strong>（以下使用cmd命令行进行）</strong></p>
+<p><strong>2.安装webpack</strong></p>
+<p>(1)全局安装</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install webpack -g</span><br></pre></td></tr></table></figure>
+
+<p>(1)局部安装</p>
+<p>我并不喜欢全局安装这种方式，因为并不是所有的项目都需要webpack的。通常我们会将 Webpack 安装到项目的依赖中，这样就可以使用项目本地版本的 Webpack。</p>
+<p><code># 进入项目目录(这里为demo)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">　　　 &#96;&#96;# 确定已经有 package.json，没有就通过 npm init 创建</span><br><span class="line"># 安装 webpack 依赖</span><br><span class="line">　　　 $ npm install webpack --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>（–save-dev会作为开发依赖来安装webpack。安装成功之后，在 package.json中会多一项配置</p>
+<p>　<img src="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/1734305-20190814134152551-1845028354.png" alt="img"></p>
+<p>　）</p>
+<p><strong>3.安装webpack-dev-server(它可以在开发环境中提供很多服务，比如启动一个服务器、热更新、接口代理等）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　$ npm install webpack-dev-server --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>安装完成之后，最终的package.json文件内容为：</p>
+<p><img src="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/1734305-20190814134848783-948265812.png" alt="img"></p>
+<p>如果你的devDependencies中包含webpack和webpack-dev-server,恭喜你，已经安装成功！</p>
+<p><strong>4.安装webpack脚手架</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install webpack-cli -g</span><br></pre></td></tr></table></figure>
+
+<p><strong>5.在demo中创建一个js文件：webpack.config.js(进行出口入口配置)</strong></p>
+<p><strong><img src="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/1734305-20191006193214025-1794197143.png" alt="img"></strong></p>
+<p> <strong>6.在demo中创建一个input.js作为入口文件</strong></p>
+<p><strong><img src="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/1734305-20191006193456785-470655005.png" alt="img"></strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/" data-id="ckc8k9x02000044pe10iw8yt5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Visual-Studio-Code中Es6的开发环境搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="article-date">
+  <time datetime="2019-07-14T12:51:00.000Z" itemprop="datePublished">2019-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Visual Studio Code中Es6的开发环境搭建</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.打开终端，输入初始化代码。输入代码之后会在目录中出现package.json,可以在红色下划线上写上作者名和描述（不写也可以）</p>
+<p><strong>npm init -y</strong>  </p>
+<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714202227695-501064038.png" alt="img"></p>
+<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714202745854-2029552755.png" alt="img"></p>
+<p>2.安装Babel转换器</p>
+<p>npm install -g babel-cli  </p>
+<p> <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714202539106-855301776.png" alt="img"></p>
+<p>3.安装打包（es5）</p>
+<p>npm install –save-dev babel-preset-es2015 babel-cli  </p>
+<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714203136635-836811666.png" alt="img"></p>
+<p>然后打开package.json，出现以下红括号的代码则说明安装成功</p>
+<p>　<img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714203253697-2100836276.png" alt="img"></p>
+<p>4.在根目录创建.babelrc配置文件（注意不是文件夹）。输入以下代码</p>
+<p>  <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714203502895-1756015490.png" alt="img"></p>
+<p>5.最后输入babel 需要转码文件路径 -o 转码结果写入的文件路径。如：</p>
+<p>  babel js/1-2es6.js -o es5Js/1-2es6.js   </p>
+<p> <img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714204132937-1799230633.png" alt="img"></p>
+<p>以上就可以实现es6到es5的转换了！</p>
+<p>最后，如果不想每次转换都输入这么多重复的路径命令。则可以通过在package.json文件中通过配置以下代码：</p>
+<p>　<img src="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1734305-20190714204355434-65865200.png" alt="img"></p>
+<p>则可以在终端输入npm run build就可以转换成功！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" data-id="ckc8j6ufv000054pe8hg6b8t3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" rel="tag">学习mpvue的第二天，对于其语法有了初步认识</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%AD%A6%E4%B9%A0mpvue%E7%9A%84%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%85%B6%E8%AF%AD%E6%B3%95%E6%9C%89%E4%BA%86%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" style="font-size: 10px;">学习mpvue的第二天，对于其语法有了初步认识</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/">nginx-vue项目在window下的部署</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/">JavaScript中对象继承方式（ES5）</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86%E5%8F%8A%E8%BF%87%E7%A8%8B/">浏览器渲染原理及过程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E6%A6%82%E5%BF%B5/">浏览器组成和多进程架构概念</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/">mpvue的用法总结（vue与小程序中的语法支持） </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
