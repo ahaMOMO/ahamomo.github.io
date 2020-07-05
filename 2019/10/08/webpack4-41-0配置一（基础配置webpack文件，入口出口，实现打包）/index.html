@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包）  | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.查看node.js版本、npm版本和webpack版本（使用webpack4时，请确保node.js的版本&gt;&#x3D;8.9.4）   2.我先重新卸载了webpack和webpack-cli(全局) 123npm uninstall -g webpack-clinpm uninstall -g webpack  npm uninstall -g webpack 3.全局安装webpack-cl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） ">
+<meta property="og:url" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.查看node.js版本、npm版本和webpack版本（使用webpack4时，请确保node.js的版本&gt;&#x3D;8.9.4）   2.我先重新卸载了webpack和webpack-cli(全局) 123npm uninstall -g webpack-clinpm uninstall -g webpack  npm uninstall -g webpack 3.全局安装webpack-cl">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007092932789-829123539.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191008132754048-1859633601.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112523844-417646620.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112554217-1233236069.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114058931-228108134.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114646407-1243656626.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114754810-915745005.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114824733-1169698622.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115418867-533485961.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115551418-1054343194.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007120219545-2089555699.png">
+<meta property="article:published_time" content="2019-10-08T05:35:00.000Z">
+<meta property="article:modified_time" content="2020-07-05T04:22:08.511Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007092932789-829123539.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-webpack4-41-0配置一（基础配置webpack文件，入口出口，实现打包）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/" class="article-date">
+  <time datetime="2019-10-08T05:35:00.000Z" itemprop="datePublished">2019-10-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） 
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.查看node.js版本、npm版本和webpack版本（使用webpack4时，请确保node.js的版本&gt;=8.9.4）</strong></p>
+<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007092932789-829123539.png" alt="img"></p>
+<p><strong>2.我先重新卸载了webpack和webpack-cli(全局)</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall -g webpack-cli</span><br><span class="line"></span><br><span class="line">npm uninstall -g webpack</span><br></pre></td></tr></table></figure>
+
+<p>npm uninstall -g webpack</p>
+<p><strong>3.全局安装webpack-cli和webpack</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack-cli -g</span><br><span class="line"></span><br><span class="line">npm install webpack -g</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.测试一下webpack4的新特性，不用配置入口(默认./src)和出口(默认./dist)</strong></p>
+<p> 4.1建立src文件夹并在文件夹中建立两个js文件，内容任意</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191008132754048-1859633601.png" alt="img"></p>
+<p>4.2之后在终端输入webpack –mode development（无–mode默认是production,有–mode为开发者模式，文件比较大，方便我们调式，有一些出入日志等功能）</p>
+<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112523844-417646620.png" alt="img"></p>
+<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112554217-1233236069.png" alt="img"></p>
+<p>然后就自动出现了出口文件夹，但是这只适合于小项目，我们一般还是建议需要配置一下配置文件，因为很多时候我们的项目不一定只有入口和出口的配置，我们可能还需要编译less,sass,需要支持es6语法等。</p>
+<p><strong>5.建立配置文件webpack.config.js并书写以下内容</strong></p>
+<p><a href="javascript:void(0);"><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const path &#x3D; require(&#39;path&#39;);</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">    entry:&#39;.&#x2F;input.js&#39;,</span><br><span class="line">    output:&#123;</span><br><span class="line">        path:path.resolve(__dirname,&#39;dist&#39;),</span><br><span class="line">        filename:&#39;output.bundle.js&#39;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);"><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/copycode.gif" alt="复制代码"></a></p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114058931-228108134.png" alt="img"></p>
+<p> 5.1建立input.js入口文件</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114646407-1243656626.png" alt="img"></p>
+<p> 5.2终端输入webpack,出现出口文件dist</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114754810-915745005.png" alt="img"></p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114824733-1169698622.png" alt="img"></p>
+<p> <strong>6.更改配置文件，多个入口文件，出口文件与相应的入口文件对应</strong></p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115418867-533485961.png" alt="img"></p>
+<p> 进行打包</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115551418-1054343194.png" alt="img"></p>
+<p>在出口文件中找不到在入口文件中写的console.log。因为打包没有写–mode默认为生产模式，将我们的调式程序都省略了。如果你换成webpack –mode development,就会看到有console.log。(这就是生产模式和开发模式的区别，开发模式的文件会大很多，所以我们项目最终上线是要打包成生产模式的)。但是我们每次不需要在终端都输入–mode,只需要在配置文件中设置mode就可以了。</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007120219545-2089555699.png" alt="img"></p>
+<p>之后在终端输入webpack也为开发者模式。终端也不会出现黄色的提示了。</p>
+<p>以上就是最基础的webpack打包的配置了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/" data-id="ckc8kknfl0001cope5nsmhioj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">多种方式实现平均分栏布局（有间距）div平分行宽</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/">webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） </a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/">多种方式实现平均分栏布局（有间距）div平分行宽</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/">Bootstrap环境安装加使用---开启Bootstrap 之旅</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/">使用webpack---安装webpack和webpack-dev-server</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Visual Studio Code中Es6的开发环境搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>多种方式实现平均分栏布局（有间距）div平分行宽 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="以下例子基于分四栏+栏间有间距的例子分析 效果图：   html代码：　  123456789&lt;div class&#x3D;&quot;buy-one-buy&quot;&gt;   &lt;h3&gt;淘一淘&lt;&#x2F;h3&gt;    &lt;ul&gt;       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;home">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多种方式实现平均分栏布局（有间距）div平分行宽">
+<meta property="og:url" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="以下例子基于分四栏+栏间有间距的例子分析 效果图：   html代码：　  123456789&lt;div class&#x3D;&quot;buy-one-buy&quot;&gt;   &lt;h3&gt;淘一淘&lt;&#x2F;h3&gt;    &lt;ul&gt;       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;home">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190915113413799-904978675.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190916122634415-1266328338.png">
+<meta property="article:published_time" content="2019-09-15T03:53:00.000Z">
+<meta property="article:modified_time" content="2020-07-05T04:19:56.491Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190915113413799-904978675.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-多种方式实现平均分栏布局（有间距）div平分行宽" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/" class="article-date">
+  <time datetime="2019-09-15T03:53:00.000Z" itemprop="datePublished">2019-09-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多种方式实现平均分栏布局（有间距）div平分行宽
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>以下例子基于分四栏+栏间有间距的例子分析</strong></p>
+<p><strong>效果图：</strong></p>
+<p><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190915113413799-904978675.png" alt="img"></p>
+<p> <strong>html代码：</strong>　</p>
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;buy-one-buy&quot;&gt;</span><br><span class="line">   &lt;h3&gt;淘一淘&lt;&#x2F;h3&gt;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-1.jpg&quot; alt&#x3D;&quot;First buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-1.jpg&quot; alt&#x3D;&quot;Second buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-2.jpg&quot; alt&#x3D;&quot;Third buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-3.jpg&quot; alt&#x3D;&quot;Four slide&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">   &lt;&#x2F;ul&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+<h5 id="1-最简单粗暴的方式就是通过固定值-margin去计算"><a href="#1-最简单粗暴的方式就是通过固定值-margin去计算" class="headerlink" title="1.最简单粗暴的方式就是通过固定值+margin去计算"></a>1.最简单粗暴的方式就是通过固定值+margin去计算</h5><ul>
+<li><p>首先我先固定了最外层的宽度为1200px;（这里为1202px宽度是因为我加了一个红边框方便观察，最后页面显示的时候要记得把border去掉并且宽度改为1200px）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>之后我将每个li的宽度固定为288px(四个li即为1152px,剩下还有1200px-1152px=48px作为四栏中的间距（四栏共有三个间距，则48px/3=16px)。因此我给每个li设置margin-right为16px，当然最后一个li中的amrgin-right要设置为0。)  </p>
+<p>注意：因为li是块元素，我首先先把它转换为行内块元素再进行操作。所以先在ul中清除掉行内块的默认间距（font-size:0）。</p>
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy ul&#123;</span><br><span class="line">    font-size: 0;</span><br><span class="line">&#125;</span><br><span class="line">.buy-one-buy li&#123;</span><br><span class="line">    display: inline-block;</span><br><span class="line">    width: 288px;</span><br><span class="line">    height: 140px;</span><br><span class="line">    margin-right: 16px;</span><br><span class="line">&#125; </span><br><span class="line">.buy-one-buy li:last-child&#123;</span><br><span class="line">    margin-right: 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+</li>
+<li><p>最后就能实现上图中的分栏效果了                           </p>
+</li>
+</ul>
+<h5 id="2-使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float-margin-百分比实现一样的效果，之后维护只需要修改相应的百分比即可"><a href="#2-使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float-margin-百分比实现一样的效果，之后维护只需要修改相应的百分比即可" class="headerlink" title="2.使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float+margin+百分比实现一样的效果，之后维护只需要修改相应的百分比即可"></a>2.使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float+margin+百分比实现一样的效果，之后维护只需要修改相应的百分比即可</h5><ul>
+<li><p>首先依旧固定住最外层的宽度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;&#x2F;*之后要改回去1200*&#x2F;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>之后在li中使用float让他们位于同一行，给每个li的宽度设置为22%(原本应为父元素的1/4，即25%。但是需要留剩下的百分比给间距)。然后100%-22%*4=12%(即为三个间距的总宽度，每个间距宽度为4%);</p>
+<p><code>.buy-one-buy li{``  ``float``: ``left``;``  ``width``: ``22%``;``  ``margin-right``: ``4%``;``  ``height``: ``180px``;``}``.buy-one-buy li:last-child{``  ``margin-right``: ``0%``;``}``.buy-one-buy img{``  ``width``: ``100%``;``  ``height``: ``100%``;``}</code></p>
+</li>
+<li><p>最后也能实现一样的效果（但在实际上也可以将float变成display:inline-block;但是需要消除默认间距。也一样能实现）</p>
+</li>
+</ul>
+<h5 id="3-上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局-css3去实现"><a href="#3-上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局-css3去实现" class="headerlink" title="3.上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局+css3去实现"></a>3.上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局+css3去实现</h5><ul>
+<li><p>依旧固定住最外层的宽度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;&#x2F;*之后要改回去1200*&#x2F;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后在ul中（li列表的父元素）使用flex布局（这里自定义了一个属性n:为你需要分栏的数字，之后的li根据这个属性去动态计算宽度）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy ul&#123;</span><br><span class="line">    display: flex;</span><br><span class="line">    justify-content: space-between;&#x2F;*两端对齐，项目之间的间隔都相等*&#x2F;</span><br><span class="line">    --n : 4;&#x2F;*css自定义属性(--*)，用var(--*)使用自定义属性*&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将每个li设置宽度和高度（其中不需要将li转换成行内块元素，因为flex布局默认flex-direction属性的主轴方向为水平方向）(这里使用了css3中的calc函数)</p>
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy li&#123;</span><br><span class="line">    width: calc(calc((100&#x2F;var(--n))*1%) - 20px);   </span><br><span class="line">    height: 100px;</span><br><span class="line">&#125;</span><br><span class="line">.buy-one-buy img&#123;</span><br><span class="line">    width: 100%;</span><br><span class="line">    height: 100%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+</li>
+<li><p>最后，就能成功实现上述效果了！而且修改成不同的栏还十分方便！</p>
+</li>
+<li><p>flex布局教程：<a href="https://www.runoob.com/w3cnote/flex-grammar.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/flex-grammar.htm</a>l</p>
+</li>
+</ul>
+<p>注意： css3中定义原生变量var浏览器兼容性不太好，如图：</p>
+<p>   <img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190916122634415-1266328338.png" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/" data-id="ckc8kknfm0002copeb2p4b0z5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） 
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Bootstrap环境安装加使用---开启Bootstrap 之旅</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/">webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） </a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/">多种方式实现平均分栏布局（有间距）div平分行宽</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/">Bootstrap环境安装加使用---开启Bootstrap 之旅</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/">使用webpack---安装webpack和webpack-dev-server</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/14/Visual-Studio-Code%E4%B8%ADEs6%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Visual Studio Code中Es6的开发环境搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

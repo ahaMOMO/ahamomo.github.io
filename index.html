@@ -64,6 +64,216 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-webpack4-41-0配置一（基础配置webpack文件，入口出口，实现打包）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/" class="article-date">
+  <time datetime="2019-10-08T05:35:00.000Z" itemprop="datePublished">2019-10-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/">webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.查看node.js版本、npm版本和webpack版本（使用webpack4时，请确保node.js的版本&gt;=8.9.4）</strong></p>
+<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007092932789-829123539.png" alt="img"></p>
+<p><strong>2.我先重新卸载了webpack和webpack-cli(全局)</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall -g webpack-cli</span><br><span class="line"></span><br><span class="line">npm uninstall -g webpack</span><br></pre></td></tr></table></figure>
+
+<p>npm uninstall -g webpack</p>
+<p><strong>3.全局安装webpack-cli和webpack</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack-cli -g</span><br><span class="line"></span><br><span class="line">npm install webpack -g</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.测试一下webpack4的新特性，不用配置入口(默认./src)和出口(默认./dist)</strong></p>
+<p> 4.1建立src文件夹并在文件夹中建立两个js文件，内容任意</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191008132754048-1859633601.png" alt="img"></p>
+<p>4.2之后在终端输入webpack –mode development（无–mode默认是production,有–mode为开发者模式，文件比较大，方便我们调式，有一些出入日志等功能）</p>
+<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112523844-417646620.png" alt="img"></p>
+<p> <img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007112554217-1233236069.png" alt="img"></p>
+<p>然后就自动出现了出口文件夹，但是这只适合于小项目，我们一般还是建议需要配置一下配置文件，因为很多时候我们的项目不一定只有入口和出口的配置，我们可能还需要编译less,sass,需要支持es6语法等。</p>
+<p><strong>5.建立配置文件webpack.config.js并书写以下内容</strong></p>
+<p><a href="javascript:void(0);"><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const path &#x3D; require(&#39;path&#39;);</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">    entry:&#39;.&#x2F;input.js&#39;,</span><br><span class="line">    output:&#123;</span><br><span class="line">        path:path.resolve(__dirname,&#39;dist&#39;),</span><br><span class="line">        filename:&#39;output.bundle.js&#39;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);"><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/copycode.gif" alt="复制代码"></a></p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114058931-228108134.png" alt="img"></p>
+<p> 5.1建立input.js入口文件</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114646407-1243656626.png" alt="img"></p>
+<p> 5.2终端输入webpack,出现出口文件dist</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114754810-915745005.png" alt="img"></p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007114824733-1169698622.png" alt="img"></p>
+<p> <strong>6.更改配置文件，多个入口文件，出口文件与相应的入口文件对应</strong></p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115418867-533485961.png" alt="img"></p>
+<p> 进行打包</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007115551418-1054343194.png" alt="img"></p>
+<p>在出口文件中找不到在入口文件中写的console.log。因为打包没有写–mode默认为生产模式，将我们的调式程序都省略了。如果你换成webpack –mode development,就会看到有console.log。(这就是生产模式和开发模式的区别，开发模式的文件会大很多，所以我们项目最终上线是要打包成生产模式的)。但是我们每次不需要在终端都输入–mode,只需要在配置文件中设置mode就可以了。</p>
+<p><img src="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/1734305-20191007120219545-2089555699.png" alt="img"></p>
+<p>之后在终端输入webpack也为开发者模式。终端也不会出现黄色的提示了。</p>
+<p>以上就是最基础的webpack打包的配置了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/" data-id="ckc8kknfl0001cope5nsmhioj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-多种方式实现平均分栏布局（有间距）div平分行宽" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/" class="article-date">
+  <time datetime="2019-09-15T03:53:00.000Z" itemprop="datePublished">2019-09-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/">多种方式实现平均分栏布局（有间距）div平分行宽</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>以下例子基于分四栏+栏间有间距的例子分析</strong></p>
+<p><strong>效果图：</strong></p>
+<p><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190915113413799-904978675.png" alt="img"></p>
+<p> <strong>html代码：</strong>　</p>
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;buy-one-buy&quot;&gt;</span><br><span class="line">   &lt;h3&gt;淘一淘&lt;&#x2F;h3&gt;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-1.jpg&quot; alt&#x3D;&quot;First buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-1.jpg&quot; alt&#x3D;&quot;Second buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-2.jpg&quot; alt&#x3D;&quot;Third buy&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">       &lt;li&gt;&lt;img src&#x3D;&quot;..&#x2F;img&#x2F;homePage&#x2F;rotation-3.jpg&quot; alt&#x3D;&quot;Four slide&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">   &lt;&#x2F;ul&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+<h5 id="1-最简单粗暴的方式就是通过固定值-margin去计算"><a href="#1-最简单粗暴的方式就是通过固定值-margin去计算" class="headerlink" title="1.最简单粗暴的方式就是通过固定值+margin去计算"></a>1.最简单粗暴的方式就是通过固定值+margin去计算</h5><ul>
+<li><p>首先我先固定了最外层的宽度为1200px;（这里为1202px宽度是因为我加了一个红边框方便观察，最后页面显示的时候要记得把border去掉并且宽度改为1200px）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>之后我将每个li的宽度固定为288px(四个li即为1152px,剩下还有1200px-1152px=48px作为四栏中的间距（四栏共有三个间距，则48px/3=16px)。因此我给每个li设置margin-right为16px，当然最后一个li中的amrgin-right要设置为0。)  </p>
+<p>注意：因为li是块元素，我首先先把它转换为行内块元素再进行操作。所以先在ul中清除掉行内块的默认间距（font-size:0）。</p>
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy ul&#123;</span><br><span class="line">    font-size: 0;</span><br><span class="line">&#125;</span><br><span class="line">.buy-one-buy li&#123;</span><br><span class="line">    display: inline-block;</span><br><span class="line">    width: 288px;</span><br><span class="line">    height: 140px;</span><br><span class="line">    margin-right: 16px;</span><br><span class="line">&#125; </span><br><span class="line">.buy-one-buy li:last-child&#123;</span><br><span class="line">    margin-right: 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+</li>
+<li><p>最后就能实现上图中的分栏效果了                           </p>
+</li>
+</ul>
+<h5 id="2-使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float-margin-百分比实现一样的效果，之后维护只需要修改相应的百分比即可"><a href="#2-使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float-margin-百分比实现一样的效果，之后维护只需要修改相应的百分比即可" class="headerlink" title="2.使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float+margin+百分比实现一样的效果，之后维护只需要修改相应的百分比即可"></a>2.使用第一种方法会使得页面维护起来很麻烦，每次宽度都要去计算。所以后来，我使用float+margin+百分比实现一样的效果，之后维护只需要修改相应的百分比即可</h5><ul>
+<li><p>首先依旧固定住最外层的宽度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;&#x2F;*之后要改回去1200*&#x2F;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>之后在li中使用float让他们位于同一行，给每个li的宽度设置为22%(原本应为父元素的1/4，即25%。但是需要留剩下的百分比给间距)。然后100%-22%*4=12%(即为三个间距的总宽度，每个间距宽度为4%);</p>
+<p><code>.buy-one-buy li{``  ``float``: ``left``;``  ``width``: ``22%``;``  ``margin-right``: ``4%``;``  ``height``: ``180px``;``}``.buy-one-buy li:last-child{``  ``margin-right``: ``0%``;``}``.buy-one-buy img{``  ``width``: ``100%``;``  ``height``: ``100%``;``}</code></p>
+</li>
+<li><p>最后也能实现一样的效果（但在实际上也可以将float变成display:inline-block;但是需要消除默认间距。也一样能实现）</p>
+</li>
+</ul>
+<h5 id="3-上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局-css3去实现"><a href="#3-上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局-css3去实现" class="headerlink" title="3.上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局+css3去实现"></a>3.上诉两种方式如果页面一直固定为四栏的话，是可行的。但是如果维护的时候需要变成三栏五栏之类的就会需要修改一系列的css数据，并且平分的时候还不一定是整数。所以，最后我决定采用flex布局+css3去实现</h5><ul>
+<li><p>依旧固定住最外层的宽度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy&#123;</span><br><span class="line">    width: 1202px;&#x2F;*之后要改回去1200*&#x2F;</span><br><span class="line">    border: 1px solid red;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后在ul中（li列表的父元素）使用flex布局（这里自定义了一个属性n:为你需要分栏的数字，之后的li根据这个属性去动态计算宽度）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy ul&#123;</span><br><span class="line">    display: flex;</span><br><span class="line">    justify-content: space-between;&#x2F;*两端对齐，项目之间的间隔都相等*&#x2F;</span><br><span class="line">    --n : 4;&#x2F;*css自定义属性(--*)，用var(--*)使用自定义属性*&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将每个li设置宽度和高度（其中不需要将li转换成行内块元素，因为flex布局默认flex-direction属性的主轴方向为水平方向）(这里使用了css3中的calc函数)</p>
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.buy-one-buy li&#123;</span><br><span class="line">    width: calc(calc((100&#x2F;var(--n))*1%) - 20px);   </span><br><span class="line">    height: 100px;</span><br><span class="line">&#125;</span><br><span class="line">.buy-one-buy img&#123;</span><br><span class="line">    width: 100%;</span><br><span class="line">    height: 100%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);"><img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/copycode.gif" alt="复制代码"></a></p>
+</li>
+<li><p>最后，就能成功实现上述效果了！而且修改成不同的栏还十分方便！</p>
+</li>
+<li><p>flex布局教程：<a href="https://www.runoob.com/w3cnote/flex-grammar.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/flex-grammar.htm</a>l</p>
+</li>
+</ul>
+<p>注意： css3中定义原生变量var浏览器兼容性不太好，如图：</p>
+<p>   <img src="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/1734305-20190916122634415-1266328338.png" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/" data-id="ckc8kknfm0002copeb2p4b0z5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Bootstrap环境安装加使用-开启Bootstrap-之旅" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/" class="article-date">
+  <time datetime="2019-09-15T03:22:00.000Z" itemprop="datePublished">2019-09-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/">Bootstrap环境安装加使用---开启Bootstrap 之旅</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.首先去Bootstrap官网<a href="https://getbootstrap.com/上下载Bootstrap" target="_blank" rel="noopener">https://getbootstrap.com/上下载Bootstrap</a> 的最新版本</p>
+<p><img src="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/1734305-20190909194121993-835429346.png" alt="img"> </p>
+<p>　　对应的中文页面如下：</p>
+<p>  <img src="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/1734305-20190909194223022-1957648999.png" alt="img"></p>
+<p>　　下载自己所需要的版本（目前我自己下载的是编译的css和js）</p>
+<p>　　下载完成之后，你将会看到很多压缩了的css和js文件</p>
+<p>2.之后就可以在页面中引入 <strong>jquery.js</strong>、<strong>bootstrap.min.js</strong>和 <strong>bootstrap.min.css</strong> 文件用于让一个常规的 HTML 文件变为使用了 Bootstrap 的模板。</p>
+<p><u>这里注意应该把jquery.js文件在引入Bootstrap.min.js之前引入,因为Bootstrap是基于jquery的，而且jquery.js的版本必须在1.9以上可以使用终端输入命令：npm install jquery下载最新版本的jquery文件。</u></p>
+<p><strong>注意事项：</strong></p>
+<p><strong><img src="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/1734305-20190909210014244-728849811.png" alt="img"></strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/" data-id="ckc8kknfj0000cope96sgaohr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-使用webpack-安装webpack和webpack-dev-server" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/" class="article-date">
@@ -202,7 +412,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
     </div>
   </div>
 
@@ -213,6 +423,18 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/10/08/webpack4-41-0%E9%85%8D%E7%BD%AE%E4%B8%80%EF%BC%88%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AEwebpack%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%A5%E5%8F%A3%E5%87%BA%E5%8F%A3%EF%BC%8C%E5%AE%9E%E7%8E%B0%E6%89%93%E5%8C%85%EF%BC%89/">webpack4.41.0配置一（基础配置webpack文件，入口出口，实现打包） </a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/15/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B9%B3%E5%9D%87%E5%88%86%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E6%9C%89%E9%97%B4%E8%B7%9D%EF%BC%89div%E5%B9%B3%E5%88%86%E8%A1%8C%E5%AE%BD/">多种方式实现平均分栏布局（有间距）div平分行宽</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/15/Bootstrap%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8A%A0%E4%BD%BF%E7%94%A8-%E5%BC%80%E5%90%AFBootstrap-%E4%B9%8B%E6%97%85/">Bootstrap环境安装加使用---开启Bootstrap 之旅</a>
+          </li>
         
           <li>
             <a href="/2019/08/18/%E4%BD%BF%E7%94%A8webpack-%E5%AE%89%E8%A3%85webpack%E5%92%8Cwebpack-dev-server/">使用webpack---安装webpack和webpack-dev-server</a>
