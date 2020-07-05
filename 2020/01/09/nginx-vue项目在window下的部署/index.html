@@ -10,29 +10,29 @@
   <meta name="description" content="主机-&gt;操作系统-&gt;window(.net)&#x2F;Linux-&gt;tomcat&#x2F;nginx(软件反向代理) 1.vue项目打包到dist文件夹(之后把dist文件夹放到服务器就可以了) 1npm run build  ​     ​     2.去https:&#x2F;&#x2F;nginx.org&#x2F;官网下载nginx 　　 ​     这里有很多版本,我们选择stable version  点击进入下">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx-vue项目在window下的部署">
-<meta property="og:url" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="主机-&gt;操作系统-&gt;window(.net)&#x2F;Linux-&gt;tomcat&#x2F;nginx(软件反向代理) 1.vue项目打包到dist文件夹(之后把dist文件夹放到服务器就可以了) 1npm run build  ​     ​     2.去https:&#x2F;&#x2F;nginx.org&#x2F;官网下载nginx 　　 ​     这里有很多版本,我们选择stable version  点击进入下">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104658881-2102662413.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104825040-1771464082.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105014339-2006775941.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105125953-1541141051.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105214933-426417882.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105303839-1095565363.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105357802-948178972.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105702104-2028287243.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105759243-2051342374.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105847171-1931406201.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105944196-1386879846.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110334712-1509860850.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110808898-329231142.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110917141-1512112451.png">
-<meta property="article:published_time" content="2020-07-05T04:45:08.000Z">
-<meta property="article:modified_time" content="2020-07-05T04:46:51.986Z">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104658881-2102662413.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104825040-1771464082.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105014339-2006775941.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105125953-1541141051.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105214933-426417882.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105303839-1095565363.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105357802-948178972.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105702104-2028287243.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105759243-2051342374.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105847171-1931406201.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105944196-1386879846.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110334712-1509860850.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110808898-329231142.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110917141-1512112451.png">
+<meta property="article:published_time" content="2020-01-09T03:14:00.000Z">
+<meta property="article:modified_time" content="2020-07-05T05:13:50.127Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104658881-2102662413.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104658881-2102662413.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -83,8 +83,8 @@
       <div class="outer">
         <section id="main"><article id="post-nginx-vue项目在window下的部署" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/" class="article-date">
-  <time datetime="2020-07-05T04:45:08.000Z" itemprop="datePublished">2020-07-05</time>
+    <a href="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time datetime="2020-01-09T03:14:00.000Z" itemprop="datePublished">2020-01-09</time>
 </a>
     
   </div>
@@ -107,38 +107,38 @@
 <p><strong>1.vue项目打包到dist文件夹(之后把dist文件夹放到服务器就可以了)</strong></p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
 
-<p>​    <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104658881-2102662413.png" alt="img"></p>
-<p>​    <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104825040-1771464082.png" alt="img"></p>
+<p>​    <img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104658881-2102662413.png" alt="img"></p>
+<p>​    <img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109104825040-1771464082.png" alt="img"></p>
 <p><strong>2.去<a href="https://nginx.org/官网下载nginx" target="_blank" rel="noopener">https://nginx.org/官网下载nginx</a></strong></p>
-<p>　　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105014339-2006775941.png" alt="img"></p>
-<p>​    <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105125953-1541141051.png" alt="img"></p>
+<p>　　<img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105014339-2006775941.png" alt="img"></p>
+<p>​    <img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105125953-1541141051.png" alt="img"></p>
 <p>这里有很多版本,我们选择stable version</p>
-<p><img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105214933-426417882.png" alt="img"></p>
+<p><img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105214933-426417882.png" alt="img"></p>
 <p>点击进入下载页面</p>
-<p>　　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105303839-1095565363.png" alt="img"></p>
+<p>　　<img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105303839-1095565363.png" alt="img"></p>
 <p> <strong>3.安装nginx</strong></p>
 <p>进入安装路径双击nginx.exe   </p>
-<p>   <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105357802-948178972.png" alt="img"></p>
-<p>若是一闪而过,在浏览器中输入localhost,若是出现以下类似页面: <img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105702104-2028287243.png" alt="img"></p>
+<p>   <img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105357802-948178972.png" alt="img"></p>
+<p>若是一闪而过,在浏览器中输入localhost,若是出现以下类似页面: <img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105702104-2028287243.png" alt="img"></p>
 <p>打开控制面板中的管理工具-&gt;服务-&gt;找到IIS</p>
-<p><img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105759243-2051342374.png" alt="img"></p>
-<p>双击打开,选择停止(因为端口可能被占用)　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105847171-1931406201.png" alt="img"></p>
-<p> 之后重新双击nginx.exe,在浏览器输入localhost,出现一些页面则安装成功　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105944196-1386879846.png" alt="img"></p>
+<p><img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105759243-2051342374.png" alt="img"></p>
+<p>双击打开,选择停止(因为端口可能被占用)　<img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105847171-1931406201.png" alt="img"></p>
+<p> 之后重新双击nginx.exe,在浏览器输入localhost,出现一些页面则安装成功　<img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109105944196-1386879846.png" alt="img"></p>
 <p><strong>4.显示自己打包的页面</strong></p>
 <p>找到自己项目中的dist文件夹</p>
-<p>　　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110334712-1509860850.png" alt="img"></p>
+<p>　　<img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110334712-1509860850.png" alt="img"></p>
 <p>复制到nginx文件夹下的html中,把之前nginx默认的index.html等删除,把我们dist里面的文件放到ngnix的html文件中,</p>
 <p>　　如图:</p>
-<p>　　<img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110808898-329231142.png" alt="img"></p>
+<p>　　<img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110808898-329231142.png" alt="img"></p>
 <p>之后回到浏览器中刷新,就是我们打包过后的页面了</p>
-<p><img src="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110917141-1512112451.png" alt="img"></p>
+<p><img src="/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/1734305-20200109110917141-1512112451.png" alt="img"></p>
 <p>完成!注意ngnix文件名路径不能带有中文!</p>
 <p>还有一种方式是修改nginx的配置文件,可以自己去百度搜索查看</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/" data-id="ckc8m3pzr0005uspe0gaxbkt0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/09/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/" data-id="ckc8m3pzr0005uspe0gaxbkt0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -147,10 +147,19 @@
     
 <nav id="article-nav">
   
+    <a href="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Vue的响应式原理---(v-model中的双向绑定原理)
+        
+      </div>
+    </a>
   
-    <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2019/10/09/webpack4-41-0%E9%85%8D%E7%BD%AE%E5%9B%9B-%E7%83%AD%E6%9B%BF%E6%8D%A2/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">JavaScript中对象继承方式（ES5）</div>
+      <div class="article-nav-title">webpack4.41.0配置四(热替换)</div>
     </a>
   
 </nav>
@@ -201,10 +210,6 @@
       <ul>
         
           <li>
-            <a href="/2020/07/05/nginx-vue%E9%A1%B9%E7%9B%AE%E5%9C%A8window%E4%B8%8B%E7%9A%84%E9%83%A8%E7%BD%B2/">nginx-vue项目在window下的部署</a>
-          </li>
-        
-          <li>
             <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/">JavaScript中对象继承方式（ES5）</a>
           </li>
         
@@ -218,6 +223,10 @@
         
           <li>
             <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/">mpvue的用法总结（vue与小程序中的语法支持） </a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/">使用mpvue创建项目以及总结</a>
           </li>
         
       </ul>
