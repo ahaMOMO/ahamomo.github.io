@@ -64,6 +64,230 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-web后台认证机制" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" class="article-date">
+  <time datetime="2020-07-06T13:32:37.000Z" itemprop="datePublished">2020-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/">postweb后台认证机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="web后台认证机制"><a href="#web后台认证机制" class="headerlink" title="web后台认证机制"></a>web后台认证机制</h1><h3 id="1-HTTP基本认证（HTTP-Basic-Authentication）"><a href="#1-HTTP基本认证（HTTP-Basic-Authentication）" class="headerlink" title="1.HTTP基本认证（HTTP Basic Authentication）"></a>1.HTTP基本认证（HTTP Basic Authentication）</h3><h5 id="1-1概念"><a href="#1-1概念" class="headerlink" title="1.1概念"></a>1.1概念</h5><p>HTTP Basic Auth简单点说明就是每次请求API时都提供用户的username和password。是浏览器遵守http协议实现的基本授权方式。</p>
+<h5 id="1-2认证过程"><a href="#1-2认证过程" class="headerlink" title="1.2认证过程"></a>1.2认证过程</h5><p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200705201513.png" alt="image-20200705201511933"></p>
+<ul>
+<li>客户端向服务器请求数据，请求的内容可能是一个网页或者是一个ajax异步请求，此时，假设客户端尚未被验证，则客户端提供如下请求至服务器:</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Get /index.html HTTP/1.0 </span><br><span class="line">Host:www.google.com</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>服务器向客户端发送验证请求代码401,（WWW-Authenticate: Basic realm=”google.com”这句话是关键，如果没有客户端不会弹出用户名和密码输入界面）服务器返回的数据大抵如下：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.0 401 Unauthorised </span><br><span class="line">Server: SokEvo/1.0 </span><br><span class="line">WWW-Authenticate: Basic realm=”google.com” </span><br><span class="line">Content-Type: text/html </span><br><span class="line">Content-Length: xxx</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当符合http1.0或1.1规范的客户端（如IE，FIREFOX）收到401返回值时，将自动弹出一个登录窗口，要求用户输入用户名和密码。</li>
+<li>用户输入用户名和密码后，将用户名及密码以BASE64加密方式加密，并将密文放入前一条请求信息中，则客户端发送的第一条请求信息则变成如下内容：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Get /index.html HTTP/1.0 </span><br><span class="line">Host:www.google.com </span><br><span class="line">Authorization: Basic d2FuZzp3YW5n</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：<code>d2FuZzp3YW5n</code>表示加密后的用户名及密码（用户名：密码 然后通过base64加密，加密过程是浏览器默认的行为，不需要我们人为加密，我们只需要输入用户名密码即可）</p>
+</blockquote>
+<ul>
+<li>服务器收到上述请求信息后，将 <code>Authorization</code> 字段后的用户信息取出、解密，将解密后的用户名及密码与用户数据库进行比较验证，如用户名及密码正确，服务器则根据请求，将所请求资源发送给客户端。</li>
+</ul>
+<h5 id="1-3效果"><a href="#1-3效果" class="headerlink" title="1.3效果"></a>1.3效果</h5><p>客户端未认证的时候，会弹出用户名密码输入框，这个时候请求时属于 <code>pending</code> 状态，当用户输入用户名密码的时候客户端会再次发送带 <code>Authentication</code> 头的请求：</p>
+<p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200705202139.png" alt="image-20200705202133791"></p>
+<p>认证成功之后：</p>
+<p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200705202507.png" alt="image-20200705202505488"></p>
+<h5 id="1-4优缺点"><a href="#1-4优缺点" class="headerlink" title="1.4优缺点"></a>1.4优缺点</h5><p>优点：</p>
+<ul>
+<li>基本所有流行的网页浏览器都支持基本认证。</li>
+<li>是配合restful api使用的最简单的认证方式。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>以明文传输的密钥和口令很容易被拦截，该方案同样没有对服务器返回的信息提供保护。</li>
+<li>现存的浏览器保存认证信息直到标签页或浏览器被关闭，或者用户清除历史记录。HTTP没有为服务器提供一种方法指示客户端丢弃这些被缓存的密钥。这意味着服务器端在用户不关闭浏览器的情况下，并没有一种有效的方法来让用户注销。</li>
+</ul>
+<h3 id="2-session-cookie认证"><a href="#2-session-cookie认证" class="headerlink" title="2.session-cookie认证"></a>2.session-cookie认证</h3><h5 id="2-1概念"><a href="#2-1概念" class="headerlink" title="2.1概念"></a>2.1概念</h5><p>Cookie认证机制就是为一次请求认证在服务端创建一个Session对象，同时在客户端的浏览器端创建了一个Cookie对象；通过客户端带上来Cookie对象来与服务器端的session对象匹配来实现状态管理的。</p>
+<h5 id="2-2cookie原理"><a href="#2-2cookie原理" class="headerlink" title="2.2cookie原理"></a>2.2cookie原理</h5><p>在浏览器第一次向服务器发送请求时，服务器在 <code>response</code> 头部设置 <code>Set-Cookie</code> 字段，浏览器收到响应就会设置 <code>cookie</code> 并存储，在下一次该浏览器向服务器发送请求时，就会在 <code>request</code> 头部自动带上 <code>Cookie</code> 字段，服务器端收到该 <code>cookie</code> 用以区分不同的浏览器。</p>
+<h5 id="2-3认证过程"><a href="#2-3认证过程" class="headerlink" title="2.3认证过程"></a>2.3认证过程</h5><p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200705203808.png" alt="image-20200705203806208"></p>
+<ul>
+<li>服务器在接受客户端首次访问时在服务器端创建seesion，然后保存seesion(我们可以将seesion保存在 内存中，也可以保存在redis中，推荐使用后者)，然后给这个session生成一个唯一的标识字符串,然后在响应头中种下这个唯一标识字符串。</li>
+<li>签名。这一步通过秘钥对sid进行签名处理，避免客户端修改sid。(非必需步骤)</li>
+<li>浏览器中收到请求响应的时候会解析响应头，然后将sid保存在本地cookie中，浏览器在下次http请求的请求头中会带上该域名下的cookie信息。</li>
+<li>服务器在接受客户端请求时会去解析请求头cookie中的sid，然后根据这个sid去找服务器端保存的该客户端的session，然后判断该请求是否合法。</li>
+</ul>
+<h5 id="2-4优缺点"><a href="#2-4优缺点" class="headerlink" title="2.4优缺点"></a>2.4优缺点</h5><p>缺点：</p>
+<ul>
+<li>服务器内存消耗大：用户每做一次应用认证,应用就会在服务端做一次记录,以方便用户下次请求时使用。通常来讲session保存在内存中,随着认证用户的增加,服务器的消耗就会很大。</li>
+<li>在不是HTTPS协议下易受到CSRF攻击：每次发送请求，用户的信息就携带在cookie中，然而cookie很容易被挟持，这样子用户就很容易被伪造。</li>
+<li>认证方式仅仅局限于在浏览器中使用，cookie是浏览器端的机制，如果在app端就无法使用cookie。</li>
+</ul>
+<h3 id="3-Token认证"><a href="#3-Token认证" class="headerlink" title="3.Token认证"></a>3.Token认证</h3><h5 id="3-1概念"><a href="#3-1概念" class="headerlink" title="3.1概念"></a>3.1概念</h5><p>当用户第一次登录后，服务器生成一个token并将此token返回给客户端，以后客户端只需带上这个token前来请求数据即可，<strong>无需再次带上用户名和密码。</strong></p>
+<p>最简单的token组成:<u>uid</u>(用户唯一的身份标识)、<u>time</u>(当前时间的时间戳)、<u>sign</u>(签名，由token的前几位+盐以哈希算法压缩成一定长的十六进制字符串，可以防止恶意第三方拼接token请求服务器)。还可以把不变的参数也放进token，避免多次查库。</p>
+<h5 id="3-2认证过程"><a href="#3-2认证过程" class="headerlink" title="3.2认证过程"></a>3.2认证过程</h5><p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200705205846.png" alt="image-20200705205845605"></p>
+<ul>
+<li>客户端使用用户名跟密码请求登录</li>
+<li>服务端收到请求，去验证用户名与密码</li>
+<li>验证成功后，服务端会签发一个 <code>Token</code>，再把这个 <code>Token</code> 发送给客户端</li>
+<li>客户端收到 <code>Token</code> 以后可以把它存储起来，比如放在 <code>Cookie</code> 里或者<code>Local Storage</code> 里</li>
+<li>客户端每次向服务端请求资源的时候需要带着服务端签发的 <code>Token</code></li>
+<li>服务端收到请求，然后去验证客户端请求里面带着的 <code>Token</code>（request头部添加Authorization），如果验证成功，就向客户端返回请求的数据 ，如果不成功返回401错误码，鉴权失败。</li>
+</ul>
+<h5 id="3-3优缺点"><a href="#3-3优缺点" class="headerlink" title="3.3优缺点"></a>3.3优缺点</h5><p>优点：</p>
+<ul>
+<li>认证方式可以支持多种客户端，而不仅是浏览器。</li>
+<li>支持跨域访问（cookie不支持跨域是因为浏览器的安全策略所导致，但是token完全由应用管理，所以它可以避开同源策略）</li>
+<li>无状态（服务器扩展性强）：token机制在服务端不需要存储session信息，因为Token 自身包含了所有登录用户的信息，只需要在客户端的cookie或本地介质存储状态信息。</li>
+<li>不使用 <code>cookie</code> 就可以规避CSRF攻击。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>加密解密消耗使得 <code>token</code> 认证比 <code>session-cookie</code> 更消耗性能。</li>
+<li><code>token</code> 比 <code>sessionId</code> 大，更占带宽。</li>
+</ul>
+<h5 id="3-4扩展问题"><a href="#3-4扩展问题" class="headerlink" title="3.4扩展问题"></a>3.4扩展问题</h5><h6 id="token生成机制？"><a href="#token生成机制？" class="headerlink" title="token生成机制？"></a>token生成机制？</h6><p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200705212434.png" alt="image-20200705212433242"></p>
+<ul>
+<li>将荷载payload，以及Header信息进行Base64加密，形成密文payload密文，header密文。</li>
+<li>将payload密文和header密文用英文句号连接在一起，用服务端秘钥进行HS256（对称算法）加密，生成签名。</li>
+<li>将payload密文，header密文以及签名用英文句号连接在一起形成”header密文+” .“+”payload密文“+“.”+“签名”“这种形式的token。</li>
+</ul>
+<blockquote>
+<p>为啥使用HS256（对称算法）？</p>
+<p>非对称算法存在一方签发，另一方验证的情况。但是在这里，签发和验证都是同一方，所以对称加密算法就能达到要求，而对称算法比非对称算法要快得多（可达数十倍差距）。</p>
+<p>更进一步思考，对称加密算法除了加密，还带有还原加密内容的功能，而这一功能在对 Token 签名时并无必要——既然不需要解密，摘要（散列）算法就会更快。可以指定密码的散列算法，自然是 HMAC。（但是这里还是用到了对称算法HS256）</p>
+</blockquote>
+<h6 id="token解析机制？"><a href="#token解析机制？" class="headerlink" title="token解析机制？"></a>token解析机制？</h6><p>用户请求时携带此token（分为三部分，header密文，payload密文，签名）到服务端，服务器是怎么检验Token合法性的呢？服务器需要确认两件事情（Token有没有过期以及Token是否是自己签发的）</p>
+<ul>
+<li>客户端通过用Base64解密第二部分（payload密文），可以知道荷载中授权时间，以及有效期。通过这个与当前时间对比发现token是否过期。</li>
+<li>服务端使用原来的秘钥与密文(header密文+”.”+payload密文)同样进行HS256运算，然后用生成的签名与token携带的签名进行对比，若一致说明token合法，不一致说明原文被修改。</li>
+</ul>
+<h6 id="token存在cookie中为什么可以规避CSRF攻击？"><a href="#token存在cookie中为什么可以规避CSRF攻击？" class="headerlink" title="token存在cookie中为什么可以规避CSRF攻击？"></a>token存在cookie中为什么可以规避CSRF攻击？</h6><p>即使在客户端使用cookie存储token，cookie也<u>仅仅是一个存储机制而不是用于认证</u>。</p>
+<p>因为就算黑客劫持了 cookie中的token,但是服务器不通过获取cookie去认证，所以黑客获得了token也无用。</p>
+<p>比如：</p>
+<p>1.使用url参数传递</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//网络请求函数：</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">let</span> token = Utils.getCookie(Const.TOKEN);</span><br><span class="line">    url += <span class="string">`?_security_token=<span class="subst">$&#123;token&#125;</span>`</span>;</span><br><span class="line">    <span class="keyword">return</span> ajax(url, payload);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200705211747.png" alt="image-20200705211745837"></p>
+<p>2.通过HTTP Request Headers 头部传入到服务器</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//axios的处理</span></span><br><span class="line">axios.interceptors.request.use(<span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> token = Cookie.get(<span class="string">'_security_token'</span>) || Cookie.get(<span class="string">'_security_token_inc'</span>) || <span class="string">''</span>;</span><br><span class="line">  config.headers.common[<span class="string">"Security-Token"</span>] = token;</span><br><span class="line">  <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//或者自己的网络库</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> ajax(host + params.url, &#123;</span><br><span class="line">                data: params.opts,</span><br><span class="line">                method: params.method,</span><br><span class="line">                contentType,</span><br><span class="line">                headers: &#123;<span class="attr">_security_token</span>: <span class="string">'02_zMKe_99eah5s0G1'</span>&#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200705211910.png" alt="image-20200705211909335"></p>
+<p>3.放在<code>Authorization</code>请求首部</p>
+<blockquote>
+<p>Authorization首部说明</p>
+<p>Authorization首部是由客户端发送，以向服务器回应自己的身份验证信息，客户端在收到服务器的401 Authentication Required响应之后，需要在请求中包含该首部。</p>
+<p>基本用法：Authorization: <authentication-scheme> <authentication-param></authentication-param></authentication-scheme></p>
+</blockquote>
+<p>在传输时，<code>Authorization</code>首部的<code>authentication-scheme</code>需要设置为<code>Bearer</code>，请求示例：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET /resource HTTP/1.1</span><br><span class="line">Host: server.example.com</span><br><span class="line">Authorization: Bearer mF_9.B5f-4.1JqM</span><br></pre></td></tr></table></figure>
+
+<h6 id="实际应用遇到的常见问题"><a href="#实际应用遇到的常见问题" class="headerlink" title="实际应用遇到的常见问题"></a>实际应用遇到的常见问题</h6><p>当token未到期，用户却注销账号后，怎么处理这个token?</p>
+<ul>
+<li>服务器保存这个被注销的token,以便下次收到使用这个仍在有效期内的 Token 时判其无效;</li>
+<li>若是前端可以控制，前端一旦注销成功，丢弃本地保存（cookie或者localStorage）；</li>
+<li>可以使用refresh token。</li>
+</ul>
+<p>refresh token 的流程：</p>
+<p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200706201205.png" alt="image-20200706201200545"></p>
+<p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200706201240.png" alt="image-20200706201238285"></p>
+<h3 id="4-基于JWT的Token认证机制实现"><a href="#4-基于JWT的Token认证机制实现" class="headerlink" title="4.基于JWT的Token认证机制实现"></a>4.基于JWT的Token认证机制实现</h3><blockquote>
+<p>JWT规定了Token的具体实现方式</p>
+</blockquote>
+<h5 id="4-1概念"><a href="#4-1概念" class="headerlink" title="4.1概念"></a>4.1概念</h5><p>WT 的原理是，服务器认证以后，生成一个 JSON 对象，发回给用户。用户与服务端通信的时候，都要发回这个 JSON 对象。服务器完全只靠这个对象认定用户身份。为了防止用户篡改数据，服务器在生成这个对象的时候，会加上签名。</p>
+<h5 id="4-2JWT的结构"><a href="#4-2JWT的结构" class="headerlink" title="4.2JWT的结构"></a>4.2JWT的结构</h5><ul>
+<li>Header（头部）</li>
+<li>Payload（负载）</li>
+<li>Signature（签名）</li>
+</ul>
+<h6 id="Header（头部）"><a href="#Header（头部）" class="headerlink" title="Header（头部）"></a>Header（头部）</h6><p>Header 部分是一个 JSON 对象，描述 JWT 的元数据，通常是下面的样子:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"alg"</span>: <span class="string">"HS256"</span>,	<span class="comment">//alg属性表示签名的算法（algorithm），默认是 HMAC SHA256（写成 HS256）</span></span><br><span class="line">  <span class="string">"typ"</span>: <span class="string">"JWT"</span>		<span class="comment">//typ属性表示这个令牌（token）的类型（type），JWT 令牌统一写为JWT</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后，将上面的 JSON 对象使用 Base64URL 算法转成字符串。</p>
+<h6 id="Payload（负载）"><a href="#Payload（负载）" class="headerlink" title="Payload（负载）"></a>Payload（负载）</h6><p>Payload 部分也是一个 JSON 对象，用来存放实际需要传递的数据。JWT 规定了7个官方字段，供选用。</p>
+<ul>
+<li>iss (issuer)：签发人</li>
+<li>exp (expiration time)：过期时间</li>
+<li>sub (subject)：主题</li>
+<li>aud (audience)：受众</li>
+<li>nbf (Not Before)：生效时间</li>
+<li>iat (Issued At)：签发时间</li>
+<li>jti (JWT ID)：编号</li>
+</ul>
+<p>注意，JWT 默认是不加密的，任何人都可以读到，所以不要把秘密信息放在这个部分。</p>
+<p>这个 JSON 对象也要使用 Base64URL 算法转成字符串。</p>
+<h6 id="Signature（签名）"><a href="#Signature（签名）" class="headerlink" title="Signature（签名）"></a>Signature（签名）</h6><p>Signature 部分是对前两部分的签名，防止数据篡改。</p>
+<p>首先，需要指定一个密钥（secret）。这个密钥只有服务器才知道，不能泄露给用户。然后，使用 Header 里面指定的签名算法（默认是 HMAC SHA256），按照下面的公式产生签名。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HMACSHA256(</span><br><span class="line">  base64UrlEncode(header) + <span class="string">"."</span> +</span><br><span class="line">  base64UrlEncode(payload),</span><br><span class="line">  secret)</span><br></pre></td></tr></table></figure>
+
+<p>算出签名以后，把 Header、Payload、Signature 三个部分拼成一个字符串，每个部分之间用”点”（<code>.</code>）分隔，就可以返回给用户。</p>
+<h5 id="4-3认证过程"><a href="#4-3认证过程" class="headerlink" title="4.3认证过程"></a>4.3认证过程</h5><p>参考token认证的过程，3.2节</p>
+<h5 id="4-4特点"><a href="#4-4特点" class="headerlink" title="4.4特点"></a>4.4特点</h5><ul>
+<li>JWT 默认是不加密，但也是可以加密的。生成原始 Token 以后，可以用密钥再加密一次。</li>
+<li>JWT 不加密的情况下，不能将秘密数据写入 JWT。</li>
+<li>JWT 不仅可以用于认证，也可以用于交换信息。有效使用 JWT，可以降低服务器查询数据库的次数。</li>
+<li>JWT 的最大缺点是，由于服务器不保存 session 状态，因此无法在使用过程中废止某个 token，或者更改 token 的权限。也就是说，一旦 JWT 签发了，在到期之前就会始终有效，除非服务器部署额外的逻辑。</li>
+<li>JWT 本身包含了认证信息，一旦泄露，任何人都可以获得该令牌的所有权限。为了减少盗用，JWT 的有效期应该设置得比较短。对于一些比较重要的权限，使用时应该再次对用户进行认证。</li>
+<li>为了减少盗用，JWT 不应该使用 HTTP 协议明码传输，要使用 HTTPS 协议传输。</li>
+</ul>
+<h3 id="5-基于OAuth-开放授权-认证（主要是规定授权流程）"><a href="#5-基于OAuth-开放授权-认证（主要是规定授权流程）" class="headerlink" title="5.基于OAuth(开放授权)认证（主要是规定授权流程）"></a>5.基于OAuth(开放授权)认证（主要是规定授权流程）</h3><h5 id="5-1概念"><a href="#5-1概念" class="headerlink" title="5.1概念"></a>5.1概念</h5><p>OAuth（Open Authorization）是一个开放标准，允许用户授权第三方网站访问他们存储在另外的服务提供者上的信息，而不需要将用户名和密码提供给第三方网站或分享他们数据的所有内容，为了保护用户数据的安全和隐私，第三方网站访问用户数据前都需要显式的向用户征求授权。我们常见的提供OAuth认证服务的厂商有支付宝，QQ,微信。</p>
+<h5 id="5-2认证过程"><a href="#5-2认证过程" class="headerlink" title="5.2认证过程"></a>5.2认证过程</h5><p>GitHub第三方登录示例：</p>
+<p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200706212228.png" alt="image-20200706212225503"></p>
+<ul>
+<li>在GitHub中备案第三方应用，拿到属于它的客户端ID和客户端密钥。在<code>github-settings-developer settings</code>中创建一个OAuth App。并填写相关内容。填写完成后Github会给你一个客户端ID和客户端密钥。</li>
+</ul>
+<p><img src="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/20200706212259.png" alt="image-20200706212257560"></p>
+<ul>
+<li>此时在你的第三方网站就可以提供一个Github登录链接，用户点击该链接后会跳转到Github。这一步拿着客户端ID向Github请求授权码code。</li>
+<li>用户跳转到Github，输入Github的用户名密码，表示用户同意使用Github身份登录第三方网站。此时就会带着授权码code跳回第三方网站。跳回的地址在创建该OAuth时已经设置好了。</li>
+<li>第三方网站收到授权码，就可以拿着授权码、客户端ID和客户端密钥去向Github请求access_token令牌。</li>
+<li>Github收到请求，向第三方网站颁发令牌。</li>
+<li>第三方网站收到令牌，就可以暂时拥有Github一些请求的权限，比如说拿到用户信息，拿到这个用户信息之后就可以构建自己第三方网站的token，做相关的鉴权操作。</li>
+</ul>
+<h5 id="5-3优点"><a href="#5-3优点" class="headerlink" title="5.3优点"></a>5.3优点</h5><ul>
+<li>客户端不接触用户密码，服务端更易集中保护</li>
+<li>广泛传播并被持续采用</li>
+<li>支持短寿命和封装的Token.</li>
+<li>资源服务器和授权服务器解耦</li>
+<li>集中式授权，简化客户端</li>
+<li>HTTP/JSON友好，易于请求和传递Token.</li>
+<li>考虑多种客户端架构场景</li>
+<li>客户端可以具有不同的信任级别</li>
+<li></li>
+</ul>
+<p>参考资料：</p>
+<p><a href="http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html</a></p>
+<p><a href="https://juejin.im/post/5d67662ee51d45621655353f#heading-11" target="_blank" rel="noopener">https://juejin.im/post/5d67662ee51d45621655353f#heading-11</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" data-id="ckcajqg6500003wpe457i2dm2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-JavaScript中对象继承方式（ES5" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/" class="article-date">
@@ -846,80 +1070,6 @@
 
 
   
-    <article id="post-Vue的响应式原理-v-model中的双向绑定原理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" class="article-date">
-  <time datetime="2020-01-09T05:05:00.000Z" itemprop="datePublished">2020-01-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/">Vue的响应式原理---(v-model中的双向绑定原理)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="Vue响应式原理"><a href="#Vue响应式原理" class="headerlink" title="Vue响应式原理"></a>Vue响应式原理</h5><p>不要认为数据发生改变,界面跟着更新是理所当然.</p>
-<p>具体代码实现:<a href="https://gitee.com/ahaMOMO/Vue-Responsive-Principle.git" target="_blank" rel="noopener">https://gitee.com/ahaMOMO/Vue-Responsive-Principle.git</a></p>
-<p>看下图:</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112059417-1001325982.png" alt="img"></p>
-<p> 例子如下:</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112242127-1957365636.png" alt="img"></p>
-<p>显示哈哈哈,但是当我们改变message时,也会相应改变</p>
-<p> <img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112345687-1736832302.png" alt="img"></p>
-<p> 加了几个message之后,页面也相应得到变化</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112541303-1303246143.png" alt="img"></p>
-<p> <img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109112612170-1797691244.png" alt="img"></p>
-<p> <strong>问题来了:</strong></p>
-<p>(1)app.message修改数据,Vue内部是如何监听message数据?</p>
-<p>*Object.defineProperty–&gt;监听对象属性的改变</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109122233887-836411830.png" alt="img"></p>
-<p> 当你的obj中的name发生改变之后:</p>
-<p>obj.name=”kobe”时,在set方法中监听name的改变</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109122549614-407984612.png" alt="img"></p>
-<p> <img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109122710554-1549707859.png" alt="img"></p>
-<p>(2)当数据发生改变,Vue是如何知道要通知哪些人,界面发生刷新?</p>
-<p><strong>发布订阅者设计模式</strong></p>
-<p>监听name改变后,要告诉谁?谁用就告诉谁,谁在用?</p>
-<p>给每个使用的定义一个名字,谁用一次就会调用一次get方法,所以就知道谁在使用</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109122848368-1405380260.png" alt="img"></p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109123015891-494686929.png" alt="img"></p>
-<p> 定义依赖类</p>
-<p>subs属性装的是watcher中的所有订阅者</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109123623691-2089646184.png" alt="img"></p>
-<p> 定义订阅者</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109123816402-1082910203.png" alt="img"></p>
-<p> 在get方法中,创建watcher(因为谁在使用get谁就是订阅者的一员)</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dep = <span class="keyword">new</span> Dep();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> w1 = <span class="keyword">new</span> Watcher(<span class="string">'张三'</span>);</span><br><span class="line"></span><br><span class="line">dep.addSub(w1);<span class="comment">//添加订阅者</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> w2 = <span class="keyword">new</span> Watcher(<span class="string">'李四'</span>);</span><br><span class="line"></span><br><span class="line">dep.addSub(w2);<span class="comment">//添加订阅者</span></span><br><span class="line"></span><br><span class="line">在<span class="keyword">set</span>方法中,调用dep中的notify方法</span><br><span class="line"></span><br><span class="line">dep.notify();//通知所有的订阅者</span><br></pre></td></tr></table></figure>
-
-<p>在obj中的每个属性都会创建一个dep对象</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109123732301-874621448.png" alt="img"></p>
-<p>使用图解分析过程如下:</p>
-<p><img src="/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/1734305-20200109130336660-234906660.png" alt="img"></p>
-<p>具体代码实现:<a href="https://gitee.com/ahaMOMO/Vue-Responsive-Principle.git" target="_blank" rel="noopener">https://gitee.com/ahaMOMO/Vue-Responsive-Principle.git</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/09/Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86-v-model%E4%B8%AD%E7%9A%84%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" data-id="ckc8m3pzd0000uspe0ymgfvhs" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -970,6 +1120,10 @@
       <ul>
         
           <li>
+            <a href="/2020/07/06/web%E5%90%8E%E5%8F%B0%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/">postweb后台认证机制</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/04/JavaScript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F%EF%BC%88ES5/">JavaScript中对象继承方式（ES5）</a>
           </li>
         
@@ -983,10 +1137,6 @@
         
           <li>
             <a href="/2020/06/02/mpvue%E7%9A%84%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88vue%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95%E6%94%AF%E6%8C%81%EF%BC%89/">mpvue的用法总结（vue与小程序中的语法支持） </a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/01/%E4%BD%BF%E7%94%A8mpvue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E6%80%BB%E7%BB%93/">使用mpvue创建项目以及总结</a>
           </li>
         
       </ul>
